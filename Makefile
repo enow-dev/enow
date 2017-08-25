@@ -17,6 +17,7 @@ depend:
 	go get -u github.com/goadesign/goa/goagen
 	go get -u github.com/jteeuwen/go-bindata/...
 	go get -u github.com/Masterminds/glide
+	go get -u github.com/deadcheat/goacors
 
 devDepend:
 	go get -u github.com/alecthomas/gometalinter
