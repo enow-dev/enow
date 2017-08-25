@@ -1,5 +1,11 @@
 box: pei0804/gae-go-deploy
-ft-build:
+build:
+  after-steps:
+    - install-packages:
+      packages: ruby
+    - wantedly/pretty-slack-notify:
+      webhook_url: $SLACK_WEBHOOK_URL
+      channel: notification
   steps:
     - script:
       name: env check
@@ -28,12 +34,6 @@ ft-build:
       name: build
       code: npm run build
 
-bk-build:
-  steps:
-    - script:
-      name: env check
-      code: env
-
     - script:
       name: depend
       cwd: ./src/github.com/enow-dev/enow/
@@ -48,16 +48,6 @@ bk-build:
       name: vendoring
       cwd: ./src/github.com/enow-dev/enow/
       code: make vendoring
-
-    - script:
-      name: pwd
-      cwd: ./src/github.com/enow-dev/enow/
-      code: pwd
-
-    - script:
-      name: deploy info
-      cwd: ./src/github.com/enow-dev/enow/
-      code: find .
 
     - script:
       name: gen
