@@ -1,0 +1,106 @@
+box: pei0804/gae-go-deploy
+ft-build:
+  steps:
+    - script:
+      name: env check
+      code: env
+
+    - script:
+      name: get code
+      cwd: ./
+      code: goapp get -v github.com/enow-dev/enow
+
+    - script:
+      name: deploy info
+      cwd: ./src/github.com/enow-dev/enow/
+      code: find .
+
+    - npm-install:
+      cwd: ./src/github.com/enow-dev/enow/front
+
+    - script:
+      cwd: ./src/github.com/enow-dev/enow/front
+      name: lint
+      code: npm run lint
+
+    - script:
+      cwd: ./src/github.com/enow-dev/enow/front
+      name: build
+      code: npm run build
+
+bk-build:
+  steps:
+    - script:
+      name: env check
+      code: env
+
+    - script:
+      name: depend
+      cwd: ./src/github.com/enow-dev/enow/
+      code: make depend
+
+    - script:
+      name: dev depend
+      cwd: ./src/github.com/enow-dev/enow/
+      code: make devDepend
+
+    - script:
+      name: vendoring
+      cwd: ./src/github.com/enow-dev/enow/
+      code: make vendoring
+
+    - script:
+      name: pwd
+      cwd: ./src/github.com/enow-dev/enow/
+      code: pwd
+
+    - script:
+      name: deploy info
+      cwd: ./src/github.com/enow-dev/enow/
+      code: find .
+
+    - script:
+      name: gen
+      cwd: ./src/github.com/enow-dev/enow/
+      code: make gen
+
+    - script:
+      name: front bindata
+      cwd: ./src/github.com/enow-dev/enow/
+      code: make bindata
+
+    - script:
+      name: lint
+      cwd: ./src/github.com/enow-dev/enow/
+      code: make lint
+
+    - script:
+      name: test
+      cwd: ./src/github.com/enow-dev/enow/
+      code: goapp test -v ./...
+
+    - script:
+      name: build
+      cwd: ./src/github.com/enow-dev/enow/
+      code: goapp build -o goa-spa-sample ./server
+
+deploy:
+  steps:
+    - script:
+      name: deploy info
+      cwd: ./src/github.com/enow-dev/enow/
+      code: find .
+
+    - install-packages:
+      packages: rsync
+
+    - script:
+      name: copy to output directory
+      code: rsync -avz ./src/github.com/enow-dev/enow/ $WERCKER_OUTPUT_DIR
+
+    - script:
+      name: deploy info
+      code: find .
+
+    - michilu/go-appengine-deploy:
+      token: $APP_ENGINE_TOKEN

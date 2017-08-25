@@ -1,0 +1,36 @@
+{
+  "DisableAll": true,
+  "Enable": [
+    "gas",
+    "gocyclo",
+    "gofmt",
+    "ineffassign",
+    "staticcheck",
+    "goconst",
+    "golint",
+    "gosimple",
+    "aligncheck",
+    "goimports",
+    "misspell",
+    "unconvert",
+    "vet",
+    "errcheck",
+    "interfacer"
+  ],
+  "Exclude": [
+    "app",
+    "client",
+    "tool",
+    "database",
+    "models",
+    "design",
+    "front",
+    "server",
+    "migrations",
+    "js",
+    "public",
+    "testhelper"
+  ],
+  "Vendor": true,
+  "Cyclo": 20
+}

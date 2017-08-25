@@ -1,0 +1,6 @@
+package: github.com/enow-dev/enow
+import:
+ignore:
+- github.com/elazarl/go-bindata-assetfs
+- github.com/goadesign/goa
+- github.com/spf13/cobra
