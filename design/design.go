@@ -5,12 +5,38 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-var _ = API("goa-spa", func() {
-	Title("Sample")
-	Description("Sample")
+var _ = API("enow", func() {
+	Title("enow")
+	Description("enow")
 	Host("localhost:8080")
 	Scheme("http", "https")
 	BasePath("/")
+	Trait(AdminUserTrait, func() {
+		Security(AdminAuth)
+		Response(Unauthorized, ErrorMedia)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+		Response(InternalServerError, ErrorMedia)
+	})
+	Trait(GeneralUserTrait, func() {
+		Security(GeneralAuth)
+		Response(Unauthorized, ErrorMedia)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+		Response(InternalServerError, ErrorMedia)
+	})
+	Trait(GuestUserTrait, func() {
+		Security(GuestAuth)
+		Response(Unauthorized, ErrorMedia)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+		Response(InternalServerError, ErrorMedia)
+	})
+	Trait(PaginatorHeader, func() {
+		Header("x-search-hits-count")
+		Header("link")
+		Required("x-search-hits-count", "link")
+	})
 })
 
 var _ = Resource("swagger", func() {
