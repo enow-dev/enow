@@ -49,12 +49,12 @@ class EventBox extends React.Component {
               <Grid container direction="row" justify="flex-star" align="center">
                 <Grid item>
                   <Button dense className={classes.button}>
-										PHP
+                    PHP
                   </Button>
                 </Grid>
                 <Grid item>
                   <Button dense className={classes.button}>
-										JavaScript
+                    JavaScript
                   </Button>
                 </Grid>
               </Grid>
@@ -64,12 +64,12 @@ class EventBox extends React.Component {
               <Grid container direction="row" justify="space-between" align="center">
                 <Grid item>
                   <Button dense className={classes.button}>
-										詳細を見る
+                    詳細を見る
                   </Button>
                 </Grid>
                 <Grid item>
                   <Button dense className={classes.button}>
-										Compass
+                    Compass
                   </Button>
                 </Grid>
               </Grid>
@@ -80,5 +80,10 @@ class EventBox extends React.Component {
     );
   }
 }
-
+EventBox.propTypes = {
+  classes: Object,
+};
+EventBox.defaultProps = {
+  classes: null,
+};
 export default withStyles(styles)(EventBox);

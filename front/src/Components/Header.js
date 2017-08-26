@@ -6,7 +6,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
-import { grey, orange } from 'material-ui/colors';
+import { grey } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
 
 const styles = theme => ({
