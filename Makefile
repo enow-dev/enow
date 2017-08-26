@@ -68,10 +68,6 @@ lint:
 		echo "^ - lint err" && echo && exit 1; \
 	fi
 
-bindata:
-	rm -f ./front/bindata.go
-	go-bindata -ignore bindata.go -pkg front -o front/bindata.go ./front/build/...
-
 local:
 	goapp serve ./server
 
@@ -85,8 +81,8 @@ staging-rollback:
 
 preDeploy:
 	$(MAKE) gen
+	cd front && npm install && npm run build
 	$(MAKE) bindata
-	cd front && npm build
 	$(MAKE) staging-deploy
 
 gcp-project-set:

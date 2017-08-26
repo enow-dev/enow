@@ -8,7 +8,7 @@ import (
 )
 
 var _ = Resource("favorites", func() {
-	BasePath("/events")
+	BasePath("/api/events")
 	Action("list", func() {
 		Description("ユーザーのお気に入り情報を返す（ユーザー判別はtokenで行う）")
 		Routing(GET("/favorites"))
