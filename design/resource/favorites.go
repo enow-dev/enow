@@ -18,7 +18,7 @@ var _ = Resource("favorites", func() {
 			})
 			Required("isEnd")
 		})
-		Response(OK, CollectionOf(media.Events, func() {
+		Response(OK, CollectionOf(media.Event, func() {
 			View("default")
 			View("tiny")
 		}))
