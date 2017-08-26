@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -28,9 +29,9 @@ class Header extends React.Component {
         <AppBar position="static">
           <Toolbar>
             <Typography type="title" color="inherit" className={classes.flex}>
-							enow
+              enow
             </Typography>
-						IT勉強会・イベント検索
+            IT勉強会・イベント検索
           </Toolbar>
         </AppBar>
         <Toolbar className={classes.subheader}>
