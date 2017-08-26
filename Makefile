@@ -69,6 +69,7 @@ lint:
 	fi
 
 local:
+	cp -f ./server/dev.yaml.tmpl2 ./server/dev.yaml
 	goapp serve ./server
 
 staging-deploy:
@@ -78,6 +79,10 @@ staging-rollback:
 	appcfg.py rollback ./server -A enow-staging
 
 ##### etc ######
+
+no-secure-local:
+	cp -f ./server/dev.yaml.tmpl ./server/dev.yaml
+	goapp serve ./server
 
 preDeploy:
 	$(MAKE) gen
