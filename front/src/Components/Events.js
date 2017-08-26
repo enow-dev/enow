@@ -10,11 +10,10 @@ import EventsTab from './EventsTab';
 import EventBox from './EventBox';
 import GithubIcon from '../icons/github.svg';
 import FacebookIcon from '../icons/facebook.svg';
+import SearchBox from './SearchBox';
 
 const styles = {
-  root: {
-    paddingBottom: '500px',
-  },
+  root: {},
   centerProgressItem: {
     marginTop: '20px',
   },
@@ -125,7 +124,6 @@ class Events extends React.Component {
             昨日見た情報は検索結果に出ませんが 複数端末で出ないようにするには
           </Typography>
           <Typography type="subheading">アカウント作成で実現出来ます</Typography>
-          <img src={GithubIcon} className={classes.githubIcon} alt="githubIcon" />
         </Grid>
         <Grid
           item
@@ -157,11 +155,20 @@ class Events extends React.Component {
   }
   renderMain() {
     return (
-      <div>
-        {this.renderEventsBox()}
-        {this.renderMoreRead()}
-        {this.renderCreateAccount()}
-      </div>
+      <Grid container spacing={40} align="center" direction="column" justify="center">
+        <Grid item>
+          {this.renderEventsBox()}
+        </Grid>
+        <Grid item style={{ width: '100%' }}>
+          {this.renderMoreRead()}
+        </Grid>
+        <Grid item>
+          {this.renderCreateAccount()}
+        </Grid>
+        <Grid item style={{ width: '100%' }}>
+          <SearchBox />
+        </Grid>
+      </Grid>
     );
   }
 
