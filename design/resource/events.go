@@ -9,7 +9,7 @@ import (
 
 var _ = Resource("events", func() {
 	BasePath("/api/events")
-	DefaultMedia(media.Events)
+	DefaultMedia(media.Event)
 	Action("list", func() {
 		Description("list")
 		Routing(GET(""))
@@ -25,7 +25,7 @@ var _ = Resource("events", func() {
 				Default(false)
 			})
 		})
-		Response(OK, CollectionOf(media.Events, func() {
+		Response(OK, CollectionOf(media.Event, func() {
 			View("default")
 			View("tiny")
 		}))
@@ -39,7 +39,7 @@ var _ = Resource("events", func() {
 			Required("id")
 		})
 		Response(OK, func() {
-			Media(media.Events, "show")
+			Media(media.Event, "show")
 		})
 		UseTrait(GeneralUserTrait)
 	})

@@ -42,6 +42,6 @@ func (c *FavoritesController) List(ctx *app.ListFavoritesContext) error {
 	// Put your logic here
 
 	// FavoritesController_List: end_implement
-	res := app.EventsCollection{}
+	res := app.EventCollection{}
 	return ctx.OK(res)
 }

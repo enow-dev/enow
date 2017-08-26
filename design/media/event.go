@@ -5,8 +5,8 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-var Events = MediaType("application/vnd.events+json", func() {
-	Description("events")
+var Event = MediaType("application/vnd.event+json", func() {
+	Description("event")
 	Attributes(func() {
 		Attribute("id", Any, "id", func() {
 			Example(9223372036854775807)
@@ -14,14 +14,21 @@ var Events = MediaType("application/vnd.events+json", func() {
 		Attribute("id_str", String, "id(string)", func() {
 			Example("9223372036854775807")
 		})
+		Attribute("api_id", Integer, "APIの種別", func() {
+			Example(1)
+		})
 		Attribute("title", String, "イベント名", func() {
 			Example("イベント")
 		})
 		Attribute("description", String, "説明文", func() {
 			Example("説明文")
 		})
-		Attribute("start_at", DateTime, "開始日時")
-		Attribute("end_at", DateTime, "終了日時")
+		Attribute("start_at", DateTime, "開始日時", func() {
+			Example("2017-08-26T15:05:11.916011956Z")
+		})
+		Attribute("end_at", DateTime, "終了日時", func() {
+			Example("2017-08-26T15:05:11.916011956Z")
+		})
 		Attribute("url", String, "イベントURL", func() {
 			Example("http://example.com")
 		})
@@ -46,15 +53,40 @@ var Events = MediaType("application/vnd.events+json", func() {
 		Attribute("waiting", Integer, "キャンセル待ち人数", func() {
 			Example(5)
 		})
-		Attribute("created_at", DateTime, "作成日時")
-		Attribute("updated_at", DateTime, "更新日時")
+		Attribute("created_at", DateTime, "作成日時", func() {
+			Example("2017-08-26T15:05:11.916011956Z")
+		})
+		Attribute("updated_at", DateTime, "更新日時", func() {
+			Example("2017-08-26T15:05:11.916011956Z")
+		})
 		Attribute("isFavorite", Boolean, "お気に入り済み", func() {
 			Example(false)
 		})
+		Required(
+			"id",
+			"id_str",
+			"api_id",
+			"title",
+			"description",
+			"start_at",
+			"end_at",
+			"url",
+			"address",
+			"place",
+			"lat",
+			"lon",
+			"limit",
+			"accepted",
+			"waiting",
+			"created_at",
+			"updated_at",
+			"isFavorite",
+		)
 	})
 	View("tiny", func() {
 		Attribute("id")
 		Attribute("id_str")
+		Attribute("api_id")
 		Attribute("title")
 		//Attribute("description")
 		Attribute("start_at")
@@ -73,6 +105,7 @@ var Events = MediaType("application/vnd.events+json", func() {
 		Required(
 			"id",
 			"id_str",
+			"api_id",
 			"title",
 			//"description",
 			"start_at",
@@ -93,6 +126,7 @@ var Events = MediaType("application/vnd.events+json", func() {
 	View("default", func() {
 		Attribute("id")
 		Attribute("id_str")
+		Attribute("api_id")
 		Attribute("title")
 		Attribute("description")
 		Attribute("start_at")
@@ -111,6 +145,7 @@ var Events = MediaType("application/vnd.events+json", func() {
 		Required(
 			"id",
 			"id_str",
+			"api_id",
 			"title",
 			"description",
 			"start_at",
@@ -131,6 +166,7 @@ var Events = MediaType("application/vnd.events+json", func() {
 	View("show", func() {
 		Attribute("id")
 		Attribute("id_str")
+		Attribute("api_id")
 		Attribute("title")
 		Attribute("description")
 		Attribute("start_at")
@@ -149,6 +185,47 @@ var Events = MediaType("application/vnd.events+json", func() {
 		Required(
 			"id",
 			"id_str",
+			"api_id",
+			"title",
+			"description",
+			"start_at",
+			"end_at",
+			"url",
+			"address",
+			"place",
+			"lat",
+			"lon",
+			"limit",
+			"accepted",
+			"waiting",
+			"created_at",
+			"updated_at",
+			"isFavorite",
+		)
+	})
+	View("full", func() {
+		Attribute("id")
+		Attribute("id_str")
+		Attribute("api_id")
+		Attribute("title")
+		Attribute("description")
+		Attribute("start_at")
+		Attribute("end_at")
+		Attribute("url")
+		Attribute("address")
+		Attribute("place")
+		Attribute("lat")
+		Attribute("lon")
+		Attribute("limit")
+		Attribute("accepted")
+		Attribute("waiting")
+		Attribute("created_at")
+		Attribute("updated_at")
+		Attribute("isFavorite")
+		Required(
+			"id",
+			"id_str",
+			"api_id",
 			"title",
 			"description",
 			"start_at",
