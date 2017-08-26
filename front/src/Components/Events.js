@@ -162,7 +162,7 @@ class Events extends React.Component {
         <Grid item style={{ width: '100%' }}>
           {this.renderMoreRead()}
         </Grid>
-        <Grid itme>
+        <Grid item>
           {this.renderCreateAccount()}
         </Grid>
         <Grid item style={{ width: '100%' }}>
