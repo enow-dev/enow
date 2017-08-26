@@ -1,96 +1,78 @@
 box: pei0804/gae-go-deploy
 build:
   after-steps:
-    - install-packages:
-      packages: ruby
-    - wantedly/pretty-slack-notify:
-      webhook_url: $SLACK_WEBHOOK_URL
-      channel: notification
+      - slack-notifier:
+          url: $SLACK_WEBHOOK_URL
+          channel: notification
+          username: github
   steps:
-    - script:
-      name: env check
-      code: env
-
-    - script:
-      name: get code
-      cwd: ./
-      code: goapp get -v github.com/enow-dev/enow
-
-    - script:
-      name: deploy info
-      cwd: ./src/github.com/enow-dev/enow/
-      code: find .
-
-    - npm-install:
-      cwd: ./src/github.com/enow-dev/enow/front
-
-    - script:
-      cwd: ./src/github.com/enow-dev/enow/front
+  - script:
+      name: バックエンドソースの場所を保存する
+      code: |-
+        : ${SRC:="./server"}
+  - setup-go-workspace
+  - script:
+      name: GOROOTのパッケージに一般ユーザーからの書き込みの許可
+      code: |
+        sudo chmod -R a+w `goapp env GOROOT`/pkg
+  - script:
+      name: versionをチェックする
+      code: |
+        goapp version
+        go version
+  - script:
+      name: depで依存パッケージをインストールする
+      code: |
+        GOROOT=/usr/local/go go get -u github.com/golang/dep/...
+        /usr/local/go_appengine/gopath/bin/dep ensure
+        /usr/local/go_appengine/gopath/bin/dep status
+  - script:
+      name: goagenでコード生成する
+      code: |
+        (cd vendor/github.com/goadesign/goa/goagen && GOROOT=/usr/local/go go get && GOROOT=/usr/local/go go build)
+        ./vendor/github.com/goadesign/goa/goagen/goagen version
+        export repo="${PWD#`goapp env GOPATH`/src/}"
+        ./vendor/github.com/goadesign/goa/goagen/goagen app -d ${repo}/design
+        ./vendor/github.com/goadesign/goa/goagen/goagen client -d ${repo}/design
+        ./vendor/github.com/goadesign/goa/goagen/goagen swagger -d ${repo}/design
+  - script:
+      name: GOPATHを設定する
+      code: |
+        export GOPATH="$GOPATH:$WERCKER_SOURCE_DIR"
+        goapp env GOPATH
+  - script:
       name: lint
-      code: npm run lint
-
-    - script:
-      cwd: ./src/github.com/enow-dev/enow/front
-      name: build
-      code: npm run build
-
-    - script:
-      name: depend
-      cwd: ./src/github.com/enow-dev/enow/
-      code: make depend
-
-    - script:
-      name: dev depend
-      cwd: ./src/github.com/enow-dev/enow/
-      code: make devDepend
-
-    - script:
-      name: vendoring
-      cwd: ./src/github.com/enow-dev/enow/
-      code: make vendoring
-
-    - script:
-      name: gen
-      cwd: ./src/github.com/enow-dev/enow/
-      code: make gen
-
-    - script:
-      name: front bindata
-      cwd: ./src/github.com/enow-dev/enow/
-      code: make bindata
-
-    - script:
-      name: lint
-      cwd: ./src/github.com/enow-dev/enow/
-      code: make lint
-
-    - script:
-      name: test
-      cwd: ./src/github.com/enow-dev/enow/
-      code: goapp test -v ./...
-
-    - script:
-      name: build
-      cwd: ./src/github.com/enow-dev/enow/
-      code: goapp build -o goa-spa-sample ./server
-
+      code: |
+        GOROOT=/usr/local/go go get -u github.com/alecthomas/gometalinter
+        /usr/local/go_appengine/gopath/bin/gometalinter --install --update --force
+        /usr/local/go_appengine/gopath/bin/gometalinter ./... --config=lint_config.json
+  - script:
+      name: フロントエンドのinstall build
+      cwd: ./front
+      code: |
+        npm install
+        npm run build
+  - script:
+      name: フロントコードをバイナリ化する
+      code: |
+        GOROOT=/usr/local/go go get -u github.com/jteeuwen/go-bindata/...
+        /usr/local/go_appengine/gopath/bin/go-bindata -ignore bindata.go -pkg front -o front/bindata.go ./front/build/...
+  - script:
+      name: goapp build
+      code: |
+        goapp build ${SRC}
+  - script:
+      name: goapp test
+      code: |
+        goapp test ${SRC}
+  - script:
+      name: サーバーサイドのコードを$WERCKER_OUTPUT_DIRへ
+      code: |-
+        rsync -avz ${GOPATH%%:*}/ $WERCKER_OUTPUT_DIR
 deploy:
   steps:
-    - script:
-      name: deploy info
-      cwd: ./src/github.com/enow-dev/enow/
-      code: find .
-
-    - install-packages:
-      packages: rsync
-
-    - script:
-      name: copy to output directory
-      code: rsync -avz ./src/github.com/enow-dev/enow/ $WERCKER_OUTPUT_DIR
-
-    - script:
-      name: deploy info
-      code: find .
-
-    - michilu/go-appengine-deploy:
-      token: $APP_ENGINE_TOKEN
+  - script:
+    name: deploy info
+    code: find .
+  - michilu/go-appengine-deploy:
+    token: $APP_ENGINE_TOKEN
