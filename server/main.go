@@ -23,9 +23,15 @@ func init() {
 	service.Use(middleware.ErrorHandler(service, true))
 	service.Use(middleware.Recover())
 
+	// Mount "events" controller
+	c := controller.NewEventsController(service)
+	app.MountEventsController(service, c)
+	// Mount "favorites" controller
+	c2 := controller.NewFavoritesController(service)
+	app.MountFavoritesController(service, c2)
 	// Mount "front" controller
-	c := controller.NewFrontController(service)
-	c.FileSystem = func(dir string) http.FileSystem {
+	c3 := controller.NewFrontController(service)
+	c3.FileSystem = func(dir string) http.FileSystem {
 		return &assetfs.AssetFS{
 			Asset:     front.Asset,
 			AssetDir:  front.AssetDir,
@@ -33,10 +39,10 @@ func init() {
 			Prefix:    dir,
 		}
 	}
-	app.MountFrontController(service, c)
+	app.MountFrontController(service, c3)
 	// Mount "swagger" controller
-	c2 := controller.NewSwaggerController(service)
-	app.MountSwaggerController(service, c2)
+	c4 := controller.NewSwaggerController(service)
+	app.MountSwaggerController(service, c4)
 
 	// Start service
 	http.HandleFunc("/", service.Mux.ServeHTTP)

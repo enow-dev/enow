@@ -38,13 +38,11 @@ var _ = Resource("swagger", func() {
 	Origin("*", func() {
 		Methods("GET")
 	})
-	Files("/swagger.json", "swagger/swagger.json")
-	Files("/swagger/*filepath", "public/swagger/")
+	Files("/swagger.json", "../swagger/swagger.json")
+	Files("/swagger/*filepath", "../swaggerui/")
 })
 
 var _ = Resource("front", func() {
-	Files("/favicon.ico", "front/build/favicon.ico")
-	Files("/static/*filepath", "front/build/static")
-	Files("/manifest.json", "front/build/manifest.json")
-	Files("*", "front/build/index.html")
+	Files("*", "front/build/")
+	Files("/", "front/build/index.html")
 })
