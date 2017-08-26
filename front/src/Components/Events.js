@@ -10,7 +10,6 @@ import EventsTab from './EventsTab';
 import EventBox from './EventBox';
 import GithubIcon from '../icons/github.svg';
 import FacebookIcon from '../icons/facebook.svg';
-import SearchBox from './SearchBox';
 
 const styles = {
   root: {
@@ -161,7 +160,6 @@ class Events extends React.Component {
         {this.renderEventsBox()}
         {this.renderMoreRead()}
         {this.renderCreateAccount()}
-        <SearchBox />
       </div>
     );
   }
