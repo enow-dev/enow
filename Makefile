@@ -51,7 +51,7 @@ clean:
 
 generate:
 	goagen app     -d $(REPO)/design
-	goagen swagger -d $(REPO)/design
+	goagen swagger -d $(REPO)/design -o server
 	goagen client -d $(REPO)/design
 
 swaggerUI:
@@ -82,7 +82,6 @@ staging-rollback:
 preDeploy:
 	$(MAKE) gen
 	cd front && npm install && npm run build
-	$(MAKE) bindata
 	$(MAKE) staging-deploy
 
 gcp-project-set:
