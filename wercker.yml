@@ -53,11 +53,6 @@ build:
         npm install
         npm run build
   - script:
-      name: フロントコードをバイナリ化する
-      code: |
-        GOROOT=/usr/local/go go get -u github.com/jteeuwen/go-bindata/...
-        /usr/local/go_appengine/gopath/bin/go-bindata -ignore bindata.go -pkg front -o front/bindata.go ./front/build/...
-  - script:
       name: goapp build
       code: |
         goapp build ${SRC}

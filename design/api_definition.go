@@ -34,18 +34,26 @@ var _ = API("enow", func() {
 	})
 })
 
-var _ = Resource("swagger", func() {
+var _ = Resource("swaggerui", func() {
 	Origin("*", func() {
 		Methods("GET")
 	})
-	Files("/swagger.json", "../swagger/swagger.json")
-	Files("/swagger/*filepath", "../swaggerui/")
+	Files("/swaggerui/*filepath", "swaggerui/")
+})
+
+var _ = Resource("swagger", func() {
+	Files("/swagger.json", "swagger/swagger.json")
 })
 
 var _ = Resource("front", func() {
-	Files("/favicon.ico", "../front/build/favicon.ico")
-	Files("/static/*filepath", "../front/build/static")
-	Files("/manifest.json", "../build/manifest.json")
-	Files("*", "../front/build/")
-	Files("/", "../front/build/index.html")
+	Files("/favicon.ico", "build/favicon.ico")
+	Files("/static/js/*filepath", "build/static/js")
+	Files("/static/media/*filepath", "build/static/media")
+	Files("/static/service-worker.js", "build/service-worker.js")
+	Files("/manifest.json", "build/manifest.json")
+	Files("/asset-manifest.json", "build/asset-manifest.json")
+	Files("/reset.css", "build/reset.css")
+	Files("/index.css", "build/index.css")
+	Files("*", "build")
+	Files("/", "build/index.html")
 })

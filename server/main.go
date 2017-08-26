@@ -33,6 +33,9 @@ func init() {
 	// Mount "swagger" controller
 	c4 := controller.NewSwaggerController(service)
 	app.MountSwaggerController(service, c4)
+	// Mount "swaggerui" controller
+	c5 := controller.NewSwaggeruiController(service)
+	app.MountSwaggeruiController(service, c5)
 
 	// Start service
 	http.HandleFunc("/", service.Mux.ServeHTTP)
