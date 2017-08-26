@@ -43,6 +43,9 @@ var _ = Resource("swagger", func() {
 })
 
 var _ = Resource("front", func() {
-	Files("*", "front/build/")
-	Files("/", "front/build/index.html")
+	Files("/favicon.ico", "../front/build/favicon.ico")
+	Files("/static/*filepath", "../front/build/static")
+	Files("/manifest.json", "../build/manifest.json")
+	Files("*", "../front/build/")
+	Files("/", "../front/build/index.html")
 })
