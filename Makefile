@@ -73,6 +73,7 @@ local:
 	goapp serve ./server
 
 staging-deploy:
+	cp -f ./server/env.yaml.staging ./server/env.yaml
 	goapp deploy -application enow-staging ./server
 
 staging-rollback:
@@ -87,6 +88,7 @@ no-secure-local:
 preDeploy:
 	$(MAKE) gen
 	cd front && npm install && npm run build
+	cp -f ./server/env.yaml.staging ./server/env.yaml
 	$(MAKE) staging-deploy
 
 gcp-project-set:
