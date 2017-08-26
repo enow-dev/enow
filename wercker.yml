@@ -53,6 +53,10 @@ build:
         npm install
         npm run build
   - script:
+      name: dev.yamlを本番用のものを設定する
+      code: |
+        cp -f ${SRC}/dev.yaml.tmpl ${SRC}/dev.yaml
+  - script:
       name: goapp build
       code: |
         goapp build ${SRC}
