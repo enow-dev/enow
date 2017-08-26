@@ -6,6 +6,5 @@ package design
 const (
 	AdminUserTrait   = "AdminUserTrait"
 	GeneralUserTrait = "GeneralUserTrait"
-	GuestUserTrait   = "GuestUserTrait"
 	PaginatorHeader  = "PaginatorHeader"
 )

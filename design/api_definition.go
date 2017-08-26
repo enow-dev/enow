@@ -1,6 +1,7 @@
 package design
 
 import (
+	_ "github.com/VG-Tech-Dojo/Logbook-server/design/resource"
 	. "github.com/goadesign/goa/design"
 	. "github.com/goadesign/goa/design/apidsl"
 )
@@ -25,13 +26,6 @@ var _ = API("enow", func() {
 		Response(BadRequest, ErrorMedia)
 		Response(InternalServerError, ErrorMedia)
 	})
-	Trait(GuestUserTrait, func() {
-		Security(GuestAuth)
-		Response(Unauthorized, ErrorMedia)
-		Response(NotFound)
-		Response(BadRequest, ErrorMedia)
-		Response(InternalServerError, ErrorMedia)
-	})
 	Trait(PaginatorHeader, func() {
 		Header("x-search-hits-count")
 		Header("link")
@@ -40,7 +34,11 @@ var _ = API("enow", func() {
 })
 
 var _ = Resource("swagger", func() {
-	Files("/swagger/*filepath", "../public/swagger/")
+	Origin("*", func() {
+		Methods("GET")
+	})
+	Files("/swagger.json", "swagger/swagger.json")
+	Files("/swagger/*filepath", "public/swagger/")
 })
 
 var _ = Resource("front", func() {
