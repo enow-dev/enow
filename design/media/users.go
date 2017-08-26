@@ -19,11 +19,11 @@ var Users = MediaType("application/vnd.users+json", func() {
 	View("default", func() {
 		Attribute("id")
 		Attribute("id_str")
-		Attribute("title")
+		Attribute("name")
 		Required(
 			"id",
 			"id_str",
-			"title",
+			"name",
 		)
 	})
 })

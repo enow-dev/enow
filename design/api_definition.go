@@ -1,7 +1,8 @@
 package design
 
 import (
-	_ "github.com/VG-Tech-Dojo/Logbook-server/design/resource"
+	. "github.com/enow-dev/enow/design/constant"
+	_ "github.com/enow-dev/enow/design/resource"
 	. "github.com/goadesign/goa/design"
 	. "github.com/goadesign/goa/design/apidsl"
 )

@@ -1,7 +1,7 @@
 package resource
 
 import (
-	. "github.com/enow-dev/enow/design"
+	. "github.com/enow-dev/enow/design/constant"
 	"github.com/enow-dev/enow/design/media"
 	. "github.com/goadesign/goa/design"
 	. "github.com/goadesign/goa/design/apidsl"
@@ -38,9 +38,8 @@ var _ = Resource("events", func() {
 			Param("id", Any, "id(Int64 or String)")
 			Required("id")
 		})
-		Response(OK, media.Events, func() {
-			View("default")
-			View("show")
+		Response(OK, func() {
+			Media(media.Events, "show")
 		})
 		UseTrait(GeneralUserTrait)
 	})
