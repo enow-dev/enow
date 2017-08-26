@@ -15,3 +15,9 @@ handlers:
 - url: /swagger.json
   static_files: swagger/swagger.json
   upload: /swagger.json
+
+env_variables:
+  TZ: JST
+
+includes:
+- dev.yaml

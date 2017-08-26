@@ -8,3 +8,7 @@ const (
 	GeneralUserTrait = "GeneralUserTrait"
 	PaginatorHeader  = "PaginatorHeader"
 )
+
+//---------------------------------------------
+// etc
+//---------------------------------------------
