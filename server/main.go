@@ -4,35 +4,66 @@ package server
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/enow-dev/enow/app"
 	"github.com/enow-dev/enow/controller"
+	"github.com/enow-dev/enow/mymiddleware"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 )
 
-func init() {
-	// Create service
-	service := goa.New("enow")
+// Server 実行に必要な値を保持している
+type Server struct {
+	service *goa.Service
+}
 
-	// Mount middleware
-	service.Use(middleware.RequestID())
-	service.Use(middleware.LogRequest(true))
-	service.Use(middleware.ErrorHandler(service, true))
-	service.Use(middleware.Recover())
+// NewServer Server構造体を作成する
+func NewServer(s *goa.Service) *Server {
+	return &Server{
+		service: s,
+	}
+}
 
+func (s *Server) mountController() {
 	// Mount "events" controller
-	c := controller.NewEventsController(service)
-	app.MountEventsController(service, c)
+	events := controller.NewEventsController(s.service)
+	app.MountEventsController(s.service, events)
 	// Mount "favorites" controller
-	c2 := controller.NewFavoritesController(service)
-	app.MountFavoritesController(service, c2)
+	favorites := controller.NewFavoritesController(s.service)
+	app.MountFavoritesController(s.service, favorites)
 	// Mount "front" controller
-	c3 := controller.NewFrontController(service)
-	app.MountFrontController(service, c3)
+	front := controller.NewFrontController(s.service)
+	app.MountFrontController(s.service, front)
 	// Mount "swagger" controller
-	c4 := controller.NewSwaggerController(service)
-	app.MountSwaggerController(service, c4)
+	swagger := controller.NewSwaggerController(s.service)
+	app.MountSwaggerController(s.service, swagger)
+	// Mount "swaggerui" controller
+	swaggerui := controller.NewSwaggeruiController(s.service)
+	app.MountSwaggeruiController(s.service, swaggerui)
+}
+
+func (s *Server) mountMiddleware() {
+	s.service.Use(middleware.RequestID())
+	s.service.Use(middleware.LogRequest(true))
+	s.service.Use(middleware.ErrorHandler(s.service, true))
+	s.service.Use(middleware.Recover())
+
+	// dev.yamlのNoSecureの項目がtureになっている時は、tokenの存在チェックのみにする（厳密な認証なし）
+	if os.Getenv("NoSecure") == "true " {
+		app.UseAdminAuthMiddleware(s.service, mymiddleware.NewTestModeMiddleware())
+		app.UseGeneralAuthMiddleware(s.service, mymiddleware.NewTestModeMiddleware())
+	} else {
+		app.UseAdminAuthMiddleware(s.service, mymiddleware.NewAdminUserAuthMiddleware())
+		app.UseGeneralAuthMiddleware(s.service, mymiddleware.NewGeneralUserAuthMiddleware())
+	}
+}
+
+func init() {
+	service := goa.New("enow")
+	s := NewServer(service)
+	s.mountMiddleware()
+	s.mountController()
 
 	// Start service
 	http.HandleFunc("/", service.Mux.ServeHTTP)

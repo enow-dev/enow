@@ -34,7 +34,7 @@ build:
         export repo="${PWD#`goapp env GOPATH`/src/}"
         ./vendor/github.com/goadesign/goa/goagen/goagen app -d ${repo}/design
         ./vendor/github.com/goadesign/goa/goagen/goagen client -d ${repo}/design
-        ./vendor/github.com/goadesign/goa/goagen/goagen swagger -d ${repo}/design
+        ./vendor/github.com/goadesign/goa/goagen/goagen swagger -d ${repo}/design -o server
   - script:
       name: GOPATHを設定する
       code: |
@@ -53,10 +53,9 @@ build:
         npm install
         npm run build
   - script:
-      name: フロントコードをバイナリ化する
+      name: dev.yamlを本番用のものを設定する
       code: |
-        GOROOT=/usr/local/go go get -u github.com/jteeuwen/go-bindata/...
-        /usr/local/go_appengine/gopath/bin/go-bindata -ignore bindata.go -pkg front -o front/bindata.go ./front/build/...
+        cp -f ${SRC}/dev.yaml.tmpl ${SRC}/dev.yaml
   - script:
       name: goapp build
       code: |

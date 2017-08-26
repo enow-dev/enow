@@ -34,9 +34,8 @@
 
   <script type="text/javascript">
     $(function () {
-      var url = window.location.search.match(/url=([^&]+)/);
-      if (url && url.length > 1) {
-        url = decodeURIComponent(url[1]);
+      if (location.host === "enow-staging.appspot.com") {
+        url = "https://enow-staging.appspot.com/swagger.json";
       } else {
         url = "http://localhost:8080/swagger.json";
       }
