@@ -1,11 +1,12 @@
 {
-    "extends": "airbnb",
-    "env": {
-        "browser": true,
-        "jest": true
-    },
-    "rules": {
-        "react/prefer-stateless-function": 0,
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"]  }]
-    }
+	"extends": "airbnb",
+	"env": {
+		"browser": true,
+		"jest": true
+	},
+	"rules": {
+		"react/prefer-stateless-function": 0,
+		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+		"no-tabs": 0
+	}
 }
