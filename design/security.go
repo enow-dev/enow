@@ -10,14 +10,8 @@ var AdminAuth = APIKeySecurity("adminAuth", func() {
 	Header("X-Authorization")
 })
 
-// 会員ユーザー
+// ユーザー
 var GeneralAuth = APIKeySecurity("generalAuth", func() {
 	Description("トークン(student)")
-	Header("X-Authorization")
-})
-
-// ゲスト
-var GuestAuth = APIKeySecurity("guestAuth", func() {
-	Description("トークン(guest)")
 	Header("X-Authorization")
 })

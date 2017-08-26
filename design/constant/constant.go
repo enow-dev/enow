@@ -1,4 +1,4 @@
-package design
+package constant
 
 //---------------------------------------------
 // UserTrait
@@ -6,6 +6,5 @@ package design
 const (
 	AdminUserTrait   = "AdminUserTrait"
 	GeneralUserTrait = "GeneralUserTrait"
-	GuestUserTrait   = "GuestUserTrait"
 	PaginatorHeader  = "PaginatorHeader"
 )
