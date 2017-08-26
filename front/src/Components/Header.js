@@ -35,7 +35,7 @@ class Header extends React.Component {
           </Toolbar>
         </AppBar>
         <Toolbar className={classes.subheader}>
-          <Grid container direction="row" align="center" justify="center">
+          <Grid container direction="row" align="center" justify="space-around">
             <Grid item>
               <Button raised>検索する</Button>
             </Grid>
