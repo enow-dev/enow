@@ -8,7 +8,7 @@ import (
 )
 
 var _ = Resource("events", func() {
-	BasePath("/events")
+	BasePath("/api/events")
 	DefaultMedia(media.Events)
 	Action("list", func() {
 		Description("list")

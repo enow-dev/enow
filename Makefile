@@ -68,9 +68,6 @@ lint:
 		echo "^ - lint err" && echo && exit 1; \
 	fi
 
-bindata:
-	go-bindata -ignore bindata.go -pkg front -o front/bindata.go ./front/build/...
-
 local:
 	goapp serve ./server
 
