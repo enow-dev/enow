@@ -3,6 +3,7 @@ import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import SearchIcon from 'material-ui-icons/Search';
+import Typography from 'material-ui/Typography';
 import TextField from 'material-ui/TextField';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
@@ -31,11 +32,15 @@ const styles = theme => ({
     fill: '#fff',
   },
   searchText: {
+    marginTop: 10,
     marginLeft: 30,
     color: '#fff',
   },
   searchForm: {
-    marginTop: 20,
+    width: '100%',
+    paddingTop: 20,
+    margin: 0,
+    backgroundColor: '#fff',
   },
   searchFormItem: {
     width: '80%',
@@ -80,13 +85,21 @@ class SearchBox extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
+      <div className={this.props.rootClass}>
         <Paper elevation={0} className={classes.paper}>
-          <Grid container align="center" direction="row" justify="flex-start">
+          <Grid
+            container
+            style={{ margin: 0 }}
+            align="center"
+            direction="row"
+            justify="justify-start"
+          >
             <Grid item className={classes.searchItem}>
               <div style={{ width: '100%', position: 'relative', display: 'inline-block' }}>
                 <SearchIcon className={classes.searchIcon} />
-                <TextField fullWidth placeholder="検索" className={classes.searchText} />
+                <Typography type="title" className={classes.searchText}>
+                  検索
+                </Typography>
               </div>
             </Grid>
           </Grid>
@@ -159,5 +172,11 @@ class SearchBox extends React.Component {
     );
   }
 }
+SearchBox.propTypes = {
+  rootClass: Object,
+};
+SearchBox.defaultProps = {
+  rootClass: null,
+};
 
 export default withStyles(styles)(SearchBox);

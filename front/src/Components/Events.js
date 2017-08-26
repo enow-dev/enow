@@ -5,6 +5,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import { grey, blue } from 'material-ui/colors';
+import MediaQuery from 'react-responsive';
 
 import EventsTab from './EventsTab';
 import EventBox from './EventBox';
@@ -12,10 +13,15 @@ import GithubIcon from '../icons/github.svg';
 import FacebookIcon from '../icons/facebook.svg';
 import SearchBox from './SearchBox';
 
-const styles = {
-  root: {},
+const styles = theme => ({
+  root: {
+    backgroundColor: grey[100],
+  },
   centerProgressItem: {
     marginTop: '20px',
+  },
+  tabsClass: {
+    backgroundColor: theme.palette.primary.A700,
   },
   moreReadContainer: {
     paddingTop: '20px',
@@ -60,7 +66,11 @@ const styles = {
     padding: '10px',
     color: `#fff`,
   },
-};
+  webRoot: {
+    marginTop: '10px',
+  },
+  webSearchBox: { border: `solid 1px ${theme.palette.primary.A700}` },
+});
 class Events extends React.Component {
   constructor(props) {
     super(props);
@@ -153,7 +163,8 @@ class Events extends React.Component {
       </Grid>
     );
   }
-  renderMain() {
+
+  renderMainNative() {
     return (
       <Grid container spacing={40} align="center" direction="column" justify="center">
         <Grid item>
@@ -171,12 +182,45 @@ class Events extends React.Component {
       </Grid>
     );
   }
+  renderMainWeb() {
+    const { classes } = this.props;
+    return (
+      <Grid
+        container
+        className={classes.webRoot}
+        spacing={24}
+        align="flex-start"
+        direction="row"
+        justify="center"
+      >
+        <Grid item xs={3}>
+          <SearchBox rootClass={classes.webSearchBox} />
+        </Grid>
+        <Grid item xs={8}>
+          {this.renderEventsBox()}
+        </Grid>
+      </Grid>
+    );
+  }
+  renderMain() {
+    return (
+      <div>
+        <MediaQuery query="(max-width: 1024px)">
+          {this.renderMainNative()}
+        </MediaQuery>
+        <MediaQuery query="(min-width: 1025px)">
+          {this.renderMainWeb()}
+        </MediaQuery>
+      </div>
+    );
+  }
 
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <EventsTab
+          appBarClass={classes.tabsClass}
           selectTabIndex={this.state.selectTabIndex}
           handleTabChange={this.handleTabChange}
         />
