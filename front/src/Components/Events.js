@@ -10,6 +10,7 @@ import EventsTab from './EventsTab';
 import EventBox from './EventBox';
 import GithubIcon from '../icons/github.svg';
 import FacebookIcon from '../icons/facebook.svg';
+import SearchBox from './SearchBox';
 
 const styles = {
   root: {
@@ -125,7 +126,6 @@ class Events extends React.Component {
             昨日見た情報は検索結果に出ませんが 複数端末で出ないようにするには
           </Typography>
           <Typography type="subheading">アカウント作成で実現出来ます</Typography>
-          <img src={GithubIcon} className={classes.githubIcon} alt="githubIcon" />
         </Grid>
         <Grid
           item
@@ -161,6 +161,7 @@ class Events extends React.Component {
         {this.renderEventsBox()}
         {this.renderMoreRead()}
         {this.renderCreateAccount()}
+        <SearchBox />
       </div>
     );
   }
