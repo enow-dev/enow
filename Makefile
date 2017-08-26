@@ -69,7 +69,7 @@ lint:
 	fi
 
 local:
-	cp -f ./server/dev.yaml.tmpl2 ./server/dev.yaml
+	cp -f ./server/env.yaml.dev ./server/env.yaml
 	goapp serve ./server
 
 staging-deploy:
@@ -81,7 +81,7 @@ staging-rollback:
 ##### etc ######
 
 no-secure-local:
-	cp -f ./server/dev.yaml.tmpl ./server/dev.yaml
+	cp -f ./server/env.yaml.dev.nosec ./server/env.yaml
 	goapp serve ./server
 
 preDeploy:

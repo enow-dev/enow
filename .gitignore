@@ -7,7 +7,7 @@ swagger/
 js/
 cover.html
 bindata.go
-dev.yaml
+env.yaml
 
 ### React ###
 .DS_STORE

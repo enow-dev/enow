@@ -1,6 +1,8 @@
 package design
 
 import (
+	"os"
+
 	. "github.com/enow-dev/enow/design/constant"
 	_ "github.com/enow-dev/enow/design/resource"
 	. "github.com/goadesign/goa/design"
@@ -10,7 +12,17 @@ import (
 var _ = API("enow", func() {
 	Title("enow")
 	Description("enow")
-	Host("localhost:8080")
+	Host(func() string {
+		switch os.Getenv("OP") {
+		case "develop":
+			return "localhost:8080"
+		case "staging":
+			return "enow-staging.appspot.com"
+		case "production":
+			return "enow.appspot.com"
+		}
+		return "localhost:8080"
+	}())
 	Scheme("http", "https")
 	BasePath("/")
 	Trait(AdminUserTrait, func() {

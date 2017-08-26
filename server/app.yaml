@@ -20,4 +20,4 @@ env_variables:
   TZ: JST
 
 includes:
-- dev.yaml
+- env.yaml

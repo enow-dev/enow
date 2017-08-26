@@ -12,6 +12,10 @@ build:
         : ${SRC:="./server"}
   - setup-go-workspace
   - script:
+      name: set env
+      code: |
+        export OP="staging"
+  - script:
       name: GOROOTのパッケージに一般ユーザーからの書き込みの許可
       code: |
         sudo chmod -R a+w `goapp env GOROOT`/pkg
@@ -55,7 +59,7 @@ build:
   - script:
       name: dev.yamlを本番用のものを設定する
       code: |
-        cp -f ${SRC}/dev.yaml.tmpl ${SRC}/dev.yaml
+        cp -f ${SRC}/env.yaml.staging ${SRC}/env.yaml
   - script:
       name: goapp build
       code: |
