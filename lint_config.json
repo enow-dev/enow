@@ -22,14 +22,9 @@
     "client",
     "tool",
     "database",
-    "models",
     "design",
     "front",
-    "server",
-    "migrations",
-    "js",
-    "public",
-    "testhelper"
+    "server"
   ],
   "Vendor": true,
   "Cyclo": 20
