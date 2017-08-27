@@ -7,11 +7,15 @@ import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import { grey } from 'material-ui/colors';
+import MediaQuery from 'react-responsive';
 
-const styles = {
+const styles = theme => ({
   root: {
     width: '100%',
     height: '100%',
+  },
+  headerAppBar: {
+    backgroundColor: theme.palette.primary.A700,
   },
   subheader: {
     borderBottom: `solid 1px ${grey[500]}`,
@@ -19,51 +23,52 @@ const styles = {
   flex: {
     flex: 1,
   },
-};
+});
 
-class Header extends React.Component {
-  render() {
-    const { classes } = this.props;
-    return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography type="title" color="inherit" className={classes.flex}>
-              enow
-            </Typography>
-            IT勉強会・イベント検索
-          </Toolbar>
-        </AppBar>
-        <Toolbar className={classes.subheader}>
-          <Grid container direction="row" align="center" justify="space-around">
-            <Grid item>
-              <Button raised>検索する</Button>
-            </Grid>
-            <Grid>
-              <Button raised>マイページ</Button>
-            </Grid>
-          </Grid>
-        </Toolbar>
-        {this.props.children}
-      </div>
-    );
-  }
+function SubHeader({ classes }) {
+  return (
+    <Toolbar className={classes.subheader}>
+      <Grid container direction="row" align="center" justify="space-around">
+        <Grid item>
+          <Button raised>検索する</Button>
+        </Grid>
+        <Grid>
+          <Button raised>マイページ</Button>
+        </Grid>
+      </Grid>
+    </Toolbar>
+  );
 }
-
+function Header({ classes, children }) {
+  return (
+    <div className={classes.root}>
+      <AppBar position="static" className={classes.headerAppBar}>
+        <Toolbar>
+          <Typography type="title" color="inherit" className={classes.flex}>
+            enow
+          </Typography>
+          IT勉強会・イベント検索
+        </Toolbar>
+      </AppBar>
+      <MediaQuery query="(max-width:1024px)">
+        <SubHeader />
+      </MediaQuery>
+      {children}
+    </div>
+  );
+}
 Header.propTypes = {
-  classes: PropTypes.shape({
-    root: PropTypes.shape({
-      width: PropTypes.string,
-    }),
-    flex: PropTypes.shape({
-      flex: PropTypes.number,
-    }),
-  }),
-  children: PropTypes.element.isRequired,
+  classes: styles,
+  children: PropTypes.node,
 };
-
 Header.defaultProps = {
   classes: styles,
+  children: null,
 };
-
+SubHeader.propTypes = {
+  classes: styles,
+};
+SubHeader.defaultProps = {
+  classes: styles,
+};
 export default withStyles(styles)(Header);
