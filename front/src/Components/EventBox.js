@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Card, { CardContent, CardHeader } from 'material-ui/Card';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
@@ -9,6 +10,7 @@ import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import Divider from 'material-ui/Divider';
 import { grey } from 'material-ui/colors';
+import dateFormat from 'dateformat';
 
 const styles = {
   button: {
@@ -21,7 +23,9 @@ const styles = {
 
 class EventBox extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes, event } = this.props;
+    const startDate = new Date(event.startAt);
+    const endDate = new Date(event.endAt);
     return (
       <Card>
         <CardHeader title="Go Conference 2017 Spring" />
@@ -31,19 +35,19 @@ class EventBox extends React.Component {
               <ListItemIcon>
                 <EventIcon />
               </ListItemIcon>
-              <ListItemText primary="2017/05/24(水)11:00 ~ 5/26(金)13:00" />
+              <ListItemText primary={`${dateFormat(startDate, 'yyyy/mm/dd')} ~ ${dateFormat(endDate, 'mm/dd')}`} />
             </ListItem>
             <ListItem>
               <ListItemIcon>
                 <LocationONIcon />
               </ListItemIcon>
-              <ListItemText primary="東京都渋谷区" />
+              <ListItemText primary={`${event.place}`} />
             </ListItem>
             <ListItem>
               <ListItemIcon>
                 <SupervisorAccount />
               </ListItemIcon>
-              <ListItemText primary="31/定員34人" />
+              <ListItemText primary={`${event.accepted}人/定員${event.limit}人`} />
             </ListItem>
             <ListItem>
               <Grid container direction="row" justify="flex-star" align="center">
@@ -82,8 +86,22 @@ class EventBox extends React.Component {
 }
 EventBox.propTypes = {
   classes: Object,
+  event: PropTypes.shape({
+    startAt: PropTypes.string.isRequired,
+    endAt: PropTypes.string.isRequired,
+    place: PropTypes.string.isRequired,
+    accepted: PropTypes.number.isRequired,
+    limit: PropTypes.number.isRequired,
+  }),
 };
 EventBox.defaultProps = {
   classes: null,
+  event: PropTypes.shape({
+    startAt: '',
+    endAt: '',
+    place: '',
+    accepted: 0,
+    limit: 0,
+  }),
 };
 export default withStyles(styles)(EventBox);
