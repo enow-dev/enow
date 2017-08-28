@@ -108,7 +108,7 @@ class Events extends React.Component {
     window.location.href = event.url;
   }
   renderEventsBox() {
-    return this.state.events.map(item => <EventBox event={item} handleEdit={this.handleEdit}/>);
+    return this.state.events.map(item => <EventBox event={item}/>);
   }
   renderMoreRead() {
     const { classes } = this.props;
