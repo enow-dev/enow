@@ -8,6 +8,7 @@ js/
 cover.html
 bindata.go
 env.yaml
+api.yaml
 
 ### React ###
 .DS_STORE

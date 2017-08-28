@@ -67,3 +67,20 @@ func NewTestModeMiddleware() goa.Middleware {
 		}
 	}
 }
+
+// NewGAECronMiddleware GAEからのリクエストか判別する
+func NewGAECronMiddleware() goa.Middleware {
+	scheme := app.NewGaeCronAuthSecurity()
+	return func(h goa.Handler) goa.Handler {
+		return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+			token := req.Header.Get(scheme.Name)
+			if token != "true" {
+				goa.LogInfo(ctx, "failed api token auth")
+				return ErrUnauthorized("missing auth")
+			}
+			// 確認ロジックは省略する
+			goa.LogInfo(ctx, "auth", "apikey", "token", token)
+			return h(ctx, rw, req)
+		}
+	}
+}

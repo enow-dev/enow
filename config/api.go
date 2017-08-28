@@ -6,6 +6,10 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/enow-dev/enow/design/constant"
+
+	"fmt"
+
 	"gopkg.in/yaml.v1"
 )
 
@@ -16,7 +20,13 @@ type APIConfigs map[string]*API
 type API struct {
 	URL   string `yaml:"url"`
 	Token string `yaml:"token"`
-	Scope int    `yaml:"scope"`
+}
+
+// APIs API情報をまとめる構造体
+type APIs struct {
+	Connpass   API
+	Doorkeeper API
+	ATND       API
 }
 
 // Get 指定されたAPI情報を返す
@@ -50,4 +60,31 @@ func NewAPIConfigs(r io.Reader) (APIConfigs, error) {
 		return nil, err
 	}
 	return configs, nil
+}
+
+// NewAPIsConf APIの設定をまとめて構造体に入れて返す
+func NewAPIsConf(conf APIConfigs) (*APIs, error) {
+	const errMsg = "%sの設定読み込み時にエラーが発生しました"
+	a, ok := conf[constant.Atnd]
+	if !ok {
+		return nil, fmt.Errorf(errMsg, constant.Atnd)
+	}
+	c, ok := conf[constant.Connpass]
+	if !ok {
+		return nil, fmt.Errorf(errMsg, constant.Connpass)
+	}
+	d, ok := conf[constant.Doorkeeper]
+	if !ok {
+		return nil, fmt.Errorf(errMsg, constant.Doorkeeper)
+	}
+	var apis APIs
+	apis.ATND.URL = a.URL
+	apis.ATND.Token = a.Token
+
+	apis.Connpass.URL = c.URL
+	apis.Connpass.Token = c.Token
+
+	apis.Doorkeeper.URL = d.URL
+	apis.Doorkeeper.Token = d.Token
+	return &apis, nil
 }
