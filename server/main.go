@@ -56,7 +56,8 @@ func (s *Server) mountMiddleware() {
 	s.service.Use(goacors.WithConfig(s.service, design.CorsConfig[os.Getenv("Op")]))
 
 	// dev.yamlのNoSecureの項目がtureになっている時は、tokenの存在チェックのみにする（厳密な認証なし）
-	if os.Getenv("NoSecure") == "true " {
+	app.UseGaeCronAuthMiddleware(s.service, mymiddleware.NewGAECronMiddleware())
+	if os.Getenv("NoSecure") == "true" {
 		app.UseAdminAuthMiddleware(s.service, mymiddleware.NewTestModeMiddleware())
 		app.UseGeneralAuthMiddleware(s.service, mymiddleware.NewTestModeMiddleware())
 	} else {
