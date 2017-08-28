@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "dateformat": "^2.0.0",
+    "dotenv": "^4.0.0",
     "history": "^4.7.2",
     "material-ui": "^1.0.0-beta.6",
     "material-ui-icons": "^1.0.0-beta.5",
@@ -16,7 +18,8 @@
     "react-router-redux": "^5.0.0-alpha.6",
     "react-scripts": "1.0.11",
     "react-tap-event-plugin": "^2.0.1",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^4.5.0",

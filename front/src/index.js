@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import { createMuiTheme } from 'material-ui/styles';
@@ -20,7 +21,7 @@ const reducer = combineReducers({
   router: routerReducer,
 });
 
-const store = createStore(reducer, applyMiddleware(middleware));
+const store = createStore(reducer, applyMiddleware(middleware, thunk));
 
 const theme = createMuiTheme({
   palette: createPalette({
