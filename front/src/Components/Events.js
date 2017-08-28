@@ -80,8 +80,6 @@ class Events extends React.Component {
     super(props);
     this.state = {
       selectTabIndex: 0,
-      isLoading: false,
-      events: [1, 2, 3, 4],
     };
   }
   componentDidMount() {
@@ -109,6 +107,10 @@ class Events extends React.Component {
     const { events } = this.props;
     return events.list.map(item => <EventBox event={item}/>);
   }
+  handleMoreRead = () => {
+    const { actions } = this.props;
+    actions.moreReadEventIfNeeded(false,false);
+  }
   renderMoreRead() {
     const { classes } = this.props;
     return (
@@ -120,7 +122,7 @@ class Events extends React.Component {
         justify="center"
       >
         <Grid item className={classes.moreReadItem} align="center" direction="row" justify="center">
-          <Button className={classes.moreReadButton}>続きを読み込む</Button>
+          <Button className={classes.moreReadButton} onClick={this.handleMoreRead}>続きを読み込む</Button>
         </Grid>
       </Grid>
     );
@@ -171,13 +173,17 @@ class Events extends React.Component {
   }
 
   renderMainNative() {
+    const { events } = this.props;
     return (
       <Grid container spacing={40} align="center" direction="column" justify="center">
         <Grid item>
           {this.renderEventsBox()}
         </Grid>
         <Grid item style={{ width: '100%' }}>
-          {this.renderMoreRead()}
+          {events.isMoreFetching ? null : this.renderMoreRead() }
+        </Grid>
+        <Grid item style={{ width: '100%' }}>
+          {events.isMoreFetching ? this.renderCenterProgress() : null }
         </Grid>
         <Grid item>
           {this.renderCreateAccount()}
