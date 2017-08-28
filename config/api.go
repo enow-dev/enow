@@ -12,17 +12,11 @@ import (
 // APIConfigs は用途ごとのAPI情報を持つ
 type APIConfigs map[string]*API
 
-type APIs struct {
-	Connpass   API
-	Doorkeeper API
-	ATND       API
-}
-
 // API APIの情報
 type API struct {
 	URL   string `yaml:"url"`
 	Token string `yaml:"token"`
-	Scope string `yaml:"scope"`
+	Scope int    `yaml:"scope"`
 }
 
 // Get 指定されたAPI情報を返す

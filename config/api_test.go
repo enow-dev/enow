@@ -28,7 +28,7 @@ doorkepper:
 	assert.NoError(err)
 	c, ok := configs["atnd"]
 	assert.True(ok)
-	assert.Equal("url", c.Bucket, "url should be equal")
-	assert.Equal("token", c.Region, "token should be equal")
-	assert.Equal("scope", c.SecretKey, "SecretKey should be equal")
+	assert.Equal("https://api.atnd.org/events/?count=100&format=jsonp&callback=", c.URL, "url should be equal")
+	assert.Equal("test", c.Token, "token should be equal")
+	assert.Equal(1, c.Scope, "scope should be equal")
 }
