@@ -21,7 +21,7 @@ const styles = {
 
 class EventBox extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes, handleEdit } = this.props;
     return (
       <Card>
         <CardHeader title="Go Conference 2017 Spring" />
