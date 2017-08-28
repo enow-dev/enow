@@ -31,6 +31,7 @@ type Events struct {
 	Limit          int                `json:"limit" datastore:""`
 	Accepted       int                `json:"accepted" datastore:""`
 	Waiting        int                `json:"waiting" datastore:""`
+	Pref           int                `json:"pref" datastore:""`
 	CreatedAt      time.Time          `json:"created_at"`
 	UpdatedAt      time.Time          `json:"updated_at"`
 }

@@ -1,0 +1,6 @@
+cron:
+- description: event fetch
+  url: /api/cron/fetch_events
+  schedule: every 24 hours
+  timezone: Asia/Tokyo
+
