@@ -18,10 +18,10 @@ var _ = Resource("events", func() {
 			Param("q", String, "検索キーワード", func() {
 				Default("")
 			})
-			Param("isFavorite", Boolean, "お気に入り済みのものも出す", func() {
+			Param("is_favorite", Boolean, "お気に入り済みのものも出す", func() {
 				Default(false)
 			})
-			Param("isRed", Boolean, "閲覧済みのものを出さない", func() {
+			Param("is_red", Boolean, "閲覧済みのものを出さない", func() {
 				Default(false)
 			})
 		})

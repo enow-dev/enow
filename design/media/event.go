@@ -59,7 +59,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("updated_at", DateTime, "更新日時", func() {
 			Example("2017-08-26T15:05:11.916011956Z")
 		})
-		Attribute("isFavorite", Boolean, "お気に入り済み", func() {
+		Attribute("is_favorite", Boolean, "お気に入り済み", func() {
 			Example(false)
 		})
 		Required(
@@ -80,7 +80,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"waiting",
 			"created_at",
 			"updated_at",
-			"isFavorite",
+			"is_favorite",
 		)
 	})
 	View("tiny", func() {
@@ -101,7 +101,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		//Attribute("waiting")
 		Attribute("created_at")
 		Attribute("updated_at")
-		//Attribute("isFavorite")
+		//Attribute("is_favorite")
 		Required(
 			"id",
 			"id_str",
@@ -120,7 +120,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			//"waiting",
 			"created_at",
 			"updated_at",
-			//"isFavorite",
+			//"is_favorite",
 		)
 	})
 	View("default", func() {
@@ -141,7 +141,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("waiting")
 		Attribute("created_at")
 		Attribute("updated_at")
-		//Attribute("isFavorite")
+		//Attribute("is_favorite")
 		Required(
 			"id",
 			"id_str",
@@ -160,7 +160,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"waiting",
 			"created_at",
 			"updated_at",
-			//"isFavorite",
+			//"is_favorite",
 		)
 	})
 	View("show", func() {
@@ -181,7 +181,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("waiting")
 		Attribute("created_at")
 		Attribute("updated_at")
-		Attribute("isFavorite")
+		Attribute("is_favorite")
 		Required(
 			"id",
 			"id_str",
@@ -200,7 +200,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"waiting",
 			"created_at",
 			"updated_at",
-			"isFavorite",
+			"is_favorite",
 		)
 	})
 	View("full", func() {
@@ -221,7 +221,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("waiting")
 		Attribute("created_at")
 		Attribute("updated_at")
-		Attribute("isFavorite")
+		Attribute("is_favorite")
 		Required(
 			"id",
 			"id_str",
@@ -240,7 +240,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"waiting",
 			"created_at",
 			"updated_at",
-			"isFavorite",
+			"is_favorite",
 		)
 	})
 })
