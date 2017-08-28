@@ -15,3 +15,9 @@ var GeneralAuth = APIKeySecurity("generalAuth", func() {
 	Description("トークン(student)")
 	Header("X-Authorization")
 })
+
+// cron
+var GAECronAuth = APIKeySecurity("cronAuth", func() {
+	Description("gae cron")
+	Header("X-Appengine-Cron")
+})
