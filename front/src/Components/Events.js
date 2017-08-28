@@ -1,5 +1,9 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import * as EventsActions from '../Actions/Events';
 import Grid from 'material-ui/Grid';
 import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
@@ -84,6 +88,7 @@ class Events extends React.Component {
     // setTimeout(() => {
     //   this.setState({ isLoading: false });
     // }, 5000);
+    this.props.actions.getEventsIfNeeded(false, false);
   }
 
   handleTabChange = (event, value) => {
@@ -101,7 +106,8 @@ class Events extends React.Component {
     );
   }
   renderEventsBox() {
-    return this.state.events.map(item => <EventBox />);
+    const { events } = this.props;
+    return events.list.map(item => <EventBox event={item}/>);
   }
   renderMoreRead() {
     const { classes } = this.props;
@@ -216,7 +222,7 @@ class Events extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes,events } = this.props;
     return (
       <div className={classes.root}>
         <EventsTab
@@ -224,10 +230,18 @@ class Events extends React.Component {
           selectTabIndex={this.state.selectTabIndex}
           handleTabChange={this.handleTabChange}
         />
-        {this.state.isLoading ? this.renderCenterProgress() : this.renderMain()}
+      {events.isFetching ? this.renderCenterProgress() : this.renderMain()}
       </div>
     );
   }
 }
+const EventWwapped = withStyles(styles)(Events);
 
-export default withStyles(styles)(Events);
+const mapStateToProps = state => ({
+  events: state.events,
+});
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(EventsActions, dispatch),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EventWwapped));
