@@ -2,10 +2,22 @@
 
 
 [[projects]]
+  name = "cloud.google.com/go"
+  packages = ["compute/metadata","datastore","iam","internal","internal/atomiccache","internal/fields","internal/optional","internal/version","storage"]
+  revision = "0f0b8420cb699ac4ce059c63bac263f4301fe95b"
+  version = "v0.12.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/armon/go-metrics"
   packages = ["."]
   revision = "023a4bbe4bb9bfb23ee7e1afc8d0abad217641f3"
+
+[[projects]]
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
+  version = "v1.1.0"
 
 [[projects]]
   branch = "master"
@@ -27,15 +39,21 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/elazarl/go-bindata-assetfs"
-  packages = ["."]
-  revision = "30f82fa23fd844bd5bb1e5f216db87fd77b5eb43"
+  name = "github.com/goadesign/goa"
+  packages = [".","client","cors","design","design/apidsl","dslengine","goatest","middleware","uuid"]
+  revision = "3b83d283edfa0de4d9c6b3fab9709905b11617e2"
 
 [[projects]]
   branch = "master"
-  name = "github.com/goadesign/goa"
-  packages = [".","client","design","design/apidsl","dslengine","middleware","uuid"]
-  revision = "3b83d283edfa0de4d9c6b3fab9709905b11617e2"
+  name = "github.com/golang/protobuf"
+  packages = ["proto","protoc-gen-go/descriptor","ptypes/any","ptypes/struct","ptypes/timestamp","ptypes/wrappers"]
+  revision = "ab9f9a6dab164b7d1246e0e688b0ab7b94d8553e"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/googleapis/gax-go"
+  packages = ["."]
+  revision = "2cadd475a3e966ec9b77a21afc530dbacec6d613"
 
 [[projects]]
   branch = "master"
@@ -56,10 +74,40 @@
   version = "v1.0"
 
 [[projects]]
+  name = "github.com/jinzhu/gorm"
+  packages = ["."]
+  revision = "5174cc5c242a728b435ea2be8a2f7f998e15429b"
+  version = "v1.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/jinzhu/inflection"
+  packages = ["."]
+  revision = "1c35d901db3da928c72a72d8458480cc9ade058f"
+
+[[projects]]
   branch = "master"
   name = "github.com/manveru/faker"
   packages = ["."]
   revision = "717f7cf83fb78669bfab612749c2e8ff63d5be11"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/mjibson/goon"
+  packages = ["."]
+  revision = "653966f4e8565edb5036c1cdf23a7cbb5ab48ce2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/pei0804/eventory"
+  packages = ["define","models","utility"]
+  revision = "997e827b88946c6abe0cc190c2e0da83c700549e"
+
+[[projects]]
+  name = "github.com/pmezard/go-difflib"
+  packages = ["difflib"]
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/satori/go.uuid"
@@ -80,6 +128,24 @@
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/stretchr/testify"
+  packages = ["assert"]
+  revision = "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
+  version = "v1.1.4"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/tikasan/eventory"
+  packages = ["app"]
+  revision = "997e827b88946c6abe0cc190c2e0da83c700549e"
+
+[[projects]]
+  name = "github.com/yterajima/go-dtf"
+  packages = ["."]
+  revision = "3dece98d86b75a437dc866f2f7b52a823f4ae73b"
+  version = "0.2.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/zach-klippenstein/goregen"
   packages = ["."]
@@ -87,13 +153,61 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/exp"
+  packages = ["utf8string"]
+  revision = "be79676510e5ce293c77bb087cdab4796a461bdb"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/net"
-  packages = ["context","websocket"]
+  packages = ["context","context/ctxhttp","http2","http2/hpack","idna","internal/timeseries","lex/httplex","trace","websocket"]
   revision = "57efc9c3d9f91fb3277f8da1cff370539c4d3dc5"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/oauth2"
+  packages = [".","google","internal","jws","jwt"]
+  revision = "9a379c6b3e95a790ffc43293c2a78dee0d7b6e20"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/text"
+  packages = ["internal/gen","internal/triegen","internal/ucd","secure/bidirule","transform","unicode/bidi","unicode/cldr","unicode/norm","unicode/rangetable"]
+  revision = "ac87088df8ef557f1e32cd00ed0b6fbc3f7ddafb"
+
+[[projects]]
+  branch = "master"
+  name = "google.golang.org/api"
+  packages = ["gensupport","googleapi","googleapi/internal/uritemplates","googleapi/transport","internal","iterator","option","storage/v1","transport/grpc","transport/http"]
+  revision = "7940d22908577b9021e0931c99b3a1d7a12e0d0e"
+
+[[projects]]
+  name = "google.golang.org/appengine"
+  packages = [".","datastore","file","internal","internal/app_identity","internal/base","internal/datastore","internal/log","internal/memcache","internal/modules","internal/remote_api","internal/search","internal/socket","internal/urlfetch","log","memcache","search","socket","urlfetch"]
+  revision = "150dc57a1b433e64154302bdc40b6bb8aefa313a"
+  version = "v1.0.0"
+
+[[projects]]
+  branch = "master"
+  name = "google.golang.org/genproto"
+  packages = ["googleapis/api/annotations","googleapis/datastore/v1","googleapis/iam/v1","googleapis/rpc/status","googleapis/type/latlng"]
+  revision = "ee236bd376b077c7a89f260c026c4735b195e459"
+
+[[projects]]
+  name = "google.golang.org/grpc"
+  packages = [".","codes","connectivity","credentials","credentials/oauth","grpclb/grpc_lb_v1","grpclog","internal","keepalive","metadata","naming","peer","stats","status","tap","transport"]
+  revision = "b3ddf786825de56a4178401b7e174ee332173b66"
+  version = "v1.5.2"
+
+[[projects]]
+  branch = "v1"
+  name = "gopkg.in/yaml.v1"
+  packages = ["."]
+  revision = "9f9df34309c04878acc86042b16630b0f696e1de"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "00646cd147e65a6580b595226df35819e8c46514003e3c866e6268f6360f6590"
+  inputs-digest = "60ab64b2a4f5660bace9502078a6a54d1439990145835082b21d06740195ff33"
   solver-name = "gps-cdcl"
   solver-version = 1
