@@ -3,10 +3,12 @@ import * as types from '../Constants/ActionTypes';
 
 dotenv.config();
 
-export const receiveEvent = events => ({ type: types.RECEIVE_EVENT, events });
-export const fetchEvent = () => ({ type: types.FETCH_EVENT });
+export const receiveEvent = (events, isMoreRead) => (
+  { type: types.RECEIVE_EVENT, events, isMoreRead }
+);
+export const fetchEvent = isMoreRead => ({ type: types.FETCH_EVENT, isMoreRead });
 
-function getEvent(isFavorite, isRed) {
+function getEvent(isFavorite, isRed, isMoreRead) {
   // const url = `http://localhost:8080/api/events?is_favorite=${isFavorite}&is_red=${isRed}`;
 
   let scheme = process.env.REACT_APP_API_Scheme;
@@ -19,7 +21,7 @@ function getEvent(isFavorite, isRed) {
   }
   const url = `${scheme}${host}/api/events?is_favorite=${isFavorite}&is_red=${isRed}`;
   return (dispatch) => {
-    dispatch(fetchEvent());
+    dispatch(fetchEvent(isMoreRead));
     return fetch(url, {
       method: 'GET',
       headers: {
@@ -29,7 +31,7 @@ function getEvent(isFavorite, isRed) {
       },
     })
       .then(response => response.json())
-      .then(responseJson => dispatch(receiveEvent(responseJson)));
+      .then(responseJson => dispatch(receiveEvent(responseJson, isMoreRead)));
   };
 }
 
@@ -38,6 +40,15 @@ export function getEventsIfNeeded(isFavorite, isRed) {
     if (getState().isFetching) {
       return Promise.resolve();
     }
-    return dispatch(getEvent(isFavorite, isRed));
+    return dispatch(getEvent(isFavorite, isRed, false));
+  };
+}
+
+export function moreReadEventIfNeeded(isFavorite, isRed) {
+  return (dispatch, getState) => {
+    if (getState().isMoreFetching) {
+      return Promise.resolve();
+    }
+    return dispatch(getEvent(isFavorite, isRed, true));
   };
 }
