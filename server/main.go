@@ -6,8 +6,10 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/deadcheat/goacors"
 	"github.com/enow-dev/enow/app"
 	"github.com/enow-dev/enow/controller"
+	"github.com/enow-dev/enow/design"
 	"github.com/enow-dev/enow/mymiddleware"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
@@ -41,6 +43,9 @@ func (s *Server) mountController() {
 	// Mount "swaggerui" controller
 	swaggerui := controller.NewSwaggeruiController(s.service)
 	app.MountSwaggeruiController(s.service, swaggerui)
+	// Mount "cron" controller
+	cron := controller.NewCronController(s.service)
+	app.MountCronController(s.service, cron)
 }
 
 func (s *Server) mountMiddleware() {
@@ -48,6 +53,7 @@ func (s *Server) mountMiddleware() {
 	s.service.Use(middleware.LogRequest(true))
 	s.service.Use(middleware.ErrorHandler(s.service, true))
 	s.service.Use(middleware.Recover())
+	s.service.Use(goacors.WithConfig(s.service, design.CorsConfig[os.Getenv("Op")]))
 
 	// dev.yamlのNoSecureの項目がtureになっている時は、tokenの存在チェックのみにする（厳密な認証なし）
 	if os.Getenv("NoSecure") == "true " {
