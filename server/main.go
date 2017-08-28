@@ -43,6 +43,9 @@ func (s *Server) mountController() {
 	// Mount "swaggerui" controller
 	swaggerui := controller.NewSwaggeruiController(s.service)
 	app.MountSwaggeruiController(s.service, swaggerui)
+	// Mount "cron" controller
+	cron := controller.NewCronController(s.service)
+	app.MountCronController(s.service, cron)
 }
 
 func (s *Server) mountMiddleware() {
