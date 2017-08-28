@@ -107,7 +107,7 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 	//appCtx := appengine.NewContext(ctx.Request)
 	for _, p := range allParser {
 		cli := model.NewParser(p.URL, p.APIType, p.Token, ctx.Request)
-		es, err := cli.ConvertingToJson()
+		es, err := cli.ConvertingToJSON()
 		if err != nil {
 			goa.LogError(ctx, "error", "error", err)
 		}

@@ -22,6 +22,7 @@ type API struct {
 	Token string `yaml:"token"`
 }
 
+// APIs API情報をまとめる構造体
 type APIs struct {
 	Connpass   API
 	Doorkeeper API
@@ -61,6 +62,7 @@ func NewAPIConfigs(r io.Reader) (APIConfigs, error) {
 	return configs, nil
 }
 
+// NewAPIsConf APIの設定をまとめて構造体に入れて返す
 func NewAPIsConf(conf APIConfigs) (*APIs, error) {
 	const errMsg = "%sの設定読み込み時にエラーが発生しました"
 	a, ok := conf[constant.Atnd]

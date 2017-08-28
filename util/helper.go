@@ -103,9 +103,9 @@ func ConcatenateString(strs ...string) string {
 	return concatenateStr.String()
 }
 
-// TODO 今後出来れば住所が不正確なものも対応したい & かなりいい加減
 // ConvertIDFromAddress 文字列から都道府県判別する
 func ConvertIDFromAddress(prefName string) int {
+	// TODO 今後出来れば住所が不正確なものも対応したい & かなりいい加減
 	if prefName == "" {
 		return 0
 	}

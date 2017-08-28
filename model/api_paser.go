@@ -15,6 +15,7 @@ import (
 	"google.golang.org/appengine/urlfetch"
 )
 
+// NewParser Parser構造体を生成する
 func NewParser(rawurl string, rawapi int, token string, r *http.Request) *Parser {
 	return &Parser{
 		URL:     rawurl,
@@ -24,6 +25,7 @@ func NewParser(rawurl string, rawapi int, token string, r *http.Request) *Parser
 	}
 }
 
+// Parser データ解析構造体
 type Parser struct {
 	URL      string
 	APIType  int
@@ -47,6 +49,11 @@ func (p *Parser) sendQuery() {
 
 	client := urlfetch.Client(ctx)
 	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Fprint(os.Stderr, err)
+		p.err = err
+		return
+	}
 	if resp == nil {
 		fmt.Fprint(os.Stderr, errors.New("Not Found URL check Request Url"))
 		p.err = errors.New("Not Found URL check Request Url")
@@ -63,7 +70,7 @@ func (p *Parser) sendQuery() {
 	p.RespByte = respByte
 }
 
-func (p *Parser) atndJsonParse() (events []Events, err error) {
+func (p *Parser) atndJSONParse() (events []Events, err error) {
 	var at ATND
 	err = json.Unmarshal(p.RespByte, &at)
 	if err != nil {
@@ -87,7 +94,7 @@ func (p *Parser) atndJsonParse() (events []Events, err error) {
 	return events, nil
 }
 
-func (p *Parser) connpassJsonParse() (events []Events, err error) {
+func (p *Parser) connpassJSONParse() (events []Events, err error) {
 	var cp Connpass
 	err = json.Unmarshal(p.RespByte, &cp)
 	if err != nil {
@@ -112,7 +119,7 @@ func (p *Parser) connpassJsonParse() (events []Events, err error) {
 	return events, nil
 }
 
-func (p *Parser) doorkeeperJsonParse() (events []Events, err error) {
+func (p *Parser) doorkeeperJSONParse() (events []Events, err error) {
 	var dk Doorkeeper
 	err = json.Unmarshal(p.RespByte, &dk)
 	if err != nil {
@@ -150,14 +157,15 @@ func createDataHash(e Events) string {
 	return util.GenHashFromString(d)
 }
 
-func (p *Parser) ConvertingToJson() (events []Events, err error) {
+// ConvertingToJSON リクエストを投げてJSONパースをする
+func (p *Parser) ConvertingToJSON() (events []Events, err error) {
 	p.sendQuery()
 	if p.APIType == constant.AtndID {
-		return p.atndJsonParse()
+		return p.atndJSONParse()
 	} else if p.APIType == constant.ConnpassID {
-		return p.connpassJsonParse()
+		return p.connpassJSONParse()
 	} else if p.APIType == constant.DoorkeeperID {
-		return p.doorkeeperJsonParse()
+		return p.doorkeeperJSONParse()
 	}
 	return events, errors.New("未知のAPIがセットされています。")
 }
