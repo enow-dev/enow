@@ -11,7 +11,7 @@ var devCORS = &goacors.GoaCORSConfig{
 }
 
 var stagingCORS = &goacors.GoaCORSConfig{
-	AllowOrigins:     []string{"https://enow-staging.appspot.com/https://enow-staging.net"},
+	AllowOrigins:     []string{"https://enow-staging.appspot.com"},
 	AllowMethods:     []string{goacors.GET, goacors.HEAD, goacors.PUT, goacors.POST, goacors.DELETE, goacors.OPTIONS},
 	AllowHeaders:     []string{"Content-Type", "X-Authorization"},
 	AllowCredentials: false,
