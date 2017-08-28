@@ -55,7 +55,7 @@ generate:
 	goagen client -d $(REPO)/design
 
 swaggerUI:
-	open http://localhost:8080/swagger/index.html
+	open http://localhost:8080/swaggerui/index.html
 
 run:
 	go run main.go
