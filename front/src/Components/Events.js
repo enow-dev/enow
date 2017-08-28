@@ -105,6 +105,9 @@ class Events extends React.Component {
       </Grid>
     );
   }
+  handleEdit = event => {
+    window.location.href = event.url;
+  }
   renderEventsBox() {
     const { events } = this.props;
     return events.list.map(item => <EventBox event={item}/>);
