@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Card, { CardContent, CardHeader } from 'material-ui/Card';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
@@ -21,7 +22,7 @@ const styles = {
 
 class EventBox extends React.Component {
   render() {
-    const { classes, handleEdit } = this.props;
+    const { classes } = this.props;
     return (
       <Card>
         <CardHeader title="Go Conference 2017 Spring" />
@@ -63,7 +64,13 @@ class EventBox extends React.Component {
             <ListItem>
               <Grid container direction="row" justify="space-between" align="center">
                 <Grid item>
-                  <Button dense className={classes.button}>
+                  <Button
+                    dense
+                    className={classes.button}
+                    onClick={() => {
+                      this.props.handleEdit(event);
+                    }}
+                  >
                     詳細を見る
                   </Button>
                 </Grid>
@@ -82,8 +89,10 @@ class EventBox extends React.Component {
 }
 EventBox.propTypes = {
   classes: Object,
+  handleEdit: PropTypes.func,
 };
 EventBox.defaultProps = {
   classes: null,
+  handleEdit: null,
 };
 export default withStyles(styles)(EventBox);
