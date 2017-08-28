@@ -1,5 +1,8 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as EventsActions from '../Actions/Events';
 import Grid from 'material-ui/Grid';
 import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
@@ -84,6 +87,7 @@ class Events extends React.Component {
     // setTimeout(() => {
     //   this.setState({ isLoading: false });
     // }, 5000);
+    this.props.actions.fetchEvent(false, false);
   }
 
   handleTabChange = (event, value) => {
@@ -229,5 +233,13 @@ class Events extends React.Component {
     );
   }
 }
+const EventWwapped = withStyles(styles)(Events);
 
-export default withStyles(styles)(Events);
+const mapStateToProps = state => ({
+  events: state.events,
+});
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(EventsActions, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventWwapped);
