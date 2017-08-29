@@ -28,7 +28,7 @@ class EventBox extends React.Component {
     const endDate = new Date(event.endAt);
     return (
       <Card>
-        <CardHeader title="Go Conference 2017 Spring" />
+        <CardHeader title={`${event.title}`} />
         <CardContent>
           <List>
             <ListItem>
