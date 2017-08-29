@@ -112,7 +112,7 @@ class Events extends React.Component {
   }
   handleMoreRead = () => {
     const { actions } = this.props;
-    actions.moreReadEventIfNeeded(false,false);
+    actions.moreReadEventsIfNeeded(false,false);
   }
   renderMoreRead() {
     const { classes } = this.props;
