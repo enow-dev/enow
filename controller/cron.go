@@ -12,6 +12,7 @@ import (
 	"github.com/goadesign/goa"
 	"github.com/mjibson/goon"
 	"google.golang.org/appengine"
+	"google.golang.org/appengine/search"
 
 	yaml "gopkg.in/yaml.v1"
 
@@ -98,32 +99,41 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 	allParser = append(allParser, doorKeeper...)
 
 	// TODO: API提供元に負荷がかかるので、順次処理にしている。
-	//index, err := search.Open("events")
-	//if err != nil {
-	//	goa.LogError(ctx, "err", err)
-	//	return ctx.InternalServerError(goa.ErrInternal(err))
-	//}
+	index, err := search.Open("events")
+	if err != nil {
+		goa.LogError(ctx, "err", err)
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
 	g := goon.NewGoon(ctx.Request)
-	//appCtx := appengine.NewContext(ctx.Request)
+	appCtx := appengine.NewContext(ctx.Request)
 	for _, p := range allParser {
 		cli := model.NewParser(p.URL, p.APIType, p.Token, ctx.Request)
 		es, err := cli.ConvertingToJSON()
 		if err != nil {
 			goa.LogError(ctx, "error", "error", err)
 		}
-		goa.LogInfo(ctx, "es", es)
+		//goa.LogInfo(ctx, "es", es)
 		for _, v := range es {
 			// 存在しなければcreated_atを入れる
 			v.CreatedAt = time.Now()
-			if _, err := g.Put(&v); err != nil {
+			key, err := g.Put(&v)
+			if err != nil {
 				goa.LogError(ctx, "error", "err", err)
 			}
-			//s := model.SearchEvents{}
-			//st, err := index.Put(appCtx, "PA6-5000", &s)
-			//if err != nil {
-			//	goa.LogError(ctx, "err", err)
-			//	return ctx.InternalServerError(goa.ErrInternal(err))
-			//}
+			s := model.SearchEvents{}
+			util.CopyStruct(v, &s)
+			s.IDStr = fmt.Sprintf("%d", key.IntID())
+			s.Description = search.HTML(v.Description)
+			s.Limit = fmt.Sprintf("%d", v.Limit)
+			s.Accepted = fmt.Sprintf("%d", v.Accepted)
+			s.Waiting = fmt.Sprintf("%d", v.Waiting)
+			s.Pref = fmt.Sprintf("%d", v.Pref)
+			s.APIID = fmt.Sprintf("%d", v.APIID)
+			_, err = index.Put(appCtx, key.StringID(), &s)
+			if err != nil {
+				goa.LogError(ctx, "err", err)
+				return ctx.InternalServerError(goa.ErrInternal(err))
+			}
 			//goa.LogInfo(ctx, "st", st)
 		}
 

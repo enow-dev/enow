@@ -17,14 +17,14 @@ type SearchEvents struct {
 	StartAt        time.Time
 	EndAt          time.Time
 	URL            string
-	Hash           string
 	Address        string
 	Place          string
 	Coords         appengine.GeoPoint
 	Tags           search.Atom
-	Limit          float64
-	Accepted       float64
-	Waiting        float64
+	Limit          string
+	Accepted       string
+	Waiting        string
+	Pref           string
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }
