@@ -12,7 +12,7 @@ import (
 
 // SearchEvents イベント検索用Document
 type SearchEvents struct {
-	IDStr          string
+	ID             string
 	Identification string
 	APIID          string
 	Title          string
@@ -35,7 +35,7 @@ type SearchEvents struct {
 // SearchEventToEventTiny SearchEvent構造体をEventTinyにする
 func (s *SearchEvents) SearchEventToEventTiny() *app.EventTiny {
 	event := &app.EventTiny{}
-	event.IDStr = s.IDStr
+	event.ID = s.ID
 	event.APIID, _ = strconv.Atoi(s.APIID)
 	event.Title = s.Title
 	event.StartAt = s.StartAt

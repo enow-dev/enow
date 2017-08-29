@@ -38,7 +38,7 @@ var _ = Resource("events", func() {
 		Description("show")
 		Routing(GET("/:id"))
 		Params(func() {
-			Param("id", Any, "id(Int64 or String)")
+			Param("id", String, "id")
 			Required("id")
 		})
 		Response(OK, func() {

@@ -8,10 +8,7 @@ import (
 var Event = MediaType("application/vnd.event+json", func() {
 	Description("event")
 	Attributes(func() {
-		Attribute("id", Any, "id", func() {
-			Example(9223372036854775807)
-		})
-		Attribute("id_str", String, "id(string)", func() {
+		Attribute("id", String, "id", func() {
 			Example("9223372036854775807")
 		})
 		Attribute("api_id", Integer, "APIの種別", func() {
@@ -67,7 +64,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 		})
 		Required(
 			"id",
-			"id_str",
 			"api_id",
 			"title",
 			"description",
@@ -89,7 +85,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 	})
 	View("tiny", func() {
 		Attribute("id")
-		Attribute("id_str")
 		Attribute("api_id")
 		Attribute("title")
 		//Attribute("description")
@@ -109,7 +104,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("tags")
 		Required(
 			"id",
-			"id_str",
 			"api_id",
 			"title",
 			//"description",
@@ -131,7 +125,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 	})
 	View("default", func() {
 		Attribute("id")
-		Attribute("id_str")
 		Attribute("api_id")
 		Attribute("title")
 		Attribute("description")
@@ -151,7 +144,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("tags")
 		Required(
 			"id",
-			"id_str",
 			"api_id",
 			"title",
 			"description",
@@ -173,7 +165,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 	})
 	View("show", func() {
 		Attribute("id")
-		Attribute("id_str")
 		Attribute("api_id")
 		Attribute("title")
 		Attribute("description")
@@ -193,7 +184,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("tags")
 		Required(
 			"id",
-			"id_str",
 			"api_id",
 			"title",
 			"description",
@@ -215,7 +205,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 	})
 	View("full", func() {
 		Attribute("id")
-		Attribute("id_str")
 		Attribute("api_id")
 		Attribute("title")
 		Attribute("description")
@@ -235,7 +224,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("tags")
 		Required(
 			"id",
-			"id_str",
 			"api_id",
 			"title",
 			"description",
