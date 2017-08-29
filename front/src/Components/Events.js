@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import * as EventsActions from '../Actions/Events';
 import Grid from 'material-ui/Grid';
 import { CircularProgress } from 'material-ui/Progress';
@@ -10,12 +10,13 @@ import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import { grey, blue } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
-
 import EventsTab from './EventsTab';
 import EventBox from './EventBox';
 import GithubIcon from '../icons/github.svg';
 import FacebookIcon from '../icons/facebook.svg';
 import SearchBox from './SearchBox';
+
+import EventDetail from './EventDetail';
 
 const styles = theme => ({
   root: {
@@ -104,7 +105,9 @@ class Events extends React.Component {
     );
   }
   handleEdit = event => {
-    window.location.href = event.url;
+    const { history, match } = this.props;
+    console.log(event,history,match);
+    history.push(`${match.url}/${event.idStr}`);
   }
   renderEventsBox() {
     const { events } = this.props;
@@ -229,8 +232,7 @@ class Events extends React.Component {
       </div>
     );
   }
-
-  render() {
+  renderComponent = () => {
     const { classes,events } = this.props;
     return (
       <div className={classes.root}>
@@ -243,6 +245,14 @@ class Events extends React.Component {
       </div>
     );
   }
+  render() {
+    return(
+      <Switch>
+        <Route exact path={`${this.props.match.url}`} render={this.renderComponent} />
+        <Route path={`${this.props.match.url}/:id`} component={EventDetail} />
+      </Switch>
+    );
+  }
 }
 const EventWwapped = withStyles(styles)(Events);
 
@@ -253,4 +263,4 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(EventsActions, dispatch),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EventWwapped));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Events)));

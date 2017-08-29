@@ -1,7 +1,26 @@
 import { RECEIVE_EVENT, FETCH_EVENT } from '../Constants/ActionTypes';
 
 const initialState = {
-  event: {},
+  item: {
+    accepted: '',
+    address: '',
+    apiId: 0,
+    createdAt: '',
+    description: '',
+    endAt: '',
+    id: 0,
+    idStr: '0',
+    isFavorite: false,
+    lat: 0,
+    limit: 0,
+    lon: 0,
+    place: '',
+    startAt: '',
+    title: '',
+    updatedAt: '',
+    url: '',
+    waiting: 0,
+  },
   isFetching: false,
 };
 
@@ -30,11 +49,10 @@ const adaptationEvent = (event) => {
 };
 
 export default function event(state = initialState, action) {
-  console.log(action);
   switch (action.type) {
     case RECEIVE_EVENT: {
       const newEvent = adaptationEvent(action.event);
-      return Object.assign({}, state, { isFetching: false, event: newEvent });
+      return Object.assign({}, state, { isFetching: false, item: newEvent });
     }
     case FETCH_EVENT:
       return Object.assign({}, state, { isFetching: true });
