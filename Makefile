@@ -98,6 +98,14 @@ gcp-project-set:
 delete-datastore:
 	dev_appserver.py --clear_datastore=yes ./server
 
+# search apiを初期化して実行する
+delete-search-api:
+	dev_appserver.py --clear_search_indexes=yes ./server
+
+# Store周りを初期化して実行する
+delete-run:
+	dev_appserver.py --clear_datastore=yes --clear_search_indexes=yes ./server
+
 # サーバーの更新を適用する
 update:
 	$(MAKE) vendoring

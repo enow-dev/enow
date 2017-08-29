@@ -14,7 +14,6 @@ type EventsDB struct {
 type Events struct {
 	_kind          string             `goon:"kind,events"`
 	ID             int64              `datastore:"-" goon:"id" json:"id"`
-	IDStr          string             `json:"id_str" datastore:""`
 	Identification string             `json:"identification" datastore:",noindex"`
 	APIID          int                `json:"api_id" datastore:""`
 	APIEventID     int                `json:"api_event_id" datastore:",noindex"`
