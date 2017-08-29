@@ -115,3 +115,6 @@ update:
 swaggerui:
 	open http://localhost:8080/swaggerui/index.html
 
+# API configの設定
+api-config-set:
+	cp ./config/api.yaml.tmpl ./config/api.yaml
