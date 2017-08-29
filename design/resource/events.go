@@ -24,6 +24,9 @@ var _ = Resource("events", func() {
 			Param("is_red", Boolean, "閲覧済みのものを出さない", func() {
 				Default(false)
 			})
+			Param("cursor", String, "ページングカーソル", func() {
+				Default("")
+			})
 		})
 		Response(OK, CollectionOf(media.Event, func() {
 			View("default")

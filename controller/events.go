@@ -3,8 +3,11 @@ package controller
 import (
 	"github.com/enow-dev/enow/app"
 	"github.com/enow-dev/enow/mock"
+	"github.com/enow-dev/enow/model"
 	"github.com/enow-dev/enow/util"
 	"github.com/goadesign/goa"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/search"
 )
 
 // EventsController implements the events resource.
@@ -24,14 +27,29 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 	// EventsController_List: start_implement
 
 	// Put your logic here
-	events := app.EventTinyCollection{}
-	event := app.EventTiny{}
-	mEvent := mock.CreateEventMedia()
-	for i := 0; i < 10; i++ {
-		util.CopyStruct(mEvent, &event)
-		events = append(events, &event)
+	appCtx := appengine.NewContext(ctx.Request)
+	index, err := search.Open("events")
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 
+	options := search.SearchOptions{
+		Limit:  10,
+		Cursor: search.Cursor(ctx.Cursor),
+	}
+	events := app.EventTinyCollection{}
+	iterator := index.Search(appCtx, ctx.Q, &options)
+	for {
+		var event model.SearchEvents
+		_, err := iterator.Next(&event)
+		if err == search.Done {
+			break
+		} else if err != nil {
+			return ctx.InternalServerError(goa.ErrInternal(err))
+		}
+
+		events = append(events, event.SearchEventToEventTiny())
+	}
 	// EventsController_List: end_implement
 	return ctx.OKTiny(events)
 }
