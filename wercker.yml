@@ -14,7 +14,7 @@ build:
   - script:
       name: set env
       code: |
-        export OP="staging"
+        export Op="staging"
   - script:
       name: GOROOTのパッケージに一般ユーザーからの書き込みの許可
       code: |

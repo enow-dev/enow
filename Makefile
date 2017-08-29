@@ -1,9 +1,10 @@
 ##### init #####
 
+# 初期インストール時に実行してください
 install:
 	git pull
 	$(MAKE) depend
-	$(MAKE) devDepend
+	$(MAKE) dev-depend
 	$(MAKE) vendoring
 	$(MAKE) gen
 	cd front && npm install && npm run build
@@ -12,20 +13,22 @@ install:
 
 ##### depend #####
 
+# 実行に必要なパッケージのインストール
 depend:
 	go get -u github.com/goadesign/goa
 	go get -u github.com/goadesign/goa/goagen
 	go get -u github.com/jteeuwen/go-bindata/...
-	go get -u github.com/Masterminds/glide
 	go get -u github.com/deadcheat/goacors
+	go get -u github.com/golang/dep/cmd/dep
 
-devDepend:
+# 開発者向けのパッケージのインストール
+dev-depend:
 	go get -u github.com/alecthomas/gometalinter
 	gometalinter --install --update --force
 
+# 依存パッケージをvendoringする
 vendoring:
-	rm -rf ./vendor
-	glide install
+	dep ensure
 
 ##### goa ######
 
@@ -54,12 +57,6 @@ generate:
 	goagen swagger -d $(REPO)/design -o server
 	goagen client -d $(REPO)/design
 
-swaggerUI:
-	open http://localhost:8080/swaggerui/index.html
-
-run:
-	go run main.go
-
 build:
 	goapp build -o goa-spa-sample ./server
 
@@ -81,18 +78,32 @@ staging-rollback:
 
 ##### etc ######
 
+# tokenの詳細なチェックをせずに実行する
 no-secure-local:
 	cp -f ./server/env.yaml.dev.nosec ./server/env.yaml
 	goapp serve ./server
 
-preDeploy:
+# 簡易的なデプロイコマンド
+pre-deploy:
 	$(MAKE) gen
 	cd front && npm install && npm run build
 	cp -f ./server/env.yaml.staging ./server/env.yaml
 	$(MAKE) staging-deploy
 
+# gcpのプロジェクトを設定する
 gcp-project-set:
 	gcloud config set project enow-staging
 
+# datastoreを初期化して実行する
 delete-datastore:
 	dev_appserver.py --clear_datastore=yes ./server
+
+# サーバーの更新を適用する
+update:
+	$(MAKE) vendoring
+	$(MAKE) gen
+
+# swaggerの実行画面をブラウザで開く
+swaggerui:
+	open http://localhost:8080/swaggerui/index.html
+
