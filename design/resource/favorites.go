@@ -28,7 +28,7 @@ var _ = Resource("favorites", func() {
 		Description("お気に入りに追加する（追加した時点で出さないようにする）")
 		Routing(POST("/:id/favorites"))
 		Params(func() {
-			Param("id", Any, "id(Int64 or String)")
+			Param("id", String, "id")
 			Required("id")
 		})
 		Response(OK)
@@ -38,7 +38,7 @@ var _ = Resource("favorites", func() {
 		Description("お気に入りから削除する")
 		Routing(DELETE("/:id/favorites"))
 		Params(func() {
-			Param("id", Any, "id(Int64 or String)")
+			Param("id", String, "id")
 			Required("id")
 		})
 		Response(OK)

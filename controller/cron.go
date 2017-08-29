@@ -122,7 +122,7 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 			}
 			s := model.SearchEvents{}
 			util.CopyStruct(v, &s)
-			s.IDStr = fmt.Sprintf("%d", key.IntID())
+			s.ID = fmt.Sprintf("%d", key.IntID())
 			s.Description = search.HTML(v.Description)
 			s.Limit = fmt.Sprintf("%d", v.Limit)
 			s.Accepted = fmt.Sprintf("%d", v.Accepted)

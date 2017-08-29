@@ -10,7 +10,6 @@ type UsersDB struct {
 type Users struct {
 	_kind        string    `goon:"kind,User"`
 	ID           int64     `datastore:"-" goon:"id" json:"id"`
-	IDStr        string    `json:"id_str" datastore:""`
 	Name         string    `json:"name" datastore:""`
 	PasswordHash string    `json:"password_hash" datastore:",noindex"`
 	Email        string    `json:"email" datastore:""`
