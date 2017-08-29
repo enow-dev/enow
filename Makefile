@@ -93,3 +93,6 @@ preDeploy:
 
 gcp-project-set:
 	gcloud config set project enow-staging
+
+delete-datastore:
+	dev_appserver.py --clear_datastore=yes ./server

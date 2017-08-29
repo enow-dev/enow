@@ -15,15 +15,15 @@ const (
 //---------------------------------------------
 
 const (
-	ATDN_ID = iota + 1
-	CONNPASS_ID
-	DOORKEEPER_ID
+	AtndID = iota + 1
+	ConnpassID
+	DoorkeeperID
 )
 
 const (
-	ATDN_URL       = "https://api.atnd.org/events/?count=100&format=jsonp&callback="
-	CONNPASS_URL   = "https://connpass.com/api/v1/event/?count=100"
-	DOORKEEPER_URL = "https://api.doorkeeper.jp/events"
+	Atnd       = "atnd"
+	Connpass   = "connpass"
+	Doorkeeper = "doorkeeper"
 )
 
-const SERACH_SCOPE = 1
+const SearchPeriod = 1

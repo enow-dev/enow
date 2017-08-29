@@ -64,7 +64,7 @@ func (p *Parser) sendQuery() {
 	p.RespByte = respByte
 }
 
-func (p *Parser) atdnJsonParse() (events []models.Event, err error) {
+func (p *Parser) atndJsonParse() (events []models.Event, err error) {
 	var at models.At
 	err = json.Unmarshal(p.RespByte, &at)
 	if err != nil {
@@ -77,8 +77,8 @@ func (p *Parser) atdnJsonParse() (events []models.Event, err error) {
 	for i, v := range at.Events {
 		utility.CopyStruct(v.Event, e)
 		events[i] = *e
-		events[i].APIType = define.ATDN
-		events[i].Identifier = fmt.Sprintf("%d-%d", define.ATDN_ID, v.Event.EventId)
+		events[i].APIType = define.ATND
+		events[i].Identifier = fmt.Sprintf("%d-%d", define.ATND_ID, v.Event.EventId)
 		events[i].DataHash = createDataHash(events[i])
 	}
 	return events, nil
@@ -142,8 +142,8 @@ func createDataHash(e models.Event) string {
 
 func (p *Parser) ConvertingToJson() (events []models.Event, err error) {
 	p.sendQuery()
-	if p.APIType == define.ATDN {
-		return p.atdnJsonParse()
+	if p.APIType == define.ATND {
+		return p.atndJsonParse()
 	} else if p.APIType == define.CONNPASS {
 		return p.connpassJsonParse()
 	} else if p.APIType == define.DOORKEEPER {

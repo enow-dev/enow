@@ -7,10 +7,10 @@ import (
 )
 
 var _ = Resource("cron", func() {
-	BasePath("/cron")
+	BasePath("/api/cron")
 	Action("fetchEvents", func() {
-		Description("fetchEvents")
-		Routing(GET("/fetchEvents"))
+		Description("fetch events")
+		Routing(GET("/fetch_events"))
 		UseTrait(GAECronTrait)
 	})
 	Action("readFix", func() {
