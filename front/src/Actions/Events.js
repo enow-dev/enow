@@ -6,8 +6,6 @@ export const receiveEvent = (events, isMoreRead) => (
 export const fetchEvent = isMoreRead => ({ type: types.FETCH_EVENTS, isMoreRead });
 
 function getEvent(isFavorite, isRed, isMoreRead) {
-  // const url = `http://localhost:8080/api/events?is_favorite=${isFavorite}&is_red=${isRed}`;
-
   let scheme = process.env.REACT_APP_API_Scheme;
   if (scheme == null) {
     scheme = process.env.Scheme;
