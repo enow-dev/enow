@@ -1,4 +1,4 @@
-import { RECEIVE_EVENT, FETCH_EVENT } from '../Constants/ActionTypes';
+import { RECEIVE_EVENTS, FETCH_EVENTS } from '../Constants/ActionTypes';
 
 const initialState = {
   list: [],
@@ -35,7 +35,7 @@ const adaptationEvents = (events) => {
 
 export default function events(state = initialState, action) {
   switch (action.type) {
-    case RECEIVE_EVENT: {
+    case RECEIVE_EVENTS: {
       const newEvents = adaptationEvents(action.events);
       if (action.isMoreRead) {
         return Object.assign({}, state, { isMoreFetching: false,
@@ -44,7 +44,7 @@ export default function events(state = initialState, action) {
       }
       return Object.assign({}, state, { isFetching: false, list: newEvents });
     }
-    case FETCH_EVENT:
+    case FETCH_EVENTS:
       if (action.isMoreRead) {
         return Object.assign({}, state, { isMoreFetching: true });
       }
