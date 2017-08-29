@@ -59,6 +59,9 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("updated_at", DateTime, "更新日時", func() {
 			Example("2017-08-26T15:05:11.916011956Z")
 		})
+		Attribute("tags", ArrayOf(String), "ジャンルタグ", func() {
+			Example([]string{"js", "php", "Go"})
+		})
 		Attribute("is_favorite", Boolean, "お気に入り済み", func() {
 			Example(false)
 		})
@@ -81,6 +84,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"created_at",
 			"updated_at",
 			"is_favorite",
+			"tags",
 		)
 	})
 	View("tiny", func() {
@@ -102,6 +106,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("created_at")
 		Attribute("updated_at")
 		//Attribute("is_favorite")
+		Attribute("tags")
 		Required(
 			"id",
 			"id_str",
@@ -121,6 +126,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"created_at",
 			"updated_at",
 			//"is_favorite",
+			"tags",
 		)
 	})
 	View("default", func() {
@@ -142,6 +148,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("created_at")
 		Attribute("updated_at")
 		//Attribute("is_favorite")
+		Attribute("tags")
 		Required(
 			"id",
 			"id_str",
@@ -161,6 +168,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"created_at",
 			"updated_at",
 			//"is_favorite",
+			"tags",
 		)
 	})
 	View("show", func() {
@@ -182,6 +190,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("created_at")
 		Attribute("updated_at")
 		Attribute("is_favorite")
+		Attribute("tags")
 		Required(
 			"id",
 			"id_str",
@@ -201,6 +210,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"created_at",
 			"updated_at",
 			"is_favorite",
+			"tags",
 		)
 	})
 	View("full", func() {
@@ -222,6 +232,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("created_at")
 		Attribute("updated_at")
 		Attribute("is_favorite")
+		Attribute("tags")
 		Required(
 			"id",
 			"id_str",
@@ -241,6 +252,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"created_at",
 			"updated_at",
 			"is_favorite",
+			"tags",
 		)
 	})
 })

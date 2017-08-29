@@ -1,7 +1,10 @@
 package model
 
 import (
+	"strconv"
 	"time"
+
+	"github.com/enow-dev/enow/app"
 
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/search"
@@ -28,3 +31,48 @@ type SearchEvents struct {
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }
+
+// SearchEventToEventTiny SearchEvent構造体をEventTinyにする
+func (s *SearchEvents) SearchEventToEventTiny() *app.EventTiny {
+	event := &app.EventTiny{}
+	event.IDStr = s.IDStr
+	event.APIID, _ = strconv.Atoi(s.APIID)
+	event.Title = s.Title
+	event.StartAt = s.StartAt
+	event.EndAt = s.EndAt
+	event.URL = s.URL
+	event.Place = s.Place
+	// TODO: タグ機能実装したら対応する
+	//event.Tags = s.Tags
+	event.Tags = []string{"js", "php"}
+	event.Limit, _ = strconv.Atoi(s.Limit)
+	event.Accepted, _ = strconv.Atoi(s.Accepted)
+	event.CreatedAt = s.CreatedAt
+	event.UpdatedAt = s.UpdatedAt
+	return event
+}
+
+//
+//func (s *SearchEvents) SearchEventToTinyEvent() *app.EventTiny {
+//	event := &app.EventTiny{}
+//	event.IDStr = s.IDStr
+//	event.Identification = s.Identification
+//	event.APIID = s.APIID
+//	event.Title = s.Title
+//	event.Description = s.Description
+//	event.StartAt = s.StartAt
+//	event.EndAt = s.EndAt
+//	event.URL = s.URL
+//	event.Address = s.Address
+//	event.Place = s.Place
+//	event.Coords = s.Coords
+//	event.Tags = s.Tags
+//	event.Limit = s.Limit
+//	event.Accepted = s.Accepted
+//	event.Waiting = s.Waiting
+//	event.Pref = s.Pref
+//	event.CreatedAt = s.CreatedAt
+//	event.UpdatedAt = s.UpdatedAt
+//
+//	return event
+//}

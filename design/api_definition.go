@@ -13,7 +13,7 @@ var _ = API("enow", func() {
 	Title("enow")
 	Description("enow")
 	Host(func() string {
-		switch os.Getenv("OP") {
+		switch os.Getenv("Op") {
 		case "develop":
 			return "localhost:8080"
 		case "staging":
