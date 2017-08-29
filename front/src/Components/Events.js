@@ -108,7 +108,7 @@ class Events extends React.Component {
   }
   renderEventsBox() {
     const { events } = this.props;
-    return events.list.map(item => <EventBox event={item}/>);
+    return events.list.map(item => <EventBox event={item} handleEdit={this.handleEdit}/>);
   }
   handleMoreRead = () => {
     const { actions } = this.props;

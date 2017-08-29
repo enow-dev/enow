@@ -23,7 +23,7 @@ const styles = {
 
 class EventBox extends React.Component {
   render() {
-    const { classes, event } = this.props;
+    const { classes, event, handleEdit } = this.props;
     const startDate = new Date(event.startAt);
     const endDate = new Date(event.endAt);
     return (
@@ -67,7 +67,7 @@ class EventBox extends React.Component {
             <ListItem>
               <Grid container direction="row" justify="space-between" align="center">
                 <Grid item>
-                  <Button dense className={classes.button}>
+                  <Button dense className={classes.button} onClick={() => { handleEdit(event); }}>
                     詳細を見る
                   </Button>
                 </Grid>
