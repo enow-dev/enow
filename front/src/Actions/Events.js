@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
 import * as types from '../Constants/ActionTypes';
-
-dotenv.config();
 
 export const receiveEvent = (events, isMoreRead) => (
   { type: types.RECEIVE_EVENT, events, isMoreRead }
