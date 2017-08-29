@@ -254,7 +254,6 @@ class Events extends React.Component {
     );
   }
 }
-const EventWwapped = withStyles(styles)(Events);
 
 const mapStateToProps = state => ({
   events: state.events,

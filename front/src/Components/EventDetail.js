@@ -1,14 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import dateFormat from 'dateformat';
-import * as EventActions from '../Actions/Event';
 
 import Grid from 'material-ui/Grid';
-import Card, { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card';
+import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
+
+import * as EventActions from '../Actions/Event';
 
 const styles = {
   root: {
@@ -71,6 +73,35 @@ class EventDetail extends React.Component {
     );
   }
 }
+
+EventDetail.propTypes = {
+  actions: PropTypes.shape({
+    getEventIfNeeded: PropTypes.func.isRequired,
+  }),
+  match: Object,
+  classes: Object,
+  event: PropTypes.shape({
+    item: PropTypes.object.isRequired,
+  }),
+};
+EventDetail.defaultProps = {
+  actions: {
+    getEventIfNeeded: null,
+  },
+  match: {},
+  classes: styles,
+  event: {
+    item: {
+      title: '',
+      place: '',
+      startAt: '',
+      endAt: '',
+      description: '',
+      address: '',
+      url: '',
+    },
+  },
+};
 
 const mapStateToProps = state => ({
   event: state.event,
