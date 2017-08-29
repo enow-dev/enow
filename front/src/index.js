@@ -12,6 +12,7 @@ import { orange } from 'material-ui/colors';
 import reducers from './Reducers';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import dotenv from 'dotenv';
 
 const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -32,6 +33,8 @@ const theme = createMuiTheme({
     },
   }),
 });
+
+dotenv.config();
 
 render(
   <Provider store={store}>
