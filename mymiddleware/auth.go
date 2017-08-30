@@ -4,13 +4,23 @@ import (
 	"context"
 	"net/http"
 
+	"google.golang.org/appengine/datastore"
+
+	"time"
+
 	"github.com/enow-dev/enow/app"
+	"github.com/enow-dev/enow/model"
+	"github.com/enow-dev/enow/util"
 	"github.com/goadesign/goa"
+	"github.com/mjibson/goon"
 )
 
 var (
-	// ErrUnauthorized is the error returned for unauthorized requests.
+	// ErrUnauthorized 認証フェーズ用のエラーレスポンス 401
 	ErrUnauthorized = goa.NewErrorClass("unauthorized", 401)
+
+	// ErrInternalServer 認証フェーズ用のエラーレスポンス 500
+	ErrInternalServer = goa.NewErrorClass("internal error", 500)
 )
 
 // NewAdminUserAuthMiddleware adminユーザーの権限を持っているかを確認する
@@ -20,9 +30,8 @@ func NewAdminUserAuthMiddleware() goa.Middleware {
 		return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 			// Retrieve and log header specified by scheme
 			token := req.Header.Get(scheme.Name)
-			// A real app would do something more interesting here
 			if len(token) == 0 {
-				goa.LogInfo(ctx, "failed api token auth")
+				goa.LogError(ctx, "failed api token auth")
 				return ErrUnauthorized("missing auth")
 			}
 			// 確認ロジックを入れる
@@ -61,6 +70,36 @@ func NewTestModeMiddleware() goa.Middleware {
 				goa.LogInfo(ctx, "failed api token auth")
 				return ErrUnauthorized("missing auth")
 			}
+			// サンプルユーザーの作成
+			g := goon.NewGoon(req)
+			q := datastore.NewQuery(g.Kind(new(model.Users))).Filter("Name =", "sampleName")
+			users, err := g.GetAll(q, &[]*model.Users{})
+			if err != nil {
+				goa.LogError(ctx, "err", err)
+				return ErrInternalServer("サンプルユーザー作成時にエラーが発生しました①")
+			}
+			if len(users) != 0 {
+				ctx = util.SetUserKey(ctx, users[0])
+				return h(ctx, rw, req)
+			}
+			// 既にサンプルユーザーが作成されているか
+			su := &model.Users{
+				Name:         "sampleName",
+				PasswordHash: "samplePasswordHash",
+				Email:        "sampleEmail",
+				FacebookID:   1,
+				TwitterID:    2,
+				GithubID:     3,
+				GoogleID:     4,
+				CreatedAt:    time.Now(),
+				UpdatedAt:    time.Now(),
+			}
+			key, err := g.Put(su)
+			if err != nil {
+				goa.LogError(ctx, "err", err)
+				return ErrInternalServer("サンプルユーザー作成時にエラーが発生しました")
+			}
+			ctx = util.SetUserKey(ctx, key)
 			// 確認ロジックは省略する
 			goa.LogInfo(ctx, "auth", "apikey", "token", token)
 			return h(ctx, rw, req)
