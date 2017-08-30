@@ -108,7 +108,7 @@ class Events extends React.Component {
   handleEdit = event => {
     const { history, match } = this.props;
     console.log(event,history,match);
-    history.push(`${match.url}/${event.idStr}`);
+    history.push(`${match.url}/${event.id}`);
   }
   renderEventsBox() {
     const { events } = this.props;
