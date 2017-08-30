@@ -32,7 +32,7 @@ type Users struct {
 func (db *UsersDB) GetFindByName(ctx context.Context, name string) ([]*app.User, error) {
 	g := goon.FromContext(ctx)
 	as := []*Users{}
-	q := datastore.NewQuery(g.Kind(new(Users))).Filter("name =", name)
+	q := datastore.NewQuery(g.Kind(new(Users))).Filter("Name =", name)
 	_, err := g.GetAll(q, &as)
 	if err != nil {
 		return nil, err
@@ -41,7 +41,6 @@ func (db *UsersDB) GetFindByName(ctx context.Context, name string) ([]*app.User,
 	for _, t := range as {
 		appAs = append(appAs, t.UserToUser())
 	}
-
 	return appAs, nil
 }
 

@@ -2,7 +2,10 @@ package controller
 
 import (
 	"github.com/enow-dev/enow/app"
+	"github.com/enow-dev/enow/model"
+	"github.com/enow-dev/enow/util"
 	"github.com/goadesign/goa"
+	"google.golang.org/appengine"
 )
 
 // FavoritesController implements the favorites resource.
@@ -15,13 +18,27 @@ func NewFavoritesController(service *goa.Service) *FavoritesController {
 	return &FavoritesController{Controller: service.NewController("FavoritesController")}
 }
 
-// Upsert runs the create action.
-func (c *FavoritesController) Upsert(ctx *app.UpsertFavoritesContext) error {
-	// FavoritesController_Upsert: start_implement
+// Update runs the upsert action.
+func (c *FavoritesController) Update(ctx *app.UpdateFavoritesContext) error {
+	// FavoritesController_Update: start_implement
 
 	// Put your logic here
+	userKey, err := util.GetUserKey(ctx)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	int64ID, err := util.ConvertIDIntoInt64(ctx.ID)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	ufeDB := &model.UserEventFavoritesDB{}
+	appCtx := appengine.NewContext(ctx.Request)
+	err = ufeDB.Add(appCtx, int64ID, userKey)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
 
-	// FavoritesController_Upsert: end_implement
+	// FavoritesController_Update: end_implement
 	return nil
 }
 
@@ -30,18 +47,32 @@ func (c *FavoritesController) Delete(ctx *app.DeleteFavoritesContext) error {
 	// FavoritesController_Delete: start_implement
 
 	// Put your logic here
+	userKey, err := util.GetUserKey(ctx)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	int64ID, err := util.ConvertIDIntoInt64(ctx.ID)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	ufeDB := &model.UserEventFavoritesDB{}
+	appCtx := appengine.NewContext(ctx.Request)
+	err = ufeDB.Delete(appCtx, int64ID, userKey)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
 
 	// FavoritesController_Delete: end_implement
 	return nil
 }
 
-// List runs the list action.
-func (c *FavoritesController) List(ctx *app.ListFavoritesContext) error {
-	// FavoritesController_List: start_implement
+// SelfList runs the list action.
+func (c *FavoritesController) SelfList(ctx *app.SelfListFavoritesContext) error {
+	// FavoritesController_SelfList: start_implement
 
 	// Put your logic here
 
-	// FavoritesController_List: end_implement
+	// FavoritesController_SelfList: end_implement
 	res := app.EventCollection{}
 	return ctx.OK(res)
 }

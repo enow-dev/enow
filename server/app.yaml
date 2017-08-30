@@ -12,9 +12,11 @@ handlers:
 - url: /swaggerui
   static_files: swaggerui/index.html
   upload: /swaggerui
+  expiration: "0m"
 - url: /swagger.json
   static_files: swagger/swagger.json
   upload: /swagger.json
+  expiration: "0m"
 
 env_variables:
   TZ: JST

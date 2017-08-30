@@ -39,8 +39,8 @@ type Events struct {
 }
 
 // Get IDを指定し1件取得する
-func (db *EventsDB) Get(ctx context.Context, id int64) (*Events, error) {
-	g := goon.FromContext(ctx)
+func (db *EventsDB) Get(appCtx context.Context, id int64) (*Events, error) {
+	g := goon.FromContext(appCtx)
 	e := &Events{
 		ID: id,
 	}
@@ -52,8 +52,8 @@ func (db *EventsDB) Get(ctx context.Context, id int64) (*Events, error) {
 }
 
 // Add レコードを追加して、追加したレコードを返す
-func (db *EventsDB) Add(ctx context.Context, user *Events) (*Events, error) {
-	g := goon.FromContext(ctx)
+func (db *EventsDB) Add(appCtx context.Context, user *Events) (*Events, error) {
+	g := goon.FromContext(appCtx)
 	_, err := g.Put(user)
 	if err != nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (db *EventsDB) Add(ctx context.Context, user *Events) (*Events, error) {
 }
 
 // Delete ID指定して、1件削除する
-func (db *EventsDB) Delete(ctx context.Context, id int64) error {
-	g := goon.FromContext(ctx)
+func (db *EventsDB) Delete(appCtx context.Context, id int64) error {
+	g := goon.FromContext(appCtx)
 	u := &Events{
 		ID: id,
 	}
@@ -83,8 +83,8 @@ func (db *EventsDB) Delete(ctx context.Context, id int64) error {
 }
 
 // Update id指定して、1件更新しその情報を返す
-func (db *EventsDB) Update(ctx context.Context, id int64, updateEvent *Events) (*Events, error) {
-	g := goon.FromContext(ctx)
+func (db *EventsDB) Update(appCtx context.Context, id int64, updateEvent *Events) (*Events, error) {
+	g := goon.FromContext(appCtx)
 	findUser := &Events{
 		ID: id,
 	}
