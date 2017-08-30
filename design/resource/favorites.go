@@ -9,9 +9,10 @@ import (
 
 var _ = Resource("favorites", func() {
 	BasePath("/api/events")
-	Action("list", func() {
+	DefaultMedia(media.Event)
+	Action("selfList", func() {
 		Description("ユーザーのお気に入り情報を返す（ユーザー判別はtokenで行う）")
-		Routing(GET("/favorites"))
+		Routing(GET("self/favorites"))
 		Params(func() {
 			Param("isEnd", Boolean, "終了したイベントを取得する", func() {
 				Default(false)
@@ -24,11 +25,11 @@ var _ = Resource("favorites", func() {
 		}))
 		UseTrait(GeneralUserTrait)
 	})
-	Action("upsert", func() {
+	Action("update", func() {
 		Description("お気に入りに追加する（追加した時点で出さないようにする）")
 		Routing(PUT("/:id/favorites"))
 		Params(func() {
-			Param("id", String, "id")
+			Param("id")
 			Required("id")
 		})
 		Response(OK)
@@ -38,7 +39,7 @@ var _ = Resource("favorites", func() {
 		Description("お気に入りから削除する")
 		Routing(DELETE("/:id/favorites"))
 		Params(func() {
-			Param("id", String, "id")
+			Param("id")
 			Required("id")
 		})
 		Response(OK)
