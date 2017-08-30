@@ -15,7 +15,7 @@ var _ = Resource("cron", func() {
 	})
 	Action("readFix", func() {
 		Description("readFix")
-		Routing(GET("readFix"))
+		Routing(GET("/read_fix"))
 		UseTrait(GAECronTrait)
 	})
 })

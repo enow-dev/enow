@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"os"
+
 	"cloud.google.com/go/datastore"
 	"github.com/enow-dev/enow/app"
 	"github.com/enow-dev/enow/model"
@@ -28,17 +30,18 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 
 	// Put your logic here
 	appCtx := appengine.NewContext(ctx.Request)
-	index, err := search.Open("events")
+	se := model.NewSearchEventsDB("events")
+	se.SetLimit(10)
+	se.Sort("StartAt", false)
+	se.SetPref(0)
+	se.SetCursor(ctx.Cursor)
+	se.SetNotSearchID("")
+	se.SetSearchKeyword("")
+	iterator, err := se.Run(appCtx)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
-
-	options := search.SearchOptions{
-		Limit:  10,
-		Cursor: search.Cursor(ctx.Cursor),
-	}
 	events := app.EventTinyCollection{}
-	iterator := index.Search(appCtx, ctx.Q, &options)
 	for {
 		var event model.SearchEvents
 		_, err := iterator.Next(&event)
@@ -47,9 +50,11 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 		} else if err != nil {
 			return ctx.InternalServerError(goa.ErrInternal(err))
 		}
-
 		events = append(events, event.SearchEventToEventTiny())
 	}
+	l := util.CreateLinkHeader(ctx.RequestData, os.Getenv("Scheme"), iterator.Cursor())
+	ctx.ResponseData.Header().Set("link", l.String())
+
 	// EventsController_List: end_implement
 	return ctx.OKTiny(events)
 }

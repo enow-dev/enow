@@ -40,9 +40,8 @@ var _ = API("enow", func() {
 		Response(InternalServerError, ErrorMedia)
 	})
 	Trait(PaginatorHeaderTrait, func() {
-		Header("x-search-hits-count")
 		Header("link")
-		Required("x-search-hits-count", "link")
+		Required("link")
 	})
 	Trait(GAECronTrait, func() {
 		Security(GAECronAuth)
