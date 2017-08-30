@@ -214,7 +214,9 @@ class Events extends React.Component {
       >
         <Grid item xs={3}>
           <Sticky>
-            { props => (<SearchBox rootClass={classes.webSearchBox} />)}
+            { props => {
+              return (<div style={props.style}><SearchBox rootClass={classes.webSearchBox} /></div>);
+            }}
           </Sticky>
         </Grid>
         <Grid item xs={8}>
