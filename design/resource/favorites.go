@@ -24,9 +24,9 @@ var _ = Resource("favorites", func() {
 		}))
 		UseTrait(GeneralUserTrait)
 	})
-	Action("create", func() {
+	Action("upsert", func() {
 		Description("お気に入りに追加する（追加した時点で出さないようにする）")
-		Routing(POST("/:id/favorites"))
+		Routing(PUT("/:id/favorites"))
 		Params(func() {
 			Param("id", String, "id")
 			Required("id")

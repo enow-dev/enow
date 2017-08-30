@@ -41,7 +41,7 @@
   branch = "master"
   name = "github.com/goadesign/goa"
   packages = [".","client","cors","design","design/apidsl","dslengine","goatest","middleware","uuid"]
-  revision = "3b83d283edfa0de4d9c6b3fab9709905b11617e2"
+  revision = "1734875a196e15eb44db08e3b217b7e5c2e1eb38"
 
 [[projects]]
   branch = "master"
@@ -161,7 +161,7 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context","context/ctxhttp","http2","http2/hpack","idna","internal/timeseries","lex/httplex","trace","websocket"]
-  revision = "57efc9c3d9f91fb3277f8da1cff370539c4d3dc5"
+  revision = "66aacef3dd8a676686c7ae3716979581e8b03c47"
 
 [[projects]]
   branch = "master"
@@ -173,13 +173,13 @@
   branch = "master"
   name = "golang.org/x/text"
   packages = ["internal/gen","internal/triegen","internal/ucd","secure/bidirule","transform","unicode/bidi","unicode/cldr","unicode/norm","unicode/rangetable"]
-  revision = "ac87088df8ef557f1e32cd00ed0b6fbc3f7ddafb"
+  revision = "18c65dde6afd36dbc39197ca72008895b8dfbfb6"
 
 [[projects]]
   branch = "master"
   name = "google.golang.org/api"
   packages = ["gensupport","googleapi","googleapi/internal/uritemplates","googleapi/transport","internal","iterator","option","storage/v1","transport/grpc","transport/http"]
-  revision = "7940d22908577b9021e0931c99b3a1d7a12e0d0e"
+  revision = "731876f62a065986f71ad71bb35692c3c7b42bcc"
 
 [[projects]]
   name = "google.golang.org/appengine"

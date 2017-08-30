@@ -47,7 +47,6 @@ func (s *SearchEvents) SearchEventToEventTiny() *app.EventTiny {
 	event.Tags = []string{"js", "php"}
 	event.Limit, _ = strconv.Atoi(s.Limit)
 	event.Accepted, _ = strconv.Atoi(s.Accepted)
-	event.CreatedAt = s.CreatedAt
 	event.UpdatedAt = s.UpdatedAt
 	return event
 }
