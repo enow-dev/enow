@@ -10,6 +10,7 @@ import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import { grey, blue } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
+import { StickyContainer, Sticky } from 'react-sticky';
 import EventsTab from './EventsTab';
 import EventBox from './EventBox';
 import GithubIcon from '../icons/github.svg';
@@ -212,13 +213,22 @@ class Events extends React.Component {
         justify="center"
       >
         <Grid item xs={3}>
-          <SearchBox rootClass={classes.webSearchBox} />
+          <Sticky>
+            { props => (<SearchBox rootClass={classes.webSearchBox} />)}
+          </Sticky>
         </Grid>
         <Grid item xs={8}>
           {this.renderEventsBox()}
         </Grid>
       </Grid>
     );
+  }
+  renderSticky() {
+    return (
+      <StickyContainer>
+        {this.renderMainWeb()}
+      </StickyContainer>
+    )
   }
   renderMain() {
     return (
@@ -227,7 +237,7 @@ class Events extends React.Component {
           {this.renderMainNative()}
         </MediaQuery>
         <MediaQuery query="(min-width: 1025px)">
-          {this.renderMainWeb()}
+          {this.renderSticky()}
         </MediaQuery>
       </div>
     );
