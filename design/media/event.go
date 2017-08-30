@@ -50,9 +50,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("waiting", Integer, "キャンセル待ち人数", func() {
 			Example(5)
 		})
-		Attribute("created_at", DateTime, "作成日時", func() {
-			Example("2017-08-26T15:05:11.916011956Z")
-		})
 		Attribute("updated_at", DateTime, "更新日時", func() {
 			Example("2017-08-26T15:05:11.916011956Z")
 		})
@@ -77,7 +74,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"limit",
 			"accepted",
 			"waiting",
-			"created_at",
 			"updated_at",
 			"is_favorite",
 			"tags",
@@ -98,7 +94,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("limit")
 		Attribute("accepted")
 		//Attribute("waiting")
-		Attribute("created_at")
 		Attribute("updated_at")
 		//Attribute("is_favorite")
 		Attribute("tags")
@@ -117,7 +112,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"limit",
 			"accepted",
 			//"waiting",
-			"created_at",
 			"updated_at",
 			//"is_favorite",
 			"tags",
@@ -138,7 +132,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("limit")
 		Attribute("accepted")
 		Attribute("waiting")
-		Attribute("created_at")
 		Attribute("updated_at")
 		//Attribute("is_favorite")
 		Attribute("tags")
@@ -157,7 +150,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"limit",
 			"accepted",
 			"waiting",
-			"created_at",
 			"updated_at",
 			//"is_favorite",
 			"tags",
@@ -178,7 +170,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("limit")
 		Attribute("accepted")
 		Attribute("waiting")
-		Attribute("created_at")
 		Attribute("updated_at")
 		Attribute("is_favorite")
 		Attribute("tags")
@@ -197,7 +188,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"limit",
 			"accepted",
 			"waiting",
-			"created_at",
 			"updated_at",
 			"is_favorite",
 			"tags",
@@ -218,7 +208,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("limit")
 		Attribute("accepted")
 		Attribute("waiting")
-		Attribute("created_at")
 		Attribute("updated_at")
 		Attribute("is_favorite")
 		Attribute("tags")
@@ -237,7 +226,6 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"limit",
 			"accepted",
 			"waiting",
-			"created_at",
 			"updated_at",
 			"is_favorite",
 			"tags",

@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"cloud.google.com/go/datastore"
 	"github.com/enow-dev/enow/app"
-	"github.com/enow-dev/enow/mock"
 	"github.com/enow-dev/enow/model"
 	"github.com/enow-dev/enow/util"
 	"github.com/goadesign/goa"
@@ -61,10 +61,19 @@ func (c *EventsController) Show(ctx *app.ShowEventsContext) error {
 	// EventsController_Show: start_implement
 
 	// Put your logic here
-	event := app.EventShow{}
-	mEvent := mock.CreateEventMedia()
-	util.CopyStruct(mEvent, &event)
+	eDB := model.EventsDB{}
+	int64ID, err := util.ConvertIDIntoInt64(ctx.ID)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	appCtx := appengine.NewContext(ctx.Request)
+	e, err := eDB.Get(appCtx, int64ID)
+	if err == datastore.ErrNoSuchEntity {
+		return ctx.NotFound()
+	} else if err != nil {
+		return ctx.BadRequest(goa.ErrBadRequest(err))
+	}
 
 	// EventsController_Show: end_implement
-	return ctx.OKShow(&event)
+	return ctx.OKShow(e.EventToEventShow())
 }

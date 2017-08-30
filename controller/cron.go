@@ -116,6 +116,8 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 		for _, v := range es {
 			// 存在しなければcreated_atを入れる
 			v.CreatedAt = time.Now()
+			// TODO あとでtagづけもする
+			v.Tags = []string{"php", "js"}
 			key, err := g.Put(&v)
 			if err != nil {
 				goa.LogError(ctx, "error", "err", err)
@@ -129,6 +131,7 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 			s.Waiting = fmt.Sprintf("%d", v.Waiting)
 			s.Pref = fmt.Sprintf("%d", v.Pref)
 			s.APIID = fmt.Sprintf("%d", v.APIID)
+			s.Tags = "test"
 			_, err = index.Put(appCtx, key.StringID(), &s)
 			if err != nil {
 				goa.LogError(ctx, "err", err)

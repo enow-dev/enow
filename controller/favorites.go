@@ -15,13 +15,13 @@ func NewFavoritesController(service *goa.Service) *FavoritesController {
 	return &FavoritesController{Controller: service.NewController("FavoritesController")}
 }
 
-// Create runs the create action.
-func (c *FavoritesController) Create(ctx *app.CreateFavoritesContext) error {
-	// FavoritesController_Create: start_implement
+// Upsert runs the create action.
+func (c *FavoritesController) Upsert(ctx *app.UpsertFavoritesContext) error {
+	// FavoritesController_Upsert: start_implement
 
 	// Put your logic here
 
-	// FavoritesController_Create: end_implement
+	// FavoritesController_Upsert: end_implement
 	return nil
 }
 
