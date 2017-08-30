@@ -27,6 +27,7 @@ const adaptationEvents = (events) => {
       updatedAt: item.update_at,
       url: item.url,
       waiting: item.waiting,
+      tags: item.tags,
     }),
   );
   return newEvents;
