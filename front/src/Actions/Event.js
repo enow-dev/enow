@@ -25,7 +25,12 @@ function getEvent(eventId) {
         'Content-Type': 'application/json',
       },
     })
-      .then(response => response.json())
+      .then(response => {
+        if(response.status !== 200){
+          dispatch({type: types.ADD_ERROR, error: response});
+        }
+        return response.json();
+      })
       .then(responseJson => dispatch(receiveEvent(responseJson)));
   };
 }

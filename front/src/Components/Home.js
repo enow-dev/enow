@@ -3,7 +3,10 @@ import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import Card, { CardContent, CardHeader } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
+import * as ErrorActions from '../Actions/Error';
 const styles = {
   root: {
     height: '100%',
@@ -11,6 +14,10 @@ const styles = {
 };
 
 class Home extends React.Component {
+  constructor(props){
+    super(props);
+    props.actions.removeError();
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -35,5 +42,8 @@ Home.propTypes = {
 Home.defaultProps = {
   classes: styles,
 };
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ErrorActions, dispatch),
+});
 
-export default withStyles(styles)(Home);
+export default connect(null, mapDispatchToProps)(withStyles(styles)(Home));

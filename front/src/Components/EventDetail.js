@@ -33,9 +33,16 @@ class EventDetail extends React.Component {
     const { actions, match } = this.props;
     actions.getEventIfNeeded(match.params.id);
   }
-  render() {
+  componentWillReceiveProps(){
+    const { error, history} = this.props;
+    if(error.isError){
+      history.push('/');
+    }
+  }
+  renderMain() {
     const { classes } = this.props;
     const { item } = this.props.event;
+    console.log(item);
     let startDateFormat = '';
     if (item.startAt !== '') {
       const startDate = new Date(item.startAt);
@@ -72,6 +79,16 @@ class EventDetail extends React.Component {
       </Grid>
     );
   }
+  renderEmpty(){
+    return null;
+  }
+  render() {
+    const { error } = this.props;
+    if(error.isError){
+      return this.renderEmpty();
+    }
+    return this.renderMain();
+  }
 }
 
 EventDetail.propTypes = {
@@ -105,6 +122,7 @@ EventDetail.defaultProps = {
 
 const mapStateToProps = state => ({
   event: state.event,
+  error: state.error,
 });
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(EventActions, dispatch),
