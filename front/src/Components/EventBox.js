@@ -51,16 +51,15 @@ class EventBox extends React.Component {
             </ListItem>
             <ListItem>
               <Grid container direction="row" justify="flex-star" align="center">
-                <Grid item>
-                  <Button dense className={classes.button}>
-                    PHP
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button dense className={classes.button}>
-                    JavaScript
-                  </Button>
-                </Grid>
+                {
+                  event.tags.map( item => (
+                    <Grid item>
+                      <Button dense className={classes.button}>
+                        {item}
+                      </Button>
+                    </Grid>
+                  ))
+                }
               </Grid>
             </ListItem>
             <Divider />
