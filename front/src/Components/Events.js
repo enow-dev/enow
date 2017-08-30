@@ -107,17 +107,21 @@ class Events extends React.Component {
   }
   handleEdit = event => {
     const { history, match } = this.props;
-    console.log(event,history,match);
+    console.log(event, history, match);
     history.push(`${match.url}/${event.id}`);
-  }
+  };
   renderEventsBox() {
     const { events } = this.props;
-    return events.list.map(item => <EventBox event={item} handleEdit={this.handleEdit}/>);
+    return events.list.map(item =>
+      <Grid item style={{ width: '100%' }}>
+        <EventBox event={item} handleEdit={this.handleEdit} />
+      </Grid>,
+    );
   }
   handleMoreRead = () => {
     const { actions } = this.props;
-    actions.moreReadEventsIfNeeded(false,false);
-  }
+    actions.moreReadEventsIfNeeded(false, false);
+  };
   renderMoreRead() {
     const { classes } = this.props;
     return (
@@ -129,7 +133,9 @@ class Events extends React.Component {
         justify="center"
       >
         <Grid item className={classes.moreReadItem} align="center" direction="row" justify="center">
-          <Button className={classes.moreReadButton} onClick={this.handleMoreRead}>続きを読み込む</Button>
+          <Button className={classes.moreReadButton} onClick={this.handleMoreRead}>
+            続きを読み込む
+          </Button>
         </Grid>
       </Grid>
     );
@@ -187,10 +193,10 @@ class Events extends React.Component {
           {this.renderEventsBox()}
         </Grid>
         <Grid item style={{ width: '100%' }}>
-          {events.isMoreFetching ? null : this.renderMoreRead() }
+          {events.isMoreFetching ? null : this.renderMoreRead()}
         </Grid>
         <Grid item style={{ width: '100%' }}>
-          {events.isMoreFetching ? this.renderCenterProgress() : null }
+          {events.isMoreFetching ? this.renderCenterProgress() : null}
         </Grid>
         <Grid item>
           {this.renderCreateAccount()}
@@ -214,13 +220,19 @@ class Events extends React.Component {
       >
         <Grid item xs={3}>
           <Sticky>
-            { props => {
-              return (<div style={props.style}><SearchBox rootClass={classes.webSearchBox} /></div>);
+            {props => {
+              return (
+                <div style={props.style}>
+                  <SearchBox rootClass={classes.webSearchBox} />
+                </div>
+              );
             }}
           </Sticky>
         </Grid>
         <Grid item xs={8}>
-          {this.renderEventsBox()}
+          <Grid container spacing={8} align="flex-start" direction="row" justify="center">
+            {this.renderEventsBox()}
+          </Grid>
         </Grid>
       </Grid>
     );
@@ -230,7 +242,7 @@ class Events extends React.Component {
       <StickyContainer>
         {this.renderMainWeb()}
       </StickyContainer>
-    )
+    );
   }
   renderMain() {
     return (
@@ -245,7 +257,7 @@ class Events extends React.Component {
     );
   }
   renderComponent = () => {
-    const { classes,events } = this.props;
+    const { classes, events } = this.props;
     return (
       <div className={classes.root}>
         <EventsTab
@@ -253,12 +265,12 @@ class Events extends React.Component {
           selectTabIndex={this.state.selectTabIndex}
           handleTabChange={this.handleTabChange}
         />
-      {events.isFetching ? this.renderCenterProgress() : this.renderMain()}
+        {events.isFetching ? this.renderCenterProgress() : this.renderMain()}
       </div>
     );
-  }
+  };
   render() {
-    return(
+    return (
       <Switch>
         <Route exact path={`${this.props.match.url}`} render={this.renderComponent} />
         <Route path={`${this.props.match.url}/:id`} component={EventDetail} />
