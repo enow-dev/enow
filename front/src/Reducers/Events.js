@@ -17,7 +17,6 @@ const adaptationEvents = (events) => {
       description: item.description,
       endAt: item.end_at,
       id: item.id,
-      idStr: item.id_str,
       isFavorite: item.is_favorite,
       lat: item.lat,
       limit: item.limit,
