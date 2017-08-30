@@ -12,7 +12,7 @@ const adaptationEvents = (events) => {
     newEvents.push({
       accepted: item.accepted,
       address: item.address,
-      apiId: item.apiId,
+      apiId: item.api_id,
       createdAt: item.created_at,
       description: item.description,
       endAt: item.end_at,
