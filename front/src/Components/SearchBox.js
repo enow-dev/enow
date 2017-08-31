@@ -89,7 +89,7 @@ class SearchBox extends React.Component {
         <Paper elevation={0} className={classes.paper}>
           <Grid
             container
-            style={{ margin: 0 }}
+            style={{ margin: 0, width: '100%' }}
             align="center"
             direction="row"
             justify="justify-start"

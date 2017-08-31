@@ -22,6 +22,8 @@ import EventDetail from './EventDetail';
 const styles = theme => ({
   root: {
     backgroundColor: grey[100],
+    width: '100%',
+    margin: 0,
   },
   centerProgressItem: {
     marginTop: '20px',
@@ -106,15 +108,22 @@ class Events extends React.Component {
     );
   }
   handleEdit = event => {
-    const { history, match } = this.props;
-    console.log(event, history, match);
-    history.push(`${match.url}/${event.id}`);
+    // const { history, match } = this.props;
+    // console.log(event, history, match);
+    // history.push(`${match.url}/${event.id}`);
   };
+  handleEditJump = event => {
+     const { history, match } = this.props;
+     history.push(`${match.url}/${event.id}`);
+  }
+  handleProviderJump = event => {
+    window.location.href= event.url
+  }
   renderEventsBox() {
     const { events } = this.props;
-    return events.list.map(item =>
+    return events.list.map((item,index) =>
       <Grid item style={{ width: '100%' }}>
-        <EventBox event={item} handleEdit={this.handleEdit} />
+        <EventBox key={index} event={item} handleEditJump={this.handleEditJump} handleProviderJump={this.handleProviderJump}/>
       </Grid>,
     );
   }
@@ -145,6 +154,7 @@ class Events extends React.Component {
     return (
       <Grid
         container
+        style={{width: '100%'}}
         align="center"
         direction="row"
         justify="center"
@@ -188,7 +198,7 @@ class Events extends React.Component {
   renderMainNative() {
     const { events } = this.props;
     return (
-      <Grid container spacing={40} align="center" direction="column" justify="center">
+      <Grid container style={{width:'100%',margin:0}} spacing={24} align="center" direction="column" justify="center">
         <Grid item>
           {this.renderEventsBox()}
         </Grid>

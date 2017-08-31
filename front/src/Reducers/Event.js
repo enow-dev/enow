@@ -8,7 +8,7 @@ const initialState = {
     createdAt: '',
     description: '',
     endAt: '',
-    id: 0,
+    id: '',
     isFavorite: false,
     lat: 0,
     limit: 0,
