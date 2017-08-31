@@ -108,10 +108,10 @@ class EventBox extends React.Component {
   }
 
   render() {
-    const { classes, event, handleEditJump, actions, match, handleProviderJump } = this.props;
+    const { classes, event, handleEditJump, handleProviderJump } = this.props;
     const startDate = new Date(event.startAt);
     const endDate = new Date(event.endAt);
-    let title = new String(event.title);
+    let title = String(event.title);
     if (title.length > 36) {
       title =`${ title.substr(0,36)}...`
     }
@@ -119,7 +119,6 @@ class EventBox extends React.Component {
     propviderInfo.map(item => {
       if (event.apiId === item.id) {
         logoUrl = item.logoUrl;
-        return;
       }
     });
     return (
@@ -222,7 +221,7 @@ class EventBox extends React.Component {
                         handleProviderJump(event);
                       }}
                     >
-                      <img style={{ width: 100 }} src={`${logoUrl}`} />
+                      <img style={{ width: 100 }} src={`${logoUrl}`} alt="提供元ロゴ"/>
                     </IconButton>
                   </ListItemSecondaryAction>
                 </Grid>
