@@ -160,8 +160,11 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 			log.Errorf(appCtx, "Datastoreから全件取得時エラー(10): %v", err)
 		}
 		s := model.SearchEvents{}
-		util.CopyStruct(v, &s)
 		s.ID = fmt.Sprintf("%d", e.ID)
+		s.Title = e.Title
+		s.URL = e.URL
+		s.Place = "大阪府高槻市"
+		s.Address = e.Address
 		s.Identification = e.Identification
 		s.Description = search.HTML(e.Description)
 		s.Limit = fmt.Sprintf("%d", e.Limit)

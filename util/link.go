@@ -19,6 +19,6 @@ func CreateLinkHeader(reqData *goa.RequestData, scheme string, cursor search.Cur
 	if err != nil {
 		return linkheader.Link{}
 	}
-	u := fmt.Sprint(scheme, reqData.Host, uURI.Path, "?cursor=", cursor)
+	u := fmt.Sprint(scheme, "://", reqData.Host, uURI.Path, "?cursor=", cursor)
 	return linkheader.Link{URL: u, Rel: "next"}
 }
