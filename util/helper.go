@@ -93,12 +93,21 @@ func GenHashFromString(str string) string {
 	return hex.EncodeToString(converted[:])
 }
 
-// ConcatenateString 文字列結合
+// ConcatenateString 文字列結合（カンマ区切り）
 func ConcatenateString(strs ...string) string {
 	var concatenateStr bytes.Buffer
 	for _, v := range strs {
 		concatenateStr.Write([]byte(v))
 		concatenateStr.Write([]byte{','})
+	}
+	return concatenateStr.String()
+}
+
+// SimpleConcatenateString 文字列結合
+func SimpleConcatenateString(strs ...string) string {
+	var concatenateStr bytes.Buffer
+	for _, v := range strs {
+		concatenateStr.Write([]byte(v))
 	}
 	return concatenateStr.String()
 }

@@ -3,12 +3,15 @@ package controller
 import (
 	"os"
 
+	"time"
+
 	"cloud.google.com/go/datastore"
 	"github.com/enow-dev/enow/app"
 	"github.com/enow-dev/enow/model"
 	"github.com/enow-dev/enow/util"
 	"github.com/goadesign/goa"
 	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"google.golang.org/appengine/search"
 )
 
@@ -30,7 +33,13 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 
 	// Put your logic here
 	appCtx := appengine.NewContext(ctx.Request)
-	se := model.NewSearchEventsDB("events")
+	sel := model.SearchEventsLogDB{}
+	indexName, err := sel.GetLatestVersion(appCtx, time.Now())
+	if err != nil {
+		log.Errorf(appCtx, "index not found err=%v", err)
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	se := model.NewSearchEventsDB(indexName)
 	se.SetLimit(10)
 	se.Sort("StartAt", false)
 	se.SetPref(0)
