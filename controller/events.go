@@ -5,6 +5,8 @@ import (
 
 	"time"
 
+	"fmt"
+
 	"cloud.google.com/go/datastore"
 	"github.com/enow-dev/enow/app"
 	"github.com/enow-dev/enow/model"
@@ -63,6 +65,7 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 	}
 	l := util.CreateLinkHeader(ctx.RequestData, os.Getenv("Scheme"), iterator.Cursor())
 	ctx.ResponseData.Header().Set("link", l.String())
+	ctx.ResponseData.Header().Set("x-search-hits-count", fmt.Sprint(iterator.Count()))
 
 	// EventsController_List: end_implement
 	return ctx.OKTiny(events)
