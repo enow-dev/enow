@@ -87,7 +87,7 @@ func (p *Parser) atndJSONParse() (events []Events, err error) {
 		events[i].Coords.Lat, _ = strconv.ParseFloat(v.Event.Lat, 64)
 		events[i].Coords.Lng, _ = strconv.ParseFloat(v.Event.Lon, 64)
 		events[i].Identification = fmt.Sprintf("%d-%d", constant.AtndID, v.Event.APIEventID)
-		events[i].Address = util.ConcatenateString(v.Event.Address, v.Event.Place)
+		events[i].Address = util.RemovePoscode(util.SimpleConcatenateString(v.Event.Address, v.Event.Place))
 		events[i].Pref = util.ConvertIDFromAddress(v.Event.Address)
 		events[i].Hash = createDataHash(events[i])
 	}
@@ -112,7 +112,7 @@ func (p *Parser) connpassJSONParse() (events []Events, err error) {
 		events[i].Coords.Lat, _ = strconv.ParseFloat(v.Lat, 64)
 		events[i].Coords.Lng, _ = strconv.ParseFloat(v.Lon, 64)
 		events[i].Identification = fmt.Sprintf("%d-%d", constant.ConnpassID, v.APIEventID)
-		events[i].Address = util.ConcatenateString(v.Address, v.Place)
+		events[i].Address = util.RemovePoscode(util.SimpleConcatenateString(v.Address, v.Place))
 		events[i].Pref = util.ConvertIDFromAddress(v.Address)
 		events[i].Hash = createDataHash(events[i])
 	}
