@@ -116,10 +116,11 @@ class EventBox extends React.Component {
       title =`${ title.substr(0,36)}...`
     }
     let logoUrl = null;
-    propviderInfo.map(item => {
+    propviderInfo.map(item => (
       if (event.apiId === item.id) {
         logoUrl = item.logoUrl;
-      }
+        return;
+      )
     });
     return (
       <Card>
