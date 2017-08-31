@@ -140,10 +140,10 @@
   revision = "997e827b88946c6abe0cc190c2e0da83c700549e"
 
 [[projects]]
+  branch = "master"
   name = "github.com/tomnomnom/linkheader"
   packages = ["."]
-  revision = "6953a30d444317754766fccdd3f7f000edc874f6"
-  version = "0.1.0"
+  revision = "6c03f819bd09605f1f01b6bfbc452ac1a904dd66"
 
 [[projects]]
   name = "github.com/yterajima/go-dtf"
@@ -214,6 +214,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6f48dd2a3c6e49bcc51ebd9bf0d18d6f03fa26b605c4af61ef5be8ad85067244"
+  inputs-digest = "aaeedc9c96a2929bbbdb329955ab9795ad05f33b5e9ad9b5f4612665a8570c3a"
   solver-name = "gps-cdcl"
   solver-version = 1
