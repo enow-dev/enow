@@ -28,6 +28,9 @@ func NewServer(s *goa.Service) *Server {
 }
 
 func (s *Server) mountController() {
+	// Mount "auth" controller
+	c := controller.NewAuthController(s.service)
+	app.MountAuthController(s.service, c)
 	// Mount "events" controller
 	events := controller.NewEventsController(s.service)
 	app.MountEventsController(s.service, events)
@@ -55,7 +58,7 @@ func (s *Server) mountMiddleware() {
 	s.service.Use(middleware.Recover())
 	s.service.Use(goacors.WithConfig(s.service, design.CorsConfig[os.Getenv("Op")]))
 
-	// dev.yamlのNoSecureの項目がtureになっている時は、tokenの存在チェックのみにする（厳密な認証なし）
+	// dev.yamlのNoSecureの項目がtrueになっている時は、tokenの存在チェックのみにする（厳密な認証なし）
 	app.UseGaeCronAuthMiddleware(s.service, mymiddleware.NewGAECronMiddleware())
 	if os.Getenv("NoSecure") == "true" {
 		app.UseAdminAuthMiddleware(s.service, mymiddleware.NewTestModeMiddleware())
