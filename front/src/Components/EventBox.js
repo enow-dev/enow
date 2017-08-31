@@ -121,6 +121,7 @@ class EventBox extends React.Component {
         logoUrl = item.logoUrl;
         return true;
       }
+      return false;
     });
     return (
       <Card>
