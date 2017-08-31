@@ -18,6 +18,9 @@ var _ = Resource("events", func() {
 			Param("q", String, "検索キーワード", func() {
 				Default("")
 			})
+			Param("pref", Integer, "都道府県検索", func() {
+				Default(0)
+			})
 			Param("is_favorite", Boolean, "お気に入り済みのものも出す", func() {
 				Default(false)
 			})
@@ -28,10 +31,15 @@ var _ = Resource("events", func() {
 				Default("")
 			})
 		})
-		Response(OK, CollectionOf(media.Event, func() {
-			View("default")
-			View("tiny")
-		}))
+		Response(OK, func() {
+			Media(CollectionOf(media.Event, func() {
+				View("default")
+				View("tiny")
+			}))
+			Headers(func() {
+				UseTrait(PaginatorHeaderTrait)
+			})
+		})
 		UseTrait(GeneralUserTrait)
 	})
 	Action("show", func() {
