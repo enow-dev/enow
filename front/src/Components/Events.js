@@ -117,7 +117,6 @@ class Events extends React.Component {
      history.push(`${match.url}/${event.id}`);
   }
   handleProviderJump = event => {
-    const { history, match } = this.props;
     window.location.href= event.url
   }
   renderEventsBox() {
