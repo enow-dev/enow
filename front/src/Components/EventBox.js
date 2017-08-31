@@ -4,7 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Card, { CardContent, CardHeader } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import List, {
   ListItem,
   ListItemIcon,
