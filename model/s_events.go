@@ -123,7 +123,6 @@ func (db *SearchEventsDB) SetNotSearchID(ignoreIDQuery string) {
 }
 
 func concatenateString(strs ...string) string {
-
 	var concatenateStr bytes.Buffer
 	for _, v := range strs {
 		concatenateStr.Write([]byte(v))
