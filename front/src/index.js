@@ -5,10 +5,9 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
-import { createMuiTheme } from 'material-ui/styles';
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createPalette from 'material-ui/styles/palette';
-import { orange } from 'material-ui/colors';
+import { orange, cyan, teal } from 'material-ui/colors';
 import reducers from './Reducers';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
@@ -25,13 +24,15 @@ const reducer = combineReducers({
 const store = createStore(reducer, applyMiddleware(middleware, thunk));
 
 const theme = createMuiTheme({
-  palette: createPalette({
-    // primary: '#E67E22',
-    primary: {
-      ...orange,
-      A700: '#E67E22',
-    },
-  }),
+  typography: {
+    fontFamily:
+       '-apple-system, BlinkMacSystemFont, "Helvetica Neue", "Yu Gothic", YuGothic, "ヒラギノ角ゴ ProN W3", Hiragino Kaku Gothic ProN, Arial, "メイリオ", Meiryo, sans-serif',
+  },
+  palette: {
+    primary: cyan,
+    secondary: teal,
+    accent: orange,
+  },
 });
 
 dotenv.config();
