@@ -54,4 +54,18 @@ var _ = Resource("events", func() {
 		})
 		UseTrait(GeneralUserTrait)
 	})
+	Action("showCount", func() {
+		Description("showCount")
+		Routing(GET("/count"))
+		Params(func() {
+			Param("q", String, "検索キーワード", func() {
+				Default("")
+			})
+			Param("pref", Integer, "都道府県検索", func() {
+				Default(0)
+			})
+		})
+		Response(OK, Integer)
+		UseTrait(GeneralUserTrait)
+	})
 })

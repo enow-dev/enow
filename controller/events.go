@@ -42,10 +42,10 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 	se := model.NewSearchEventsDB(indexName)
 	se.SetLimit(10)
 	se.Sort("StartAt", false)
-	se.SetPref(0)
+	se.SetPref(ctx.Pref)
 	se.SetCursor(ctx.Cursor)
 	se.SetNotSearchID("")
-	se.SetSearchKeyword("")
+	se.SetSearchKeyword(ctx.Q)
 	iterator, err := se.Run(appCtx)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
@@ -90,4 +90,35 @@ func (c *EventsController) Show(ctx *app.ShowEventsContext) error {
 
 	// EventsController_Show: end_implement
 	return ctx.OKShow(e.EventToEventShow())
+}
+
+// ShowCount runs the showCount action.
+func (c *EventsController) ShowCount(ctx *app.ShowCountEventsContext) error {
+	// EventsController_ShowCount: start_implement
+
+	// Put your logic here
+	appCtx := appengine.NewContext(ctx.Request)
+	sel := model.SearchEventsLogDB{}
+	indexName, err := sel.GetLatestVersion(appCtx, time.Now())
+	if err != nil {
+		log.Errorf(appCtx, "index not found err=%v", err)
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	se := model.NewSearchEventsDB(indexName)
+	se.SetLimit(10)
+	se.SetPref(ctx.Pref)
+	se.SetNotSearchID("")
+	se.SetSearchKeyword(ctx.Q)
+	iterator, err := se.Run(appCtx)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	var event model.SearchEvents
+	_, err = iterator.Next(&event)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+
+	// EventsController_ShowCount: end_implement
+	return ctx.OK(iterator.Count())
 }
