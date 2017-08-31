@@ -10,6 +10,7 @@ import (
 
 	"github.com/enow-dev/enow/app"
 	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 	"google.golang.org/appengine/search"
 )
 
@@ -47,11 +48,12 @@ type SearchEvents struct {
 
 // Run 検索を実行する Cursorが存在する時は、即実行する
 func (db *SearchEventsDB) Run(appCtx context.Context) (*search.Iterator, error) {
+	log.Infof(appCtx, "%v", db.genQuery())
 	index, err := search.Open(db.indexName)
 	if err != nil {
 		return nil, err
 	}
-	if db.cursor == nil {
+	if db.cursor != nil {
 		return index.Search(appCtx, "", db.opts), nil
 	}
 	return index.Search(appCtx, db.genQuery(), db.opts), nil

@@ -163,6 +163,8 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 		s.ID = fmt.Sprintf("%d", e.ID)
 		s.Title = e.Title
 		s.URL = e.URL
+		s.StartAt = e.StartAt
+		s.EndAt = e.EndAt
 		s.Place = "大阪府高槻市"
 		s.Address = e.Address
 		s.Identification = e.Identification

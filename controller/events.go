@@ -108,7 +108,6 @@ func (c *EventsController) ShowCount(ctx *app.ShowCountEventsContext) error {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 	se := model.NewSearchEventsDB(indexName)
-	se.SetLimit(10)
 	se.SetPref(ctx.Pref)
 	se.SetNotSearchID("")
 	se.SetSearchKeyword(ctx.Q)
