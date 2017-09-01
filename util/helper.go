@@ -7,9 +7,6 @@ import (
 	"strconv"
 	"strings"
 
-	"crypto/sha256"
-	"encoding/hex"
-
 	"regexp"
 
 	"golang.org/x/exp/utf8string"
@@ -85,12 +82,6 @@ var rePoscode = regexp.MustCompile(`〒\d{3}-\d{4}($|\s)`)
 func RemovePoscode(str string) string {
 	str = rePoscode.ReplaceAllString(str, "")
 	return str
-}
-
-// GenHashFromString 文字列からハッシュを生成する
-func GenHashFromString(str string) string {
-	converted := sha256.Sum256([]byte(str))
-	return hex.EncodeToString(converted[:])
 }
 
 // ConcatenateString 文字列結合（カンマ区切り）
