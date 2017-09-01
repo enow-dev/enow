@@ -17,13 +17,16 @@ type UsersDB struct {
 // Users ユーザー情報
 type Users struct {
 	ID           int64     `datastore:"-" goon:"id" json:"id"`
-	Name         string    `json:"name" datastore:""`
+	Name         string    `json:"name" datastore:",noindex"`
 	PasswordHash string    `json:"password_hash" datastore:",noindex"`
+	Salt         string    `json:"salt" datastore:",noindex"`
+	Token        string    `json:"token" datastore:",noindex"`
 	Email        string    `json:"email" datastore:""`
-	FacebookID   int       `json:"facebook_id" datastore:""`
-	TwitterID    int       `json:"twitter_id" datastore:""`
-	GithubID     int       `json:"github_id" datastore:""`
-	GoogleID     int       `json:"google_id" datastore:""`
+	AvaterURL    string    `json:"avater_url" datastore:",noindex"`
+	FacebookID   int       `json:"facebook_id" datastore:",noindex"`
+	TwitterID    int       `json:"twitter_id" datastore:",noindex"`
+	GithubID     int       `json:"github_id" datastore:",noindex"`
+	GoogleID     int       `json:"google_id" datastore:",noindex"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }

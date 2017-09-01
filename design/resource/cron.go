@@ -2,7 +2,6 @@ package resource
 
 import (
 	. "github.com/enow-dev/enow/design/constant"
-	. "github.com/goadesign/goa/design"
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
