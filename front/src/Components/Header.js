@@ -20,9 +20,6 @@ const styles = theme => ({
   subheader: {
     borderBottom: `solid 1px ${grey[500]}`,
   },
-  flex: {
-    flex: 1,
-  },
 });
 
 function SubHeader({ classes }) {
@@ -44,10 +41,15 @@ function Header({ classes, children }) {
     <div className={classes.root}>
       <AppBar position="static" className={classes.headerAppBar}>
         <Toolbar>
-          <Typography type="title" color="inherit" className={classes.flex}>
-            enow
+          <Typography type="display3">
+            e
           </Typography>
-          IT勉強会・イベント検索
+          <Typography type="display1">
+            now
+          </Typography>
+          <Typography type="title">
+            IT勉強会・イベント検索
+          </Typography>
         </Toolbar>
       </AppBar>
       <MediaQuery query="(max-width:1024px)">
