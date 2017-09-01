@@ -41,6 +41,7 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 	// そうでない場合は、ローカルの設定ファイルを使う
 	appCtx := appengine.NewContext(ctx.Request)
 	var apis *config.APIs
+	// TODO: 関数を別で作成する
 	if os.Getenv("Op") == "develop" {
 		conf, err := config.NewAPIConfigsFromFile("../config/api.yaml")
 		if err != nil {
