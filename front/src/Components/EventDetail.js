@@ -33,9 +33,9 @@ class EventDetail extends React.Component {
     const { actions, match } = this.props;
     actions.getEventIfNeeded(match.params.id);
   }
-  componentWillReceiveProps(){
-    const { error, history} = this.props;
-    if(error.isError){
+  componentWillReceiveProps() {
+    const { error, history } = this.props;
+    if (error.isError) {
       history.push('/');
     }
   }
@@ -79,12 +79,12 @@ class EventDetail extends React.Component {
       </Grid>
     );
   }
-  renderEmpty(){
+  renderEmpty() {
     return null;
   }
   render() {
     const { error } = this.props;
-    if(error.isError){
+    if (error.isError) {
       return this.renderEmpty();
     }
     return this.renderMain();

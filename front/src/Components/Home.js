@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Autosuggest from 'react-autosuggest';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
-import Card, { CardContent, CardHeader } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
 import Paper from 'material-ui/Paper';

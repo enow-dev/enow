@@ -7,7 +7,7 @@ import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-r
 import createHistory from 'history/createBrowserHistory';
 import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { orange, cyan, teal } from 'material-ui/colors';
+import { cyan, teal } from 'material-ui/colors';
 import reducers from './Reducers';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
@@ -31,7 +31,6 @@ const theme = createMuiTheme({
   palette: {
     primary: cyan,
     secondary: teal,
-    accent: orange,
   },
 });
 
