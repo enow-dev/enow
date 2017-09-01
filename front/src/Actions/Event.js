@@ -1,6 +1,6 @@
 import * as types from '../Constants/ActionTypes';
 
-export const receiveEvent = (event) => (
+export const receiveEvent = event => (
   { type: types.RECEIVE_EVENT, event }
 );
 export const fetchEvent = () => ({ type: types.FETCH_EVENT });
@@ -25,9 +25,9 @@ function getEvent(eventId) {
         'Content-Type': 'application/json',
       },
     })
-      .then(response => {
-        if(response.status !== 200){
-          dispatch({type: types.ADD_ERROR, error: response});
+      .then((response) => {
+        if (response.status !== 200) {
+          dispatch({ type: types.ADD_ERROR, error: response });
         }
         return response.json();
       })

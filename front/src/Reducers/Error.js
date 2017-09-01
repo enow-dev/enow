@@ -8,10 +8,10 @@ const initialState = {
   isError: false,
 };
 
-export default function error(state = initialState, action){
-  switch(action.type) {
+export default function error(state = initialState, action) {
+  switch (action.type) {
     case ADD_ERROR:
-      return Object.assign({}, state, { isError: true, error: action.error});
+      return Object.assign({}, state, { isError: true, error: action.error });
     case REMOVE_ERROR:
       return initialState;
     default:
