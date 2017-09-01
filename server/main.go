@@ -29,8 +29,8 @@ func NewServer(s *goa.Service) *Server {
 
 func (s *Server) mountController() {
 	// Mount "auth" controller
-	c := controller.NewAuthController(s.service)
-	app.MountAuthController(s.service, c)
+	auth := controller.NewAuthController(s.service)
+	app.MountAuthController(s.service, auth)
 	// Mount "events" controller
 	events := controller.NewEventsController(s.service)
 	app.MountEventsController(s.service, events)

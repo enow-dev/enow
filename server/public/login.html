@@ -3,54 +3,51 @@
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 </head>
 <body>
-  <button id="loginB">login with Github</button>
-  <span id="status"></span>
+<button id="loginB">login with Github</button>
+<span id="status"></span>
 
-  <script>
-CLIENT_ID = "";
-
-$(function(){
-  attr=getQueryString();
-  if ("code" in attr){
-    $("#loginB").prop('disabled', true);
-    login(attr["code"]);
-  } else {
-    $("#loginB").click(function() {
-      document.location = "https://github.com/login/oauth/authorize?client_id="+CLIENT_ID+"&scope=user:email,read:org&redirect_uri=http://localhost:4040/login";
+<script>
+    CLIENT_ID = "87a42765a18adc939d0a";
+    $(function(){
+        attr=getQueryString();
+        if ("code" in attr){
+            $("#loginB").prop('disabled', true);
+            login(attr["code"]);
+        } else {
+            $("#loginB").click(function() {
+                document.location = "https://github.com/login/oauth/authorize?client_id="+CLIENT_ID+"&scope=user&redirect_uri=http://localhost:8080/login";
+            });
+        }
     });
-  }
-});
-
-function login(code){
-  $.ajax({
-    type: 'POST',
-    url: "//localhost:8080/auth/login?code="+code,
-    timeout: 3000,
-    success: function(data){
-      $("#status").text("logged in.\nYour token: "+data.token);
-      console.log(JSON.stringify(data));
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      alert(textStatus +" "+ XMLHttpRequest.responseText);
+    function login(code){
+        $.ajax({
+            type: 'POST',
+            url: "http://localhost:8080/auth/login?code="+code,
+            timeout: 3000,
+            success: function(data){
+                $("#status").text("logged in.\nYour token: "+data.data.token);
+                console.log(JSON.stringify(data));
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(textStatus +" "+ XMLHttpRequest.responseText);
+            }
+        });
     }
-  });
-}
-
-// URLから?パラメータのマップを取得
-function getQueryString() {
-var result = {};
-if (1 < window.location.search.length) {
-    var query = window.location.search.substring(1);
-    var parameters = query.split('&');
-    for (var i = 0; i < parameters.length; i++) {
-        var element = parameters[i].split('=');
-        var paramName = decodeURIComponent(element[0]);
-        var paramValue = decodeURIComponent(element[1]);
-        result[paramName] = paramValue;
+    // URLから?パラメータのマップを取得
+    function getQueryString() {
+        var result = {};
+        if (1 < window.location.search.length) {
+            var query = window.location.search.substring(1);
+            var parameters = query.split('&');
+            for (var i = 0; i < parameters.length; i++) {
+                var element = parameters[i].split('=');
+                var paramName = decodeURIComponent(element[0]);
+                var paramValue = decodeURIComponent(element[1]);
+                result[paramName] = paramValue;
+            }
+        }
+        return result;
     }
-}
-return result;
-}
-  </script>
+</script>
 </body>
 </html>
