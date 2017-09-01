@@ -15,7 +15,7 @@ func GetRandomString() string {
 	const base = 36
 	size := big.NewInt(base)
 	n := make([]byte, 16)
-	for i, _ := range n {
+	for i := range n {
 		c, _ := rand.Int(rand.Reader, size)
 		n[i] = strconv.FormatInt(c.Int64(), base)[0]
 	}
