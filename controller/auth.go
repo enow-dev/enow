@@ -1,12 +1,16 @@
 package controller
 
 import (
+	"time"
+
 	"github.com/enow-dev/enow/app"
 	"github.com/enow-dev/enow/config"
+	"github.com/enow-dev/enow/model"
 	"github.com/enow-dev/enow/util"
 	"github.com/goadesign/goa"
+	"github.com/mjibson/goon"
 	"google.golang.org/appengine"
-	"google.golang.org/appengine/log"
+	"google.golang.org/appengine/datastore"
 )
 
 // AuthController implements the auth resource.
@@ -74,29 +78,44 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 			break
 		}
 	}
-	// OAuth処理完了
-	log.Infof(ctx, "id %v", githubuser.ID)
-	log.Infof(ctx, "avater %v", githubuser.AvaterURL)
-	log.Infof(ctx, "email %v", githubuser.Email)
 
-	// Salt作成
-	//Salt := util.GetRandomString()
-	//Token := util.CreateTokenHash()
-	//
-	//// User追加
-	//user := model.Users{
-	//	Name:      githubuser.Login,
-	//	Email:     githubuser.Email,
-	//	Token:     Salt,
-	//	Salt:      Salt,
-	//	AvaterURL: githubuser.AvaterURL,
-	//	GithubID:  githubuser.ID,
-	//	CreatedAt: time.Now(),
-	//	UpdatedAt: time.Now(),
-	//}
-
+	// 既にユーザーが存在しているか確認する
+	uDB := model.UsersDB{}
+	var loginUserKey *datastore.Key
+	loginUserKey, err = uDB.GetKeyFindByOauthID(appCtx, githubuser.ID, model.GithubOAuth)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	g := goon.FromContext(appCtx)
+	now := time.Now()
+	Token := util.CreateTokenHash(string(githubuser.ID))
+	// 1トランザクションにしたいが、Datastoreの仕様上、commitしてないユーザーの取得が無理だった
+	// ユーザーが存在していないので、作成する
+	if loginUserKey == nil {
+		newUser := &model.Users{
+			Name:      githubuser.Login,
+			Email:     githubuser.Email,
+			AvaterURL: githubuser.AvaterURL,
+			GithubID:  githubuser.ID,
+			CreatedAt: now,
+			Expire:    now.AddDate(0, 0, 7),
+			Token:     Token,
+		}
+		loginUserKey, err = g.Put(newUser)
+		if err != nil {
+			return ctx.InternalServerError(goa.ErrInternal(err))
+		}
+	}
+	loginUser, err := uDB.UpdateToken(appCtx, loginUserKey, now, Token)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
 	// AuthController_Login: end_implement
-	res := &app.Session{}
+	res := &app.Session{
+		Token:  loginUser.Token,
+		Name:   loginUser.Name,
+		Expire: loginUser.Expire,
+	}
 	return ctx.OK(res)
 }
 

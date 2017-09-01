@@ -19,21 +19,21 @@ type Users struct {
 	ID           int64     `datastore:"-" goon:"id" json:"id"`
 	Name         string    `json:"name" datastore:",noindex"`
 	PasswordHash string    `json:"password_hash" datastore:",noindex"`
-	Salt         string    `json:"salt" datastore:",noindex"`
 	Token        string    `json:"token" datastore:",noindex"`
 	Email        string    `json:"email" datastore:""`
 	AvaterURL    string    `json:"avater_url" datastore:",noindex"`
-	FacebookID   int       `json:"facebook_id" datastore:",noindex"`
-	TwitterID    int       `json:"twitter_id" datastore:",noindex"`
-	GithubID     int       `json:"github_id" datastore:",noindex"`
-	GoogleID     int       `json:"google_id" datastore:",noindex"`
+	FacebookID   int       `json:"facebook_id" datastore:""`
+	TwitterID    int       `json:"twitter_id" datastore:""`
+	GithubID     int       `json:"github_id" datastore:""`
+	GoogleID     int       `json:"google_id" datastore:""`
+	Expire       time.Time `json:"created_at" datastore:""`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }
 
 // nolint
-func (db *UsersDB) GetFindByName(ctx context.Context, name string) ([]*app.User, error) {
-	g := goon.FromContext(ctx)
+func (db *UsersDB) GetFindByName(appCtx context.Context, name string) ([]*app.User, error) {
+	g := goon.FromContext(appCtx)
 	as := []*Users{}
 	q := datastore.NewQuery(g.Kind(new(Users))).Filter("Name =", name)
 	_, err := g.GetAll(q, &as)
@@ -48,8 +48,31 @@ func (db *UsersDB) GetFindByName(ctx context.Context, name string) ([]*app.User,
 }
 
 // nolint
-func (db *UsersDB) Get(ctx context.Context, id int64) (*Users, error) {
-	g := goon.FromContext(ctx)
+const (
+	FacebookOAuth = "FacebookID ="
+	TwitterOAuth  = "TwitterID ="
+	GithubOAuth   = "GithubID ="
+	GoogleOAuth   = "GoogleID ="
+)
+
+// nolint
+func (db *UsersDB) GetKeyFindByOauthID(appCtx context.Context, id int, oauthType string) (*datastore.Key, error) {
+	g := goon.FromContext(appCtx)
+	as := []*Users{}
+	q := datastore.NewQuery(g.Kind(new(Users))).Filter(oauthType, id).KeysOnly()
+	keys, err := g.GetAll(q, &as)
+	if err != nil {
+		return nil, err
+	}
+	if len(keys) == 0 {
+		return nil, nil
+	}
+	return keys[0], nil
+}
+
+// nolint
+func (db *UsersDB) Get(appCtx context.Context, id int64) (*Users, error) {
+	g := goon.FromContext(appCtx)
 	u := Users{
 		ID: id,
 	}
@@ -61,8 +84,8 @@ func (db *UsersDB) Get(ctx context.Context, id int64) (*Users, error) {
 }
 
 // nolint
-func (db *UsersDB) Add(ctx context.Context, user *Users) (*Users, error) {
-	g := goon.FromContext(ctx)
+func (db *UsersDB) Add(appCtx context.Context, user *Users) (*Users, error) {
+	g := goon.FromContext(appCtx)
 	_, err := g.Put(user)
 	if err != nil {
 		return nil, err
@@ -75,8 +98,8 @@ func (db *UsersDB) Add(ctx context.Context, user *Users) (*Users, error) {
 }
 
 // nolint
-func (db *UsersDB) Delete(ctx context.Context, id int64) error {
-	g := goon.FromContext(ctx)
+func (db *UsersDB) Delete(appCtx context.Context, id int64) error {
+	g := goon.FromContext(appCtx)
 	u := &Users{
 		ID: id,
 	}
@@ -92,8 +115,8 @@ func (db *UsersDB) Delete(ctx context.Context, id int64) error {
 }
 
 // nolint
-func (db *UsersDB) Update(ctx context.Context, id int64, updateUser *Users) (*Users, error) {
-	g := goon.FromContext(ctx)
+func (db *UsersDB) Update(appCtx context.Context, id int64, updateUser *Users) (*Users, error) {
+	g := goon.FromContext(appCtx)
 	findUser := &Users{
 		ID: id,
 	}
@@ -113,6 +136,24 @@ func (db *UsersDB) Update(ctx context.Context, id int64, updateUser *Users) (*Us
 		return nil, err
 	}
 	return updateUser, nil
+}
+
+// nolint
+func (db *UsersDB) UpdateToken(appCtx context.Context, key *datastore.Key, createTime time.Time, token string) (*Users, error) {
+	user := &Users{}
+	err := datastore.Get(appCtx, key, user)
+	if err != nil {
+		return nil, err
+	}
+	// 期限を一週間後にする
+	user.Expire = createTime.AddDate(0, 0, 7)
+	user.Token = token
+	user.UpdatedAt = createTime
+	_, err = datastore.Put(appCtx, key, user)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
 // nolint

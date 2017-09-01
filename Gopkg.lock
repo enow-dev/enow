@@ -3,7 +3,7 @@
 
 [[projects]]
   name = "cloud.google.com/go"
-  packages = ["compute/metadata","datastore","iam","internal","internal/atomiccache","internal/fields","internal/optional","internal/version","storage"]
+  packages = ["compute/metadata","iam","internal","internal/optional","internal/version","storage"]
   revision = "0f0b8420cb699ac4ce059c63bac263f4301fe95b"
   version = "v0.12.0"
 
@@ -46,7 +46,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/golang/protobuf"
-  packages = ["proto","protoc-gen-go/descriptor","ptypes","ptypes/any","ptypes/duration","ptypes/struct","ptypes/timestamp","ptypes/wrappers"]
+  packages = ["proto","protoc-gen-go/descriptor","ptypes","ptypes/any","ptypes/duration","ptypes/timestamp"]
   revision = "83cd65fc365ace80eb6b6ecfc45203e43edfbc70"
 
 [[projects]]
@@ -159,6 +159,12 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["pbkdf2","scrypt"]
+  revision = "81e90905daefcd6fd217b62423c0908922eadb30"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/exp"
   packages = ["utf8string"]
   revision = "be79676510e5ce293c77bb087cdab4796a461bdb"
@@ -184,24 +190,24 @@
 [[projects]]
   branch = "master"
   name = "google.golang.org/api"
-  packages = ["gensupport","googleapi","googleapi/internal/uritemplates","googleapi/transport","internal","iterator","option","storage/v1","transport/grpc","transport/http"]
+  packages = ["gensupport","googleapi","googleapi/internal/uritemplates","googleapi/transport","internal","iterator","option","storage/v1","transport/http"]
   revision = "4c6d21ebe7d908cb32717e14783f80ffee6cdcb0"
 
 [[projects]]
   name = "google.golang.org/appengine"
-  packages = [".","datastore","file","internal","internal/app_identity","internal/base","internal/datastore","internal/log","internal/memcache","internal/modules","internal/remote_api","internal/search","internal/socket","internal/urlfetch","log","memcache","search","socket","urlfetch"]
+  packages = [".","datastore","file","internal","internal/app_identity","internal/base","internal/datastore","internal/log","internal/memcache","internal/modules","internal/remote_api","internal/search","internal/urlfetch","log","memcache","search","urlfetch"]
   revision = "150dc57a1b433e64154302bdc40b6bb8aefa313a"
   version = "v1.0.0"
 
 [[projects]]
   branch = "master"
   name = "google.golang.org/genproto"
-  packages = ["googleapis/api/annotations","googleapis/datastore/v1","googleapis/iam/v1","googleapis/rpc/status","googleapis/type/latlng"]
+  packages = ["googleapis/api/annotations","googleapis/iam/v1","googleapis/rpc/status"]
   revision = "ee236bd376b077c7a89f260c026c4735b195e459"
 
 [[projects]]
   name = "google.golang.org/grpc"
-  packages = [".","codes","connectivity","credentials","credentials/oauth","grpclb/grpc_lb_v1/messages","grpclog","internal","keepalive","metadata","naming","peer","stats","status","tap","transport"]
+  packages = [".","codes","connectivity","credentials","grpclb/grpc_lb_v1/messages","grpclog","internal","keepalive","metadata","naming","peer","stats","status","tap","transport"]
   revision = "f92cdcd7dcdc69e81b2d7b338479a19a8723cfa3"
   version = "v1.6.0"
 
@@ -214,6 +220,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "aaeedc9c96a2929bbbdb329955ab9795ad05f33b5e9ad9b5f4612665a8570c3a"
+  inputs-digest = "218abcf9141a619bf86becb098269c941dc88638433ee481a1d4a688c449a5f3"
   solver-name = "gps-cdcl"
   solver-version = 1

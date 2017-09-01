@@ -11,7 +11,7 @@ import (
 )
 
 // GetRandomString 16桁のランダムな文字列を返す
-func GetRandomString() string {
+func getRandomString() string {
 	const base = 36
 	size := big.NewInt(base)
 	n := make([]byte, 16)
@@ -23,8 +23,8 @@ func GetRandomString() string {
 }
 
 // CreateTokenHash 渡された文字列とsaltからTokenハッシュを生成する
-func CreateTokenHash(str string, salt string) string {
-	converted, _ := scrypt.Key([]byte(str), []byte(salt), 16384, 8, 1, 32)
+func CreateTokenHash(str string) string {
+	converted, _ := scrypt.Key([]byte(str), []byte(getRandomString()), 16384, 8, 1, 32)
 	return hex.EncodeToString(converted[:])
 }
 

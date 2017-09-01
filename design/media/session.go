@@ -15,15 +15,17 @@ var Session = MediaType("application/vnd.session+json", func() {
 		Attribute("token", String, "トークン", func() {
 			Example("ECB666D778725EC97307044D642BF4D160AABB76F56C0069C71EA25B1E926825")
 		})
-		Attribute("expire", DateTime, "トークン期限")
-		Attribute("user", User, "ユーザー情報")
-		Required("token", "expire", "user")
+		Attribute("expire", DateTime, "トークン期限", func() {
+			Example("2017-08-26T15:05:11.916011956Z")
+		})
+		Attribute("name", String, "ユーザー名", func() {
+			Example("hogeさん")
+		})
+		Required("token", "expire", "name")
 	})
 	View("default", func() {
 		Attribute("token")
-		Attribute("user", func() {
-			View("full")
-		})
+		Attribute("name")
 		Attribute("expire")
 	})
 })
