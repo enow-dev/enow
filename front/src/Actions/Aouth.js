@@ -1,11 +1,11 @@
 import * as types from '../Constants/ActionTypes';
 
-export const receiveEvent = event => (
-  { type: types.RECEIVE_EVENT, event }
+export const receiveLogin = aouth => (
+  { type: types.RECEIVE_LOGIN, aouth }
 );
-export const fetchEvent = () => ({ type: types.FETCH_EVENT });
+export const fetchLogin = () => ({ type: types.FETCH_LOGIN });
 
-function getEvent(eventId) {
+function login(code) {
   let scheme = process.env.REACT_APP_API_Scheme;
   if (scheme == null) {
     scheme = process.env.Scheme;
@@ -14,32 +14,32 @@ function getEvent(eventId) {
   if (host == null) {
     host = process.env.Host;
   }
-  const url = `${scheme}${host}/api/events/${eventId}`;
+  const url = `http://localhost:8080/auth/login?code=${code}`;
   return (dispatch) => {
-    dispatch(fetchEvent());
+    dispatch(fetchLogin());
     return fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         Accept: 'application/vnd.event+json', // eslint-disable-line
-        'X-Authorization': 'hogehoge',
         'Content-Type': 'application/json',
       },
     })
       .then((response) => {
         if (response.status !== 200) {
-          dispatch({ type: types.ADD_ERROR, error: response });
+          dispatch({ type: types.LOGIN_ERROR, error: response });
         }
         return response.json();
       })
-      .then(responseJson => dispatch(receiveEvent(responseJson)));
+      .then(responseJson => dispatch(receiveLogin(responseJson)));
   };
 }
 
-export function getEventIfNeeded(eventId) {
+export function loginIfNeeded(code) {
   return (dispatch, getState) => {
-    if (getState().events.isFetching) {
+    const { aouth } = getState();
+    if (aouth.isFetching || aouth.isError || aouth.isAouth) {
       return Promise.resolve();
     }
-    return dispatch(getEvent(eventId));
+    return dispatch(login(code));
   };
 }
