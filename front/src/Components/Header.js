@@ -6,7 +6,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
-import { grey } from 'material-ui/colors';
+import { grey, orange } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
 
 const styles = theme => ({
@@ -19,9 +19,6 @@ const styles = theme => ({
   },
   subheader: {
     borderBottom: `solid 1px ${grey[500]}`,
-  },
-  flex: {
-    flex: 1,
   },
 });
 
@@ -44,10 +41,18 @@ function Header({ classes, children }) {
     <div className={classes.root}>
       <AppBar position="static" className={classes.headerAppBar}>
         <Toolbar>
-          <Typography type="title" color="inherit" className={classes.flex}>
-            enow
+          <Typography
+            type="display3"
+            style={{ lineHeight: 0, marginBottom: 10, color: `${orange[500]}`, letterSpacing: 2 }}
+          >
+            e
           </Typography>
-          IT勉強会・イベント検索
+          <Typography type="display1" style={{ letterSpacing: 2 }}>
+            now
+          </Typography>
+          <Typography type="title" style={{ marginLeft: 20, marginTop: 10 }}>
+            IT勉強会・イベント検索
+          </Typography>
         </Toolbar>
       </AppBar>
       <MediaQuery query="(max-width:1024px)">
