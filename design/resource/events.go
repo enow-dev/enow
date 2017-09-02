@@ -40,7 +40,7 @@ var _ = Resource("events", func() {
 				UseTrait(PaginatorHeaderTrait)
 			})
 		})
-		UseTrait(GeneralUserTrait)
+		UseTrait(GuestUserTrait)
 	})
 	Action("show", func() {
 		Description("show")
@@ -52,7 +52,7 @@ var _ = Resource("events", func() {
 		Response(OK, func() {
 			Media(media.Event, "show")
 		})
-		UseTrait(GeneralUserTrait)
+		UseTrait(GuestUserTrait)
 	})
 	Action("showCount", func() {
 		Description("showCount")
@@ -66,6 +66,6 @@ var _ = Resource("events", func() {
 			})
 		})
 		Response(OK, Integer)
-		UseTrait(GeneralUserTrait)
+		UseTrait(GuestUserTrait)
 	})
 })

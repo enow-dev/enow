@@ -39,6 +39,13 @@ var _ = API("enow", func() {
 		Response(BadRequest, ErrorMedia)
 		Response(InternalServerError, ErrorMedia)
 	})
+	Trait(GuestUserTrait, func() {
+		Security(GuestAuth)
+		Response(Unauthorized, ErrorMedia)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+		Response(InternalServerError, ErrorMedia)
+	})
 	Trait(PaginatorHeaderTrait, func() {
 		Header("x-search-hits-count")
 		Header("link")

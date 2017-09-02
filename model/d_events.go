@@ -144,6 +144,26 @@ func (db *EventsDB) Update(appCtx context.Context, id int64, updateEvent *Events
 	return updateEvent, nil
 }
 
+// EventToEventTiny EventをEventShow構造体に移す
+func (e *Events) EventToEventTiny() *app.EventTiny {
+	event := &app.EventTiny{}
+	event.ID = fmt.Sprintf("%v", e.ID)
+	event.APIID = e.APIID
+	event.Title = e.Title
+	event.StartAt = e.StartAt
+	event.EndAt = e.EndAt
+	event.URL = e.URL
+	event.Place = e.Place
+	// TODO: タグ機能実装したら対応する
+	//event.Tags          = e.Tags
+	event.Tags = []string{"js", "php"}
+	event.Limit = e.Limit
+	event.Accepted = e.Accepted
+	event.UpdatedAt = e.UpdatedAt
+	// TODO お気にい入り機能作ったら判定して格納する
+	return event
+}
+
 // EventToEventShow EventをEventShow構造体に移す
 func (e *Events) EventToEventShow() *app.EventShow {
 	event := &app.EventShow{}

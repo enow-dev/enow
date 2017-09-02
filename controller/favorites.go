@@ -23,6 +23,7 @@ func (c *FavoritesController) Update(ctx *app.UpdateFavoritesContext) error {
 	// FavoritesController_Update: start_implement
 
 	// Put your logic here
+	appCtx := appengine.NewContext(ctx.Request)
 	userKey, err := util.GetUserKey(ctx)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
@@ -32,7 +33,6 @@ func (c *FavoritesController) Update(ctx *app.UpdateFavoritesContext) error {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 	ufeDB := &model.UserEventFavoritesDB{}
-	appCtx := appengine.NewContext(ctx.Request)
 	err = ufeDB.Add(appCtx, int64ID, userKey)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
@@ -47,6 +47,7 @@ func (c *FavoritesController) Delete(ctx *app.DeleteFavoritesContext) error {
 	// FavoritesController_Delete: start_implement
 
 	// Put your logic here
+	appCtx := appengine.NewContext(ctx.Request)
 	userKey, err := util.GetUserKey(ctx)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
@@ -56,7 +57,6 @@ func (c *FavoritesController) Delete(ctx *app.DeleteFavoritesContext) error {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 	ufeDB := &model.UserEventFavoritesDB{}
-	appCtx := appengine.NewContext(ctx.Request)
 	err = ufeDB.Delete(appCtx, int64ID, userKey)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
@@ -71,8 +71,17 @@ func (c *FavoritesController) SelfList(ctx *app.SelfListFavoritesContext) error 
 	// FavoritesController_SelfList: start_implement
 
 	// Put your logic here
+	appCtx := appengine.NewContext(ctx.Request)
+	userKey, err := util.GetUserKey(ctx)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	ufeDB := &model.UserEventFavoritesDB{}
+	events, err := ufeDB.GetListFindByUserKey(appCtx, userKey)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
 
 	// FavoritesController_SelfList: end_implement
-	res := app.EventCollection{}
-	return ctx.OK(res)
+	return ctx.OKTiny(events)
 }
