@@ -56,7 +56,7 @@ export default function aouth(state = initialState, action) {
         isError: true,
       });
     case LOGOUT:
-      return Object.assign({}, state, { isAouth: false, isFetching: false });
+      return Object.assign({}, state, { isAouth: false, isFetching: false, isRedirect: false, isAouthing: false });
     default:
       return state;
   }
