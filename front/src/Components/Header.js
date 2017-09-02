@@ -11,7 +11,13 @@ import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import { grey, orange } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
+import Avatar from 'material-ui/Avatar';
+import AccountCircleIcon from 'material-ui-icons/AccountCircle';
+import Dialog, { DialogTitle } from 'material-ui/Dialog';
+import List, { ListItem, ListItemAvatar, ListItemText } from 'material-ui/List';
 
+import FacebookIcon from '../icons/facebook.svg';
+import GithubIcon from '../icons/github.svg';
 import * as AouthActions from '../Actions/Aouth';
 
 const styles = theme => ({
@@ -24,6 +30,10 @@ const styles = theme => ({
   },
   subheader: {
     borderBottom: `solid 1px ${grey[500]}`,
+  },
+  accountCircleIcon: {
+    width: 38,
+    height: 38,
   },
 });
 
@@ -42,39 +52,117 @@ function SubHeader({classes}) {
   );
 }
 
+function AccountDialog({classes, aouthActions, isOpen, onRequestClose, isGithubAouth}){
+  return (
+    <Dialog open={isOpen}>
+      <DialogTitle>ログイン</DialogTitle>
+      <div>
+        <List>
+
+          <ListItem button onClick={()=>{
+              !isGithubAouth ?
+              aouthActions.startAouthGithub() :
+              aouthActions.logout() ;
+              onRequestClose();
+            }}>
+            <ListItemAvatar>
+              <Avatar src={GithubIcon} style={{backgroundColor: 'black'}}/>
+            </ListItemAvatar>
+            <ListItemText primary={isGithubAouth ? "ログアウント" : "Githubでログイン"} />
+          </ListItem>
+          <ListItem button onClick={()=>{}}>
+            <ListItemAvatar>
+              <Avatar src={FacebookIcon} style={{backgroundColor: 'blue'}} />
+            </ListItemAvatar>
+            <ListItemText primary="Facebookでログイン" />
+          </ListItem>
+          <ListItem button onClick={()=>{onRequestClose()}}>
+            <ListItemText primary="キャンセル" />
+          </ListItem>
+        </List>
+      </div>
+    </Dialog>
+  );
+}
+
 class Header extends React.Component {
-  aouthAction = () => {
-    const { aouthActions } = this.props;
-    aouthActions.startAouthGithub();
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      isAccountDialogOpen: false,
+    }
+  }
+
+  handleClickAvatar = () => {
+    this.setState({ isAccountDialogOpen: !this.state.isAccountDialogOpen });
+  }
+  renderAvatarIcon() {
+    const { aouth, classes } = this.props;
+    if (aouth.isAouth) {
+      return (
+        <Avatar
+          alt="Adelle Charles"
+          src={`${aouth.info.avaterUrl}`}
+        />
+      );
+    } else {
+      return (
+        <AccountCircleIcon className={classes.accountCircleIcon}/>
+      )
+    }
+  }
+
+  handleRequestClose = () => {
+    this.setState({ isAccountDialogOpen: false });
+  }
 
   render() {
-    console.log(this.props);
-    const { classes, children, aouth } = this.props;
+    const { classes, children, aouth, aouthActions } = this.props;
+    console.log('header=',aouth);
     return (
       <div className={classes.root}>
         <AppBar position="static" className={classes.headerAppBar}>
           <Toolbar>
-            <Typography
-              type="display3"
-              style={{ lineHeight: 0, marginBottom: 10, color: `${orange[500]}`, letterSpacing: 2 }}
-            >
-              e
-            </Typography>
-            <Typography type="display1" style={{ letterSpacing: 2 }}>
-              now
-            </Typography>
-            <Typography type="title" style={{ marginLeft: 20, marginTop: 10 }}>
-              IT勉強会・イベント検索
-            </Typography>
-            {
-              aouth.isAouthing ? null : <Button onClick={this.aouthAction}>Github</Button>
-            }
+            <Grid container direction="row" align="center" justify="space-between">
+              <Grid item>
+                <Grid container direction="row" align="center" justify="flex-start" spacing={0}>
+                  <Grid item>
+                    <Typography
+                      type="display3"
+                      style={{ lineHeight: 0, marginBottom: 10, color: `${orange[500]}`, letterSpacing: 2 }}
+                    >
+                      e
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography type="display1" style={{ letterSpacing: 2 }}>
+                      now
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography type="title" style={{ marginLeft: 20, marginTop: 10 }}>
+                      IT勉強会・イベント検索
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <div
+                  onClick={this.handleClickAvatar}>
+                  { this.renderAvatarIcon() }
+                </div>
+              </Grid>
+            </Grid>
           </Toolbar>
         </AppBar>
         <MediaQuery query="(max-width:1024px)">
           <SubHeader />
         </MediaQuery>
+        <AccountDialog
+          isGithubAouth={aouth.isAouth}
+          isOpen={this.state.isAccountDialogOpen}
+          aouthActions={aouthActions}
+          onRequestClose={this.handleRequestClose}/>
         {children}
       </div>
     );

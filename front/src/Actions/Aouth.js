@@ -6,6 +6,7 @@ export const fetchLogin = () => ({ type: types.FETCH_LOGIN });
 export const receiveLogin = aouth => (
   { type: types.RECEIVE_LOGIN, aouth }
 );
+export const logout = () => ({ type: types.LOGOUT });
 function login(code) {
   let scheme = process.env.REACT_APP_API_Scheme;
   if (scheme == null) {
