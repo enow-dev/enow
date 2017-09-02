@@ -9,6 +9,8 @@ import (
 
 	"regexp"
 
+	"unicode/utf8"
+
 	"golang.org/x/exp/utf8string"
 )
 
@@ -106,22 +108,25 @@ func SimpleConcatenateString(strs ...string) string {
 // ConvertIDFromAddress 文字列から都道府県判別する
 func ConvertIDFromAddress(prefName string) int {
 	// TODO 今後出来れば住所が不正確なものも対応したい & かなりいい加減
-	if prefName == "" {
+	// 2文字以下なら処理しない
+	if utf8.RuneCountInString(prefName) < 2 {
 		return 0
 	}
 
 	// 都道府県検索
-	p := utf8string.NewString(prefName).Slice(0, 3)
-	if prefs[p] != 0 {
-		return prefs[p]
-	}
-	for k, v := range prefs {
-		if strings.Index(prefName, k) != -1 {
-			return v
+	if utf8.RuneCountInString(prefName) >= 3 {
+		p := utf8string.NewString(prefName).Slice(0, 3)
+		if prefs[p] != 0 {
+			return prefs[p]
+		}
+		for k, v := range prefs {
+			if strings.Index(prefName, k) != -1 {
+				return v
+			}
 		}
 	}
 	// 県庁所在地
-	p = utf8string.NewString(prefName).Slice(0, 2)
+	p := utf8string.NewString(prefName).Slice(0, 2)
 	if captals[p] != 0 {
 		return captals[p]
 	}
