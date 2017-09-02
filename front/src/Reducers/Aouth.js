@@ -1,11 +1,15 @@
+import Cookies from 'universal-cookie';
 import {
   START_AOUTH,
   REDIRECT_AOUTH,
   FETCH_LOGIN,
   RECEIVE_LOGIN,
+  LOGIN_FROM_QOOKIE,
   LOGIN_ERROR,
   LOGOUT,
 } from '../Constants/ActionTypes';
+
+const cookies = new Cookies();
 
 const initialState = {
   info: {
@@ -25,6 +29,7 @@ const initialState = {
 const adaptionAouthInfo = (info) => {
   const newInfo = {
     avaterUrl: info.avater_url,
+    expireDate: new Date(info.expire),
     ...info,
   };
   return newInfo;
@@ -40,6 +45,8 @@ export default function aouth(state = initialState, action) {
       return Object.assign({}, state, { isFetching: true });
     case RECEIVE_LOGIN: {
       const newInfo = adaptionAouthInfo(action.aouth);
+      cookies.remove('aouth', { path: '/' });
+      cookies.set('aouth', newInfo, { path: '/', expires: newInfo.expireDate });
       return Object.assign({}, state, {
         isFetching: false,
         info: newInfo,
@@ -54,8 +61,22 @@ export default function aouth(state = initialState, action) {
         isAouth: false,
         isError: true,
       });
+    case LOGIN_FROM_QOOKIE: {
+      const newInfo = cookies.get('aouth');
+      return Object.assign({}, state, {
+        isFetching: false,
+        info: newInfo,
+        isAouth: true,
+        isAouthing: false,
+      });
+    }
     case LOGOUT:
-      return Object.assign({}, state, { isAouth: false, isFetching: false, isRedirect: false, isAouthing: false });
+      return Object.assign({}, state, {
+        isAouth: false,
+        isFetching: false,
+        isRedirect: false,
+        isAouthing: false,
+      });
     default:
       return state;
   }

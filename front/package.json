@@ -22,7 +22,8 @@
     "react-sticky": "^6.0.1",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "universal-cookie": "^2.0.8"
   },
   "devDependencies": {
     "eslint": "^4.5.0",

@@ -94,6 +94,11 @@ class Header extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const { aouthActions } = this.props;
+    aouthActions.isCookieAouth();
+  }
+
   handleClickAvatar = () => {
     this.setState({ isAccountDialogOpen: !this.state.isAccountDialogOpen });
   }
@@ -119,13 +124,11 @@ class Header extends React.Component {
 
   jumpHome = () => {
     const { history } = this.props;
-    //console.log(history);
     history.push('/');
   }
 
   render() {
     const { classes, children, aouth, aouthActions } = this.props;
-    console.log('header=',aouth);
     return (
       <div className={classes.root}>
         <AppBar position="static" className={classes.headerAppBar}>
