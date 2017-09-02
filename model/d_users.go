@@ -17,16 +17,16 @@ type UsersDB struct {
 // Users ユーザー情報
 type Users struct {
 	ID           int64     `datastore:"-" goon:"id" json:"id"`
-	Name         string    `json:"name" datastore:",noindex"`
+	Name         string    `json:"name" datastore:""`
 	PasswordHash string    `json:"password_hash" datastore:",noindex"`
-	Token        string    `json:"token" datastore:",noindex"`
+	Token        string    `json:"token" datastore:""`
 	Email        string    `json:"email" datastore:""`
 	AvaterURL    string    `json:"avater_url" datastore:",noindex"`
 	FacebookID   int       `json:"facebook_id" datastore:""`
 	TwitterID    int       `json:"twitter_id" datastore:""`
 	GithubID     int       `json:"github_id" datastore:""`
 	GoogleID     int       `json:"google_id" datastore:""`
-	Expire       time.Time `json:"created_at" datastore:""`
+	Expire       time.Time `json:"expire" datastore:""`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }
@@ -154,6 +154,21 @@ func (db *UsersDB) UpdateToken(appCtx context.Context, key *datastore.Key, creat
 		return nil, err
 	}
 	return user, nil
+}
+
+// nolint
+func (db *UsersDB) GetUserKeyFindByToken(appCtx context.Context, token string) (*datastore.Key, error) {
+	g := goon.FromContext(appCtx)
+	as := []*Users{}
+	q := datastore.NewQuery(g.Kind(new(Users))).Filter("Token =", token).KeysOnly()
+	keys, err := g.GetAll(q, &as)
+	if err != nil {
+		return nil, err
+	}
+	if len(keys) == 0 {
+		return nil, nil
+	}
+	return keys[0], nil
 }
 
 // nolint

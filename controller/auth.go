@@ -88,7 +88,18 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 	}
 	g := goon.FromContext(appCtx)
 	now := time.Now()
-	Token := util.CreateTokenHash(string(githubuser.ID))
+
+	// tokenを生成するが、被っている可能生があるのでチェックする
+	token := util.CreateTokenHash(string(githubuser.ID))
+	alreadyRegisteredUser, err := uDB.GetUserKeyFindByToken(appCtx, token)
+	for {
+		// 既に同じTokenがあれば再生成する
+		if err != nil && alreadyRegisteredUser != nil {
+			token = util.CreateTokenHash(string(githubuser.ID))
+		} else {
+			break
+		}
+	}
 	// 1トランザクションにしたいが、Datastoreの仕様上、commitしてないユーザーの取得が無理だった
 	// ユーザーが存在していないので、作成する
 	if loginUserKey == nil {
@@ -99,22 +110,23 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 			GithubID:  githubuser.ID,
 			CreatedAt: now,
 			Expire:    now.AddDate(0, 0, 7),
-			Token:     Token,
+			Token:     token,
 		}
 		loginUserKey, err = g.Put(newUser)
 		if err != nil {
 			return ctx.InternalServerError(goa.ErrInternal(err))
 		}
 	}
-	loginUser, err := uDB.UpdateToken(appCtx, loginUserKey, now, Token)
+	loginUser, err := uDB.UpdateToken(appCtx, loginUserKey, now, token)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 	// AuthController_Login: end_implement
 	res := &app.Session{
-		Token:  loginUser.Token,
-		Name:   loginUser.Name,
-		Expire: loginUser.Expire,
+		Token:     loginUser.Token,
+		Name:      loginUser.Name,
+		Expire:    loginUser.Expire,
+		AvaterURL: loginUser.AvaterURL,
 	}
 	return ctx.OK(res)
 }
