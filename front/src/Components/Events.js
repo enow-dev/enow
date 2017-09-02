@@ -90,7 +90,7 @@ class Events extends React.Component {
     // setTimeout(() => {
     //   this.setState({ isLoading: false });
     // }, 5000);
-    this.props.actions.getEventsIfNeeded(false, false);
+    //this.props.actions.getEventsIfNeeded(false, false);
   }
 
   handleTabChange = (event, value) => {

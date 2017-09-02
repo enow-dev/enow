@@ -8,15 +8,15 @@ import Events from './Components/Events';
 class App extends React.Component {
   render() {
     return (
-      <Header>
-        <Router>
+      <Router>
+        <Header>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/events" component={Events} />
           </Switch>
-        </Router>
-      </Header>
+        </Header>
+      </Router>
     );
   }
 }

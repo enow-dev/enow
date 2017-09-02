@@ -5,7 +5,7 @@ export const receiveEvents = (events, isMoreRead) => (
 );
 export const fetchEvents = isMoreRead => ({ type: types.FETCH_EVENTS, isMoreRead });
 
-function getEvents(isFavorite, isRed, isMoreRead) {
+function getEvents(isFavorite, isRed, isMoreRead, q) {
   let scheme = process.env.REACT_APP_API_Scheme;
   if (scheme == null) {
     scheme = process.env.Scheme;
@@ -14,7 +14,8 @@ function getEvents(isFavorite, isRed, isMoreRead) {
   if (host == null) {
     host = process.env.Host;
   }
-  const url = `${scheme}${host}/api/events?is_favorite=${isFavorite}&is_red=${isRed}`;
+  const url = `${scheme}${host}/api/events?is_favorite=${isFavorite}&is_red=${isRed}${q ? `&q=${q}` : ''}`;
+  console.log(url);
   return (dispatch) => {
     dispatch(fetchEvents(isMoreRead));
     return fetch(url, {
@@ -30,12 +31,12 @@ function getEvents(isFavorite, isRed, isMoreRead) {
   };
 }
 
-export function getEventsIfNeeded(isFavorite, isRed) {
+export function getEventsIfNeeded(isFavorite, isRed, q) {
   return (dispatch, getState) => {
     if (getState().isFetching) {
       return Promise.resolve();
     }
-    return dispatch(getEvents(isFavorite, isRed, false));
+    return dispatch(getEvents(isFavorite, isRed, false, q));
   };
 }
 

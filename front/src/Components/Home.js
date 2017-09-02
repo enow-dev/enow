@@ -11,11 +11,14 @@ import Card, { CardContent } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
 import Paper from 'material-ui/Paper';
+import Button from 'material-ui/Button';
+
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 
 import * as ErrorActions from '../Actions/Error';
 import * as AutosuggestActions from '../Actions/Autosuggest';
+import * as EventsActions from '../Actions/Events';
 
 const styles = theme =>({
   root: {
@@ -46,6 +49,10 @@ const styles = theme =>({
   },
   textField: {
     width: '100%',
+  },
+  submitButton: {
+    width: '100%',
+    marginTop: 10,
   },
 });
 
@@ -152,6 +159,12 @@ class Home extends React.Component {
     });
   };
 
+  handleSubmit = () => {
+    const { eventsAction, history } = this.props;
+    eventsAction.getEventsIfNeeded(false,false,this.state.value);
+    history.push('/events');
+  }
+
   render() {
     const { classes,autosuggests } = this.props;
     console.log(this.props);
@@ -196,6 +209,12 @@ class Home extends React.Component {
                 }}
               />
               <TextField fullWidth label="都道府県" margin="normal" />
+              <Button
+                raised
+                color="primary"
+                className={classes.submitButton}
+                onClick={this.handleSubmit}
+                >検索</Button>
             </CardContent>
           </Card>
         </Grid>
@@ -231,6 +250,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   errorActions: bindActionCreators(ErrorActions, dispatch),
   autosuggestActions: bindActionCreators(AutosuggestActions, dispatch),
+  eventsAction: bindActionCreators(EventsActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Home));

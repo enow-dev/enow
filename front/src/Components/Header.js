@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
+import { withRouter } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -116,6 +117,12 @@ class Header extends React.Component {
     this.setState({ isAccountDialogOpen: false });
   }
 
+  jumpHome = () => {
+    const { history } = this.props;
+    //console.log(history);
+    history.push('/');
+  }
+
   render() {
     const { classes, children, aouth, aouthActions } = this.props;
     console.log('header=',aouth);
@@ -125,26 +132,28 @@ class Header extends React.Component {
           <Toolbar>
             <Grid container direction="row" align="center" justify="space-between">
               <Grid item>
-                <Grid container direction="row" align="center" justify="flex-start" spacing={0}>
-                  <Grid item>
-                    <Typography
-                      type="display3"
-                      style={{ lineHeight: 0, marginBottom: 10, color: `${orange[500]}`, letterSpacing: 2 }}
-                    >
-                      e
-                    </Typography>
+                <div onClick={this.jumpHome}>
+                  <Grid container direction="row" align="center" justify="flex-start" spacing={0}>
+                    <Grid item>
+                      <Typography
+                        type="display3"
+                        style={{ lineHeight: 0, marginBottom: 10, color: `${orange[500]}`, letterSpacing: 2 }}
+                      >
+                        e
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography type="display1" style={{ letterSpacing: 2 }}>
+                        now
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography type="title" style={{ marginLeft: 20, marginTop: 10 }}>
+                        IT勉強会・イベント検索
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <Typography type="display1" style={{ letterSpacing: 2 }}>
-                      now
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography type="title" style={{ marginLeft: 20, marginTop: 10 }}>
-                      IT勉強会・イベント検索
-                    </Typography>
-                  </Grid>
-                </Grid>
+                  </div>
               </Grid>
               <Grid item>
                 <div
@@ -190,4 +199,4 @@ const mapDispatchToProps = dispatch => ({
   aouthActions: bindActionCreators(AouthActions, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header)));
