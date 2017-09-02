@@ -6,6 +6,7 @@ package constant
 const (
 	AdminUserTrait       = "AdminUserTrait"
 	GeneralUserTrait     = "GeneralUserTrait"
+	GuestUserTrait       = "GuestUserTrait"
 	PaginatorHeaderTrait = "PaginatorHeaderTrait"
 	GAECronTrait         = "PaginatorHeader"
 )

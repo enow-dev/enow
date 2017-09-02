@@ -63,9 +63,11 @@ func (s *Server) mountMiddleware() {
 	if os.Getenv("NoSecure") == "true" {
 		app.UseAdminAuthMiddleware(s.service, mymiddleware.NewTestModeMiddleware())
 		app.UseGeneralAuthMiddleware(s.service, mymiddleware.NewTestModeMiddleware())
+		app.UseGuestAuthMiddleware(s.service, mymiddleware.NewTestModeMiddleware())
 	} else {
 		app.UseAdminAuthMiddleware(s.service, mymiddleware.NewAdminUserAuthMiddleware())
 		app.UseGeneralAuthMiddleware(s.service, mymiddleware.NewGeneralUserAuthMiddleware())
+		app.UseGuestAuthMiddleware(s.service, mymiddleware.NewGuestUserAuthMiddleware())
 	}
 }
 

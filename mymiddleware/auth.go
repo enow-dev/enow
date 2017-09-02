@@ -50,6 +50,36 @@ func NewGeneralUserAuthMiddleware() goa.Middleware {
 		return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 			// Retrieve and log header specified by scheme
 			token := req.Header.Get(scheme.Name)
+			// 会員でないと操作出来ないのでtokenがなければはじく
+			if len(token) == 0 {
+				goa.LogError(ctx, "failed api token auth")
+				return ErrUnauthorized("missing auth")
+			}
+			// tokenとユーザーを紐付ける
+			uDB := model.UsersDB{}
+			appCtx := appengine.NewContext(req)
+			loginUserKey, err := uDB.GetUserKeyFindByToken(appCtx, token)
+			if err != nil {
+				log.Errorf(appCtx, "token check err = %v", err)
+			}
+			if loginUserKey == nil {
+				goa.LogError(ctx, "user not found")
+				return ErrUnauthorized("missing auth")
+			}
+			ctx = util.SetUserKey(ctx, loginUserKey)
+			log.Infof(appCtx, "token = %v ,login userID = %d", token, loginUserKey.IntID())
+			return h(ctx, rw, req)
+		}
+	}
+}
+
+// NewGuestUserAuthMiddleware Guestユーザーでも利用できるが、会員向けの機能もあるのでチェックする
+func NewGuestUserAuthMiddleware() goa.Middleware {
+	scheme := app.NewGuestAuthSecurity()
+	return func(h goa.Handler) goa.Handler {
+		return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+			// Retrieve and log header specified by scheme
+			token := req.Header.Get(scheme.Name)
 			// tokenとユーザーを紐付ける
 			uDB := model.UsersDB{}
 			appCtx := appengine.NewContext(req)
@@ -59,7 +89,6 @@ func NewGeneralUserAuthMiddleware() goa.Middleware {
 			}
 			if loginUserKey != nil {
 				ctx = util.SetUserKey(ctx, loginUserKey)
-				// 確認ロジックを入れる
 				log.Infof(appCtx, "token = %v ,login userID = %d", token, loginUserKey.IntID())
 			}
 			return h(ctx, rw, req)
