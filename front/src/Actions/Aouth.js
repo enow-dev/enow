@@ -1,10 +1,16 @@
+import Cookies from 'universal-cookie';
 import * as types from '../Constants/ActionTypes';
+
+const cookies = new Cookies();
 
 export const startAouth = () => ({ type: types.START_AOUTH });
 export const redirectAouth = () => ({ type: types.REDIRECT_AOUTH });
 export const fetchLogin = () => ({ type: types.FETCH_LOGIN });
 export const receiveLogin = aouth => (
   { type: types.RECEIVE_LOGIN, aouth }
+);
+export const loginFromQookie = aouth => (
+  { type: types.LOGIN_FROM_QOOKIE, aouth }
 );
 export const logout = () => ({ type: types.LOGOUT });
 function login(code) {
@@ -79,6 +85,15 @@ export function checkAouth() {
   };
 }
 
+export function isCookieAouth() {
+  return (dispatch) => {
+    const aouthCookie = cookies.get('aouth');
+    if (aouthCookie === undefined) {
+      return Promise.resolve();
+    }
+    return dispatch(loginFromQookie(aouthCookie));
+  };
+}
 export function startAouthGithub() {
   const CLIENT_ID = '87a42765a18adc939d0a';
   return (dispatch) => {

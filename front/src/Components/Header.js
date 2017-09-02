@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import { withRouter } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -20,6 +21,8 @@ import List, { ListItem, ListItemAvatar, ListItemText } from 'material-ui/List';
 import FacebookIcon from '../icons/facebook.svg';
 import GithubIcon from '../icons/github.svg';
 import * as AouthActions from '../Actions/Aouth';
+
+const cookies = new Cookies();
 
 const styles = theme => ({
   root: {
@@ -94,6 +97,11 @@ class Header extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const { aouthActions } = this.props;
+    aouthActions.isCookieAouth();
+  }
+
   handleClickAvatar = () => {
     this.setState({ isAccountDialogOpen: !this.state.isAccountDialogOpen });
   }
@@ -119,13 +127,11 @@ class Header extends React.Component {
 
   jumpHome = () => {
     const { history } = this.props;
-    //console.log(history);
     history.push('/');
   }
 
   render() {
     const { classes, children, aouth, aouthActions } = this.props;
-    console.log('header=',aouth);
     return (
       <div className={classes.root}>
         <AppBar position="static" className={classes.headerAppBar}>
