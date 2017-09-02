@@ -31,7 +31,6 @@ const adaptionAouthInfo = (info) => {
 };
 
 export default function aouth(state = initialState, action) {
-  console.log(action.type);
   switch (action.type) {
     case START_AOUTH:
       return Object.assign({}, state, { isAouthing: true, isRedirect: false });

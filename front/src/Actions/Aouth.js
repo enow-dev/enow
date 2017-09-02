@@ -63,7 +63,6 @@ export function loginIfNeeded(code) {
 
 export function checkAouth() {
   return (dispatch, getState) => {
-    console.log(getState().aouth.isAouthing);
     if (getState().aouth.isAouth) {
       return Promise.resolve();
     }
@@ -81,7 +80,6 @@ export function checkAouth() {
 }
 
 export function startAouthGithub() {
-  console.log('start aouth github');
   const CLIENT_ID = '87a42765a18adc939d0a';
   return (dispatch) => {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user:email&redirect_uri=http://localhost:3000/login`;
