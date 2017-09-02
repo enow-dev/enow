@@ -42,7 +42,6 @@ class EventDetail extends React.Component {
   renderMain() {
     const { classes } = this.props;
     const { item } = this.props.event;
-    console.log(item);
     let startDateFormat = '';
     if (item.startAt !== '') {
       const startDate = new Date(item.startAt);
