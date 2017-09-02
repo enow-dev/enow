@@ -35,6 +35,9 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 
 	// Put your logic here
 	appCtx := appengine.NewContext(ctx.Request)
+	now := time.Now()
+	// 未ログインでも許容する
+	userKey, _ := util.GetUserKey(ctx)
 	sel := model.SearchEventsLogDB{}
 	indexName, err := sel.GetLatestVersion(appCtx, time.Now())
 	if err != nil {
@@ -42,22 +45,18 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 	se := model.NewSearchEventsDB(indexName)
-	se.SetLimit(10)
-	se.Sort("StartAt", false)
-	se.SetPref(ctx.Pref)
-	se.SetCursor(ctx.Cursor)
-	se.SetNotSearchID("")
-	se.SetSearchKeyword(ctx.Q)
+	se.SetLimit(appCtx, 20)
+	se.Sort(appCtx, "StartAt", true)
+	se.SetPeriodDate(appCtx, "EndAt >", now)
+	se.SetPref(appCtx, ctx.Pref)
+	se.SetCursor(appCtx, ctx.Cursor)
+	se.SetNotSearchID(appCtx, userKey)
+	se.SetSearchKeyword(appCtx, ctx.Q)
 	iterator, err := se.Run(appCtx)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
-	userKey, err := util.GetUserKey(ctx)
-	if err != nil {
-		log.Errorf(appCtx, "ログインユーザー取得時にエラー %v", err)
-	}
 	events := app.EventTinyCollection{}
-	now := time.Now()
 	for {
 		var event model.SearchEvents
 		_, err := iterator.Next(&event)
@@ -72,12 +71,13 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 		if userKey != nil {
 			eventID, err := util.ConvertIDIntoInt64(event.ID)
 			if err != nil {
-				log.Infof(appCtx, "既読情報の挿入時エラー(1) %v", err)
+				log.Errorf(appCtx, "既読情報の挿入時エラー(1) %v", err)
 			}
 			userEventReads := &model.UserEventReads{
-				EventID:   eventID,
-				UserID:    userKey.IntID(),
-				CreatedAt: now,
+				EventID:    eventID,
+				EventEndAt: event.EndAt,
+				UserID:     userKey.IntID(),
+				CreatedAt:  now,
 			}
 			uerDB := model.UserEventReadsDB{}
 			uerDB.Add(appCtx, userEventReads)
@@ -121,6 +121,8 @@ func (c *EventsController) ShowCount(ctx *app.ShowCountEventsContext) error {
 
 	// Put your logic here
 	appCtx := appengine.NewContext(ctx.Request)
+	// 未ログインでも許容する
+	userKey, _ := util.GetUserKey(ctx)
 	sel := model.SearchEventsLogDB{}
 	indexName, err := sel.GetLatestVersion(appCtx, time.Now())
 	if err != nil {
@@ -128,19 +130,26 @@ func (c *EventsController) ShowCount(ctx *app.ShowCountEventsContext) error {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 	se := model.NewSearchEventsDB(indexName)
-	se.SetPref(ctx.Pref)
-	se.SetNotSearchID("")
-	se.SetSearchKeyword(ctx.Q)
+	se.SetPref(appCtx, ctx.Pref)
+	se.SetLimit(appCtx, 1)
+	se.SetNotSearchID(appCtx, userKey)
+	se.SetSearchKeyword(appCtx, ctx.Q)
 	iterator, err := se.Run(appCtx)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
-	var event model.SearchEvents
-	_, err = iterator.Next(&event)
-	if err != nil {
-		return ctx.InternalServerError(goa.ErrInternal(err))
+	events := app.EventTinyCollection{}
+	for {
+		var event model.SearchEvents
+		_, err := iterator.Next(&event)
+		if err == search.Done {
+			break
+		} else if err != nil {
+			return ctx.InternalServerError(goa.ErrInternal(err))
+		}
+		events = append(events, event.SearchEventToEventTiny())
 	}
-
 	// EventsController_ShowCount: end_implement
 	return ctx.OK(iterator.Count())
+	//return ctx.OK(iterator.Count())
 }

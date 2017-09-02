@@ -25,15 +25,15 @@ type UserEventFavorites struct {
 // nolint
 func (db *UserEventFavoritesDB) GetListFindByUserKey(appCtx context.Context, userKey *datastore.Key) ([]*app.EventTiny, error) {
 	g := goon.FromContext(appCtx)
-	as := []*UserEventFavorites{}
+	uers := []*UserEventFavorites{}
 	q := datastore.NewQuery(g.Kind(new(UserEventFavorites)))
 	q = q.Ancestor(userKey)
-	_, err := g.GetAll(q, &as)
+	_, err := g.GetAll(q, &uers)
 	if err != nil {
 		return nil, err
 	}
 	var appEvents []*app.EventTiny
-	for _, v := range as {
+	for _, v := range uers {
 		event := &Events{
 			ID: v.EventID,
 		}

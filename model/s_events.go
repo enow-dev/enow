@@ -1,7 +1,6 @@
 package model
 
 import (
-	"bytes"
 	"context"
 	"strconv"
 	"time"
@@ -9,8 +8,9 @@ import (
 	"fmt"
 
 	"github.com/enow-dev/enow/app"
+	"github.com/enow-dev/enow/util"
 	"google.golang.org/appengine"
-	"google.golang.org/appengine/log"
+	"google.golang.org/appengine/datastore"
 	"google.golang.org/appengine/search"
 )
 
@@ -20,7 +20,6 @@ type SearchEventsDB struct {
 	indexName string
 	queries   []string
 	opts      *search.SearchOptions
-	cursor    *search.Cursor
 	Iterator  *search.Iterator
 }
 
@@ -48,15 +47,20 @@ type SearchEvents struct {
 
 // Run 検索を実行する Cursorが存在する時は、即実行する
 func (db *SearchEventsDB) Run(appCtx context.Context) (*search.Iterator, error) {
-	log.Infof(appCtx, "%v", db.genQuery())
 	index, err := search.Open(db.indexName)
 	if err != nil {
 		return nil, err
 	}
-	if db.cursor != nil {
+	if db.opts == nil {
+		db.opts = &search.SearchOptions{}
+	}
+	if db.opts.Sort == nil {
+		db.opts.Sort = &search.SortOptions{}
+	}
+	if db.opts.Cursor != "" {
 		return index.Search(appCtx, "", db.opts), nil
 	}
-	return index.Search(appCtx, db.genQuery(), db.opts), nil
+	return index.Search(appCtx, db.genQuery(appCtx), db.opts), nil
 }
 
 // NewSearchEventsDB SearchEventsDBを使うための初期処理と生成
@@ -67,7 +71,7 @@ func NewSearchEventsDB(indexName string) *SearchEventsDB {
 }
 
 // SetLimit 読み込みLimit数を設定する
-func (db *SearchEventsDB) SetLimit(limit int) {
+func (db *SearchEventsDB) SetLimit(appCtx context.Context, limit int) {
 	if db.opts == nil {
 		db.opts = &search.SearchOptions{}
 	}
@@ -79,12 +83,12 @@ func (db *SearchEventsDB) SetLimit(limit int) {
 }
 
 // SetCursor ページングに使うカーソルを設定する
-func (db *SearchEventsDB) SetCursor(cursor string) {
+func (db *SearchEventsDB) SetCursor(appCtx context.Context, cursor string) {
 	db.opts.Cursor = search.Cursor(cursor)
 }
 
 // Sort ソートしたいプロパティと降順昇順を設定する
-func (db *SearchEventsDB) Sort(expr string, isAsc bool) {
+func (db *SearchEventsDB) Sort(appCtx context.Context, expr string, isAsc bool) {
 	if expr == "" {
 		return
 	}
@@ -101,15 +105,23 @@ func (db *SearchEventsDB) Sort(expr string, isAsc bool) {
 }
 
 // SetSearchKeyword ワード検索する
-func (db *SearchEventsDB) SetSearchKeyword(q string) {
+func (db *SearchEventsDB) SetSearchKeyword(appCtx context.Context, q string) {
 	if q == "" {
 		return
 	}
 	db.queries = append(db.queries, fmt.Sprintf("(Description:%s OR Title:%s)", q, q))
 }
 
+// SetPeriodDate 日付範囲検索
+func (db *SearchEventsDB) SetPeriodDate(appCtx context.Context, target string, t time.Time) {
+	if target == "" || t.IsZero() {
+		return
+	}
+	db.queries = append(db.queries, fmt.Sprint(target, t.Format("2006-01-02")))
+}
+
 // SetPref 都道府県を設定する
-func (db *SearchEventsDB) SetPref(pref int) {
+func (db *SearchEventsDB) SetPref(appCtx context.Context, pref int) {
 	if pref == 0 {
 		return
 	}
@@ -117,33 +129,36 @@ func (db *SearchEventsDB) SetPref(pref int) {
 }
 
 // SetNotSearchID 既読しているIDを検索から除外する
-func (db *SearchEventsDB) SetNotSearchID(ignoreIDQuery string) {
-	if ignoreIDQuery == "" {
+func (db *SearchEventsDB) SetNotSearchID(appCtx context.Context, key *datastore.Key) {
+	if key == nil {
 		return
 	}
-	db.queries = append(db.queries, fmt.Sprintf("%s", ignoreIDQuery))
-}
-
-func concatenateString(strs ...string) string {
-	var concatenateStr bytes.Buffer
-	for _, v := range strs {
-		concatenateStr.Write([]byte(v))
-		concatenateStr.Write([]byte{' '})
+	uDB := UsersDB{}
+	u, err := uDB.Get(appCtx, key.IntID())
+	if err != nil {
+		return
 	}
-	return concatenateStr.String()
+	if u.ExcludeRedEventQ == "" {
+		return
+	}
+	db.queries = append(db.queries, u.ExcludeRedEventQ)
 }
 
-func (db *SearchEventsDB) genQuery() string {
+func (db *SearchEventsDB) genQuery(appCtx context.Context) string {
 	// TODO 現状はANDのみ対応
 	if len(db.queries) == 0 {
 		return ""
 	}
+	if len(db.queries) == 1 {
+		return db.queries[0]
+	}
 	q := ""
 	lastIndex := len(db.queries) - 1
 	for k, v := range db.queries {
-		q = concatenateString(q, fmt.Sprintf("%s AND", v))
 		if k == lastIndex {
-			q = concatenateString(q, fmt.Sprintf("%s", v))
+			q = util.SpaceDelimiterStringJoin(q, fmt.Sprintf("%s", v))
+		} else {
+			q = util.SpaceDelimiterStringJoin(q, fmt.Sprintf("%s AND", v))
 		}
 	}
 	return q

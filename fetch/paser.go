@@ -128,7 +128,7 @@ func (p *Parser) doorkeeperJsonParse() (events []models.Event, err error) {
 }
 
 func createDataHash(e models.Event) string {
-	d := utility.ConcatenateString(
+	d := utility.CommaDelimiterJoinString(
 		e.Title,
 		e.Description,
 		e.URL,

@@ -4,3 +4,7 @@ cron:
   schedule: every 24 hours
   timezone: Asia/Tokyo
 
+- description: read fix
+  url: /api/cron/read_fix
+  schedule: every 24 hours
+  timezone: Asia/Tokyo
