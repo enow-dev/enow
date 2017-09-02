@@ -86,8 +86,21 @@ func RemovePoscode(str string) string {
 	return str
 }
 
-// ConcatenateString 文字列結合（カンマ区切り）
-func ConcatenateString(strs ...string) string {
+// nolint
+func RemoveDuplicateInt64(args []int64) []int64 {
+	results := make([]int64, 0, len(args))
+	encountered := map[int64]bool{}
+	for i := 0; i < len(args); i++ {
+		if !encountered[args[i]] {
+			encountered[args[i]] = true
+			results = append(results, args[i])
+		}
+	}
+	return results
+}
+
+// CommaDelimiterStringJoin 文字列結合（カンマ区切り）
+func CommaDelimiterStringJoin(strs ...string) string {
 	var concatenateStr bytes.Buffer
 	for _, v := range strs {
 		concatenateStr.Write([]byte(v))
@@ -96,11 +109,21 @@ func ConcatenateString(strs ...string) string {
 	return concatenateStr.String()
 }
 
-// SimpleConcatenateString 文字列結合
-func SimpleConcatenateString(strs ...string) string {
+// SimpleStringJoin 文字列結合
+func SimpleStringJoin(strs ...string) string {
 	var concatenateStr bytes.Buffer
 	for _, v := range strs {
 		concatenateStr.Write([]byte(v))
+	}
+	return concatenateStr.String()
+}
+
+// SpaceDelimiterStringJoin スペース区切りの文字結合
+func SpaceDelimiterStringJoin(strs ...string) string {
+	var concatenateStr bytes.Buffer
+	for _, v := range strs {
+		concatenateStr.Write([]byte(v))
+		concatenateStr.Write([]byte{' '})
 	}
 	return concatenateStr.String()
 }

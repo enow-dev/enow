@@ -146,7 +146,7 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 	}
 	sel := model.SearchEventsLogDB{}
 	// 今日の日付情報でindexを作成する
-	index, err := search.Open(util.SimpleConcatenateString("events", now.Format("20060102150405")))
+	index, err := search.Open(util.SimpleStringJoin("events", now.Format("20060102150405")))
 	if err != nil {
 		log.Errorf(appCtx, "index openエラー(9): %v", err)
 		return ctx.InternalServerError(goa.ErrInternal(err))
@@ -176,6 +176,8 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 		s.Pref = fmt.Sprintf("%d", e.Pref)
 		s.APIID = fmt.Sprintf("%d", e.APIID)
 		s.Tags = "test"
+		s.CreatedAt = e.CreatedAt
+		s.UpdatedAt = e.UpdatedAt
 		_, err = index.Put(appCtx, v.StringID(), &s)
 		if err != nil {
 			log.Errorf(appCtx, "SearchAPIへのPUT操作エラー(10): %v", err)
@@ -200,6 +202,13 @@ func (c *CronController) ReadFix(ctx *app.ReadFixCronContext) error {
 	// CronController_ReadFix: start_implement
 
 	// Put your logic here
+	appCtx := appengine.NewContext(ctx.Request)
+	uerDB := model.UserEventReadsDB{}
+	err := uerDB.UpdateExcludeRedEventQ(appCtx, time.Now())
+	if err != nil {
+		log.Errorf(appCtx, "%v", err)
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
 
 	// CronController_ReadFix: end_implement
 	return nil

@@ -62,7 +62,7 @@ func (db *SearchEventsLogDB) GetLatestVersion(appCtx context.Context, createTime
 func (db *SearchEventsLogDB) CreateIndex(appCtx context.Context, createTime time.Time) (string, error) {
 	g := goon.FromContext(appCtx)
 	sel := &SearchEventsLog{
-		Identification: util.SimpleConcatenateString("events", createTime.Format("20060102150405")),
+		Identification: util.SimpleStringJoin("events", createTime.Format("20060102150405")),
 		CreatedAt:      createTime,
 	}
 	key, err := g.Put(sel)
