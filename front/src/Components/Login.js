@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import Grid from 'material-ui/Grid';
 import Card, { CardContent, CardHeader } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 
 import * as AouthActions from '../Actions/Aouth';
@@ -49,14 +48,15 @@ class Login extends React.Component {
   renderAouthInfo(){
     const {aouth} = this.props;
     console.log(aouth);
-    return
-    <div>
-      <ul>
-        <li>{aouth.info.expire}</li>
-        <li>{aouth.info.name}</li>
-        <li>{aouth.info.token}</li>
-      </ul>
-    </div>;
+    return (
+      <div>
+        <ul>
+          <li>{aouth.info.expire}</li>
+          <li>{aouth.info.name}</li>
+          <li>{aouth.info.token}</li>
+        </ul>
+      </div>
+    );
   }
   shouldComponentUpdate(nextProps, nextState){
     console.log('shouldComponentUpdate',nextProps,nextProps);
