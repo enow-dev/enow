@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import { withRouter } from 'react-router-dom';
-import Cookies from 'universal-cookie';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -21,8 +20,6 @@ import List, { ListItem, ListItemAvatar, ListItemText } from 'material-ui/List';
 import FacebookIcon from '../icons/facebook.svg';
 import GithubIcon from '../icons/github.svg';
 import * as AouthActions from '../Actions/Aouth';
-
-const cookies = new Cookies();
 
 const styles = theme => ({
   root: {
