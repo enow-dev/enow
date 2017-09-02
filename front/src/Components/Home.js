@@ -226,6 +226,7 @@ Home.defaultProps = {
 
 const mapStateToProps = state => ({
   autosuggests: state.autosuggest,
+  aouth: state.aouth,
 });
 const mapDispatchToProps = dispatch => ({
   errorActions: bindActionCreators(ErrorActions, dispatch),
