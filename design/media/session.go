@@ -21,11 +21,15 @@ var Session = MediaType("application/vnd.session+json", func() {
 		Attribute("name", String, "ユーザー名", func() {
 			Example("hogeさん")
 		})
-		Required("token", "expire", "name")
+		Attribute("avater_url", String, "アバターURL", func() {
+			Example("https://avatars3.githubusercontent.com/u/9821370?v=4&s=460")
+		})
+		Required("token", "expire", "name", "avater_url")
 	})
 	View("default", func() {
 		Attribute("token")
 		Attribute("name")
 		Attribute("expire")
+		Attribute("avater_url")
 	})
 })
