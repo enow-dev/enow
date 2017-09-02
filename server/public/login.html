@@ -7,7 +7,7 @@
 <span id="status"></span>
 
 <script>
-    CLIENT_ID = "87a42765a18adc939d0a";
+    CLIENT_ID = "0b21f737bc6c037e2f8e";
     $(function(){
         attr=getQueryString();
         if ("code" in attr){
@@ -19,20 +19,20 @@
             });
         }
     });
-    function login(code){
-        $.ajax({
-            type: 'POST',
-            url: "http://localhost:8080/auth/login?code="+code,
-            timeout: 3000,
-            success: function(data){
-                $("#status").text("logged in.\nYour token: "+data.data.token);
-                console.log(JSON.stringify(data));
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert(textStatus +" "+ XMLHttpRequest.responseText);
-            }
-        });
-    }
+//    function login(code){
+//        $.ajax({
+//            type: 'POST',
+//            url: "http://localhost:8080/auth/login?code="+code,
+//            timeout: 3000,
+//            success: function(data){
+//                $("#status").text("logged in.\nYour token: "+data.data.token);
+//                console.log(JSON.stringify(data));
+//            },
+//            error: function(XMLHttpRequest, textStatus, errorThrown) {
+//                alert(textStatus +" "+ XMLHttpRequest.responseText);
+//            }
+//        });
+//    }
     // URLから?パラメータのマップを取得
     function getQueryString() {
         var result = {};

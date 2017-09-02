@@ -52,7 +52,12 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
+	userKey, err := util.GetUserKey(ctx)
+	if err != nil {
+		log.Errorf(appCtx, "ログインユーザー取得時にエラー %v", err)
+	}
 	events := app.EventTinyCollection{}
+	now := time.Now()
 	for {
 		var event model.SearchEvents
 		_, err := iterator.Next(&event)
@@ -62,6 +67,21 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 			return ctx.InternalServerError(goa.ErrInternal(err))
 		}
 		events = append(events, event.SearchEventToEventTiny())
+
+		// 既読情報をつける
+		if userKey != nil {
+			eventID, err := util.ConvertIDIntoInt64(event.ID)
+			if err != nil {
+				log.Infof(appCtx, "既読情報の挿入時エラー(1) %v", err)
+			}
+			userEventReads := &model.UserEventReads{
+				EventID:   eventID,
+				UserID:    userKey.IntID(),
+				CreatedAt: now,
+			}
+			uerDB := model.UserEventReadsDB{}
+			uerDB.Add(appCtx, userEventReads)
+		}
 	}
 	l := util.CreateLinkHeader(ctx.RequestData, os.Getenv("Scheme"), iterator.Cursor())
 	ctx.ResponseData.Header().Set("link", l.String())
