@@ -1,6 +1,7 @@
 import Cookies from 'universal-cookie';
 import * as types from '../Constants/ActionTypes';
 import getUrl from '../Utils/UrlScheme';
+import getGithubID from '../Utils/AouthClientID';
 
 const cookies = new Cookies();
 
@@ -88,9 +89,8 @@ export function isCookieAouth() {
   };
 }
 export function startAouthGithub() {
-  const CLIENT_ID = '87a42765a18adc939d0a';
   return (dispatch) => {
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user:email&redirect_uri=${getUrl()}/login`;
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${getGithubID()}&scope=user:email&redirect_uri=${getUrl()}/login`;
     return dispatch(startAouth());
   };
 }
