@@ -6,12 +6,12 @@ import Grid from 'material-ui/Grid';
 import SearchIcon from 'material-ui-icons/Search';
 import Typography from 'material-ui/Typography';
 import TextField from 'material-ui/TextField';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Menu, { MenuItem } from 'material-ui/Menu';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
 import Button from 'material-ui/Button';
 import { grey } from 'material-ui/colors';
+
+import PrefMenu from './PrefMenu';
 
 const styles = theme => ({
   root: {},
@@ -62,27 +62,16 @@ class SearchBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      keyword: '',
       selectedIndex: 0,
-      anchorEl: undefined,
-      placeList: ['大阪府', '東京', '石垣島'],
       alreadyCheck: false,
     };
   }
-  handleClickPlace = event => {
-    this.setState({ open: true, anchorEl: event.currentTarget });
-  };
 
-  handleMenuItemClick = (event, index) => {
-    this.setState({ selectedIndex: index, open: false });
-  };
-
-  handleRequestClose = () => {
-    this.setState({ open: false });
-  };
   handleChangeAleady = (event, checked) => {
     this.setState({ alreadyCheck: checked });
   };
+
   render() {
     const { classes } = this.props;
     return (
@@ -120,35 +109,7 @@ class SearchBox extends React.Component {
           </Grid>
           <Grid item className={classes.searchFormItem}>
             <div className={classes.selectPlaceRoot}>
-              <List>
-                <ListItem
-                  button
-                  aria-haspopup="true"
-                  aria-controls="lock-menu"
-                  aria-label="When device is locked"
-                  onClick={this.handleClickPlace}
-                >
-                  <ListItemText
-                    primary={`${this.state.placeList[this.state.selectedIndex]}(IP,cookieから自動取得）`}
-                  />
-                </ListItem>
-              </List>
-              <Menu
-                id="lock-menu"
-                anchorEl={this.state.anchorEl}
-                open={this.state.open}
-                onRequestClose={this.handleRequestClose}
-              >
-                {this.state.placeList.map((option, index) =>
-                  <MenuItem
-                    key={option}
-                    selected={index === this.state.selectedIndex}
-                    onClick={event => this.handleMenuItemClick(event, index)}
-                  >
-                    {option}
-                  </MenuItem>,
-                )}
-              </Menu>
+              <PrefMenu onSelectPref={(event,index) => { this.setState({ selectedIndex: index}) }}/>
             </div>
           </Grid>
           <Grid item className={classes.searchFormItem}>

@@ -9,7 +9,7 @@ import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import Card, { CardContent } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import { MenuItem } from 'material-ui/Menu';
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
 

@@ -109,7 +109,9 @@ class PrefMenu extends React.Component {
                 selected={index === this.state.selectedIndex}
                 onClick={event => {
                   this.handleMenuItemClick(event, index);
-                  onSelectPref ? onSelectPref(event, index) : null;
+                  if(onSelectPref){
+                    onSelectPref(event, index);
+                  }
                 }}
               >
                 {option}
@@ -129,6 +131,6 @@ PrefMenu.propTypes = {
   onSelectPref: PropTypes.func,
 };
 PrefMenu.defaultProps = {
-  onSelectPref: null,
+  onSelectPref: false,
 }
 export default PrefMenu;
