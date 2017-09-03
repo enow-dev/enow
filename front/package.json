@@ -40,6 +40,8 @@
     "lint": "node_modules/eslint/bin/eslint.js ./src",
     "start": "react-scripts start",
     "build": "rm -rf ../server/build && react-scripts build && mv ./build ../server/",
+    "staging-build": "rm -rf ../server/build  && node -r dotenv/config ./node_modules/.bin/react-scripts build dotenv_config_path=.staging.env && mv ./build ../server/",
+    "production-build": "rm -rf ../server/build && node -r dotenv/config ./node_modules/.bin/react-scripts build dotenv_config_path=.production.env && mv ./build ../server/",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
