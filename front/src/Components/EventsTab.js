@@ -18,13 +18,13 @@ function EventsTab(props) {
 EventsTab.propTypes = {
   selectTabIndex: PropTypes.number,
   handleTabChange: PropTypes.func,
-  appBarClass: Object,
+  appBarClass: PropTypes.string,
 };
 
 EventsTab.defaultProps = {
   selectTabIndex: 0,
   handleTabChange: null,
-  appBarClass: null,
+  appBarClass: '',
 };
 
 export default EventsTab;
