@@ -146,7 +146,7 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 	}
 	sel := model.SearchEventsLogDB{}
 	// 今日の日付情報でindexを作成する
-	index, err := search.Open(util.SimpleStringJoin("events", now.Format("20060102150405")))
+	index, err := search.Open(fmt.Sprint("events", now.Format("20060102150405")))
 	if err != nil {
 		log.Errorf(appCtx, "index openエラー(9): %v", err)
 		return ctx.InternalServerError(goa.ErrInternal(err))
@@ -166,7 +166,7 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 		s.URL = e.URL
 		s.StartAt = e.StartAt
 		s.EndAt = e.EndAt
-		s.Place = "大阪府高槻市"
+		s.Place = e.Place
 		s.Address = e.Address
 		s.Identification = e.Identification
 		s.Description = search.HTML(e.Description)

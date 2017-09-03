@@ -33,8 +33,11 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("address", String, "住所", func() {
 			Example("大阪府大阪市北区小松原町5-8　トリオビル４F、5Ｆ")
 		})
-		Attribute("place", String, "開催地", func() {
-			Example("大阪府大阪市北区")
+		Attribute("place", String, "開催場所", func() {
+			Example("大阪府高槻市")
+		})
+		Attribute("area", String, "開催地域", func() {
+			Example("ほげビル")
 		})
 		Attribute("lat", Number, "緯度", func() {
 			Example(34.7033395)
@@ -70,6 +73,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"url",
 			"address",
 			"place",
+			"area",
 			"lat",
 			"lon",
 			"limit",
@@ -90,6 +94,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("url")
 		//Attribute("address")
 		Attribute("place")
+		Attribute("area")
 		//Attribute("lat")
 		//Attribute("lon")
 		Attribute("limit")
@@ -108,6 +113,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"url",
 			//"address",
 			"place",
+			//"area",
 			//"lat",
 			//"lon",
 			"limit",
@@ -128,6 +134,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("url")
 		Attribute("address")
 		Attribute("place")
+		Attribute("area")
 		Attribute("lat")
 		Attribute("lon")
 		Attribute("limit")
@@ -146,6 +153,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"url",
 			"address",
 			"place",
+			"area",
 			"lat",
 			"lon",
 			"limit",
@@ -166,6 +174,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("url")
 		Attribute("address")
 		Attribute("place")
+		Attribute("area")
 		Attribute("lat")
 		Attribute("lon")
 		Attribute("limit")
@@ -184,6 +193,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"url",
 			"address",
 			"place",
+			"area",
 			"lat",
 			"lon",
 			"limit",
@@ -204,6 +214,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("url")
 		Attribute("address")
 		Attribute("place")
+		Attribute("area")
 		Attribute("lat")
 		Attribute("lon")
 		Attribute("limit")
@@ -222,6 +233,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"url",
 			"address",
 			"place",
+			"area",
 			"lat",
 			"lon",
 			"limit",
