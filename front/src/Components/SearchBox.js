@@ -1,17 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import SearchIcon from 'material-ui-icons/Search';
 import Typography from 'material-ui/Typography';
 import TextField from 'material-ui/TextField';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Menu, { MenuItem } from 'material-ui/Menu';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
 import Button from 'material-ui/Button';
 import { grey } from 'material-ui/colors';
+
+import PrefMenu from './PrefMenu';
+
+import * as EventsActions from '../Actions/Events';
 
 const styles = theme => ({
   root: {},
@@ -62,27 +67,23 @@ class SearchBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      keyword: '',
       selectedIndex: 0,
-      anchorEl: undefined,
-      placeList: ['大阪府', '東京', '石垣島'],
       alreadyCheck: false,
     };
   }
-  handleClickPlace = event => {
-    this.setState({ open: true, anchorEl: event.currentTarget });
-  };
 
-  handleMenuItemClick = (event, index) => {
-    this.setState({ selectedIndex: index, open: false });
-  };
-
-  handleRequestClose = () => {
-    this.setState({ open: false });
-  };
   handleChangeAleady = (event, checked) => {
     this.setState({ alreadyCheck: checked });
   };
+  handleChangeKeyword = (event) => {
+    this.setState({keyword: event.target.value})
+  }
+  handleSubmit = () => {
+    const { eventsAction } = this.props;
+    const { alreadyCheck, keyword, selectedIndex } = this.state;
+    eventsAction.getEventsIfNeeded(false, alreadyCheck, keyword, selectedIndex);
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -113,42 +114,18 @@ class SearchBox extends React.Component {
           justify="center"
         >
           <Grid item className={classes.searchFormItem}>
-            <TextField fullWidth placeholder="キーワード（PHP,UX）サジェスト？" />
+            <TextField
+              fullWidth
+              placeholder="キーワード（PHP,UX）サジェスト？"
+              onChange={this.handleChangeKeyword}
+            />
           </Grid>
           <Grid item className={classes.searchFormItem}>
             <TextField fullWidth placeholder="開催日 From（自動的に入れる）" />
           </Grid>
           <Grid item className={classes.searchFormItem}>
             <div className={classes.selectPlaceRoot}>
-              <List>
-                <ListItem
-                  button
-                  aria-haspopup="true"
-                  aria-controls="lock-menu"
-                  aria-label="When device is locked"
-                  onClick={this.handleClickPlace}
-                >
-                  <ListItemText
-                    primary={`${this.state.placeList[this.state.selectedIndex]}(IP,cookieから自動取得）`}
-                  />
-                </ListItem>
-              </List>
-              <Menu
-                id="lock-menu"
-                anchorEl={this.state.anchorEl}
-                open={this.state.open}
-                onRequestClose={this.handleRequestClose}
-              >
-                {this.state.placeList.map((option, index) =>
-                  <MenuItem
-                    key={option}
-                    selected={index === this.state.selectedIndex}
-                    onClick={event => this.handleMenuItemClick(event, index)}
-                  >
-                    {option}
-                  </MenuItem>,
-                )}
-              </Menu>
+              <PrefMenu onSelectPref={(event,index) => { this.setState({ selectedIndex: index}) }}/>
             </div>
           </Grid>
           <Grid item className={classes.searchFormItem}>
@@ -166,7 +143,7 @@ class SearchBox extends React.Component {
             </FormGroup>
           </Grid>
           <Grid item className={classes.searchFormItem}>
-            <Button className={classes.searchButton}>検索する</Button>
+            <Button className={classes.searchButton} onClick={this.handleSubmit}>検索する</Button>
           </Grid>
         </Grid>
       </div>
@@ -180,4 +157,8 @@ SearchBox.defaultProps = {
   rootClass: '',
 };
 
-export default withStyles(styles)(SearchBox);
+const mapDispatchToProps = dispatch => ({
+  eventsAction: bindActionCreators(EventsActions, dispatch),
+});
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(SearchBox));
