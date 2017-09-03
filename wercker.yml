@@ -10,6 +10,10 @@ build:
       name: バックエンドソースの場所を保存する
       code: |-
         : ${SRC:="./server"}
+  - script:
+      name: フロントソースの場所を保存する
+      code: |-
+        : ${FSRC:="./front"}
   - setup-go-workspace
   - script:
       name: set env
@@ -60,7 +64,7 @@ build:
       name: dev.yamlを本番用のものを設定する
       code: |
         cp -f ${SRC}/env.yaml.staging ${SRC}/env.yaml
-        cp -f ${SRC}/front/.env.staging ${SRC}/front/.env
+        cp -f ${FSRC}/.env.staging ${FSRC}/.env
   - script:
       name: goapp build
       code: |
