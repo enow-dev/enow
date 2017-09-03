@@ -43,7 +43,6 @@ class Login extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    console.log('shouldComponentUpdate',nextProps,nextProps);
     const { aouth, history } = nextProps;
     if (aouth.isAouth) {
       history.replace('/');

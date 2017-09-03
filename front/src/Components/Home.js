@@ -167,7 +167,6 @@ class Home extends React.Component {
   };
 
   handleSuggestionsClearRequested = () => {
-    console.log('handleSuggestionsClearRequested');
     const { autosuggestActions } = this.props;
     autosuggestActions.clearAutosuggest();
   };
