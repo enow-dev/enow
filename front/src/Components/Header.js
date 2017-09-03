@@ -158,7 +158,7 @@ class Header extends React.Component {
                         IT勉強会・イベント検索
                       </Typography>
                     </Grid>
-                    {`ClientID=${getGithubID()},Url=${getUrl()}`}
+                    {`ClientID=${getGithubID()}、Url=${getUrl()}`}
                   </Grid>
                   </div>
               </Grid>
