@@ -94,8 +94,8 @@ EventDetail.propTypes = {
   actions: PropTypes.shape({
     getEventIfNeeded: PropTypes.func.isRequired,
   }),
-  match: Object,
-  classes: Object,
+  match: PropTypes.object,
+  classes: PropTypes.object,
   event: PropTypes.shape({
     item: PropTypes.object.isRequired,
   }),
@@ -104,8 +104,8 @@ EventDetail.defaultProps = {
   actions: {
     getEventIfNeeded: null,
   },
-  match: {},
-  classes: styles,
+  match: Object,
+  classes: Object,
   event: {
     item: {
       title: '',
