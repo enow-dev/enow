@@ -21,6 +21,9 @@ import FacebookIcon from '../icons/facebook.svg';
 import GithubIcon from '../icons/github.svg';
 import * as AouthActions from '../Actions/Aouth';
 
+import getGithubID from '../Utils/AouthClientID';
+import getUrl from '../Utils/UrlScheme';
+
 const styles = theme => ({
   root: {
     width: '100%',
@@ -155,6 +158,7 @@ class Header extends React.Component {
                         IT勉強会・イベント検索
                       </Typography>
                     </Grid>
+                    {`ClientID=${getGithubID()},Url=${getUrl()}`}
                   </Grid>
                   </div>
               </Grid>
