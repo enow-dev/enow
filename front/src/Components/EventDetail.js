@@ -36,7 +36,7 @@ class EventDetail extends React.Component {
   componentWillReceiveProps() {
     const { error, history } = this.props;
     if (error.isError) {
-      history.push('/');
+      history.push('/NotFound');
     }
   }
   renderMain() {

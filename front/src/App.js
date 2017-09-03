@@ -15,6 +15,7 @@ class App extends React.Component {
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/events" component={Events} />
+            <Route path="/NotFound" component={NotFound} />
             <Route component={NotFound} />
           </Switch>
         </Header>

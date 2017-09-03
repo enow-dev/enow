@@ -282,8 +282,8 @@ class Events extends React.Component {
   render() {
     return (
       <Switch>
-        <Route key={1} exact path={`${this.props.match.url}`} render={this.renderComponent} />
-        <Route key={2} path={`${this.props.match.url}/:id`} component={EventDetail} />
+        <Route　exact path={`${this.props.match.url}`} render={this.renderComponent} />
+        <Route path={`${this.props.match.url}/:id`} component={EventDetail} />
       </Switch>
     );
   }

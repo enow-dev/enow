@@ -159,7 +159,7 @@ SearchBox.propTypes = {
 };
 SearchBox.defaultProps = {
   rootClass: '',
-  handleSubmit: false,
+  handleSubmit: null,
 };
 
 const mapDispatchToProps = dispatch => ({
