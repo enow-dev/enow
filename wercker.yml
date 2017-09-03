@@ -61,9 +61,11 @@ build:
         npm install
         npm run build
   - script:
-      name: dev.yamlを本番用のものを設定する
+      name: envを本番用のものを設定する
       code: |
         cp -f ${SRC}/env.yaml.staging ${SRC}/env.yaml
+        rm -f ${FSRC}/.env.dev
+        rm -f ${FSRC}/.env.production
         cp -f ${FSRC}/.env.staging ${FSRC}/.env
   - script:
       name: goapp build
