@@ -47,7 +47,7 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 	se := model.NewSearchEventsDB(indexName)
 	se.SetLimit(appCtx, 20)
 	se.Sort(appCtx, "StartAt", true)
-	se.SetPeriodDate(appCtx, "EndAt >", now)
+	se.SetPeriodDate(appCtx, "EndAt > ", now)
 	se.SetPref(appCtx, ctx.Pref)
 	se.SetCursor(appCtx, ctx.Cursor)
 	se.SetNotSearchID(appCtx, userKey)
