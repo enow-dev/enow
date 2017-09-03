@@ -44,7 +44,7 @@ func (p *Parser) sendQuery() {
 		return
 	}
 	if p.Token != "" {
-		req.Header.Set("Authorization", p.Token)
+		req.Header.Set("Authorization", fmt.Sprint("Bearer ", p.Token))
 	}
 
 	client := urlfetch.Client(ctx)
@@ -87,9 +87,10 @@ func (p *Parser) atndJSONParse() (events []Events, err error) {
 		events[i].Coords.Lat, _ = strconv.ParseFloat(v.Event.Lat, 64)
 		events[i].Coords.Lng, _ = strconv.ParseFloat(v.Event.Lon, 64)
 		events[i].Identification = fmt.Sprintf("%d-%d", constant.AtndID, v.Event.APIEventID)
-		events[i].Address = util.RemovePoscode(util.SimpleStringJoin(v.Event.Address, v.Event.Place))
-		events[i].Pref = util.ConvertIDFromAddress(v.Event.Address)
-		events[i].Hash = createDataHash(events[i])
+		events[i].Address = util.FormatAddress(v.Event.Address)
+		events[i].Place = util.FormatAddress(v.Event.Place)
+		events[i].Area = util.GetAreaFromAddress(events[i].Address)
+		events[i].Pref = util.ConvertIDFromAddress(events[i].Address)
 	}
 	return events, nil
 }
@@ -112,9 +113,10 @@ func (p *Parser) connpassJSONParse() (events []Events, err error) {
 		events[i].Coords.Lat, _ = strconv.ParseFloat(v.Lat, 64)
 		events[i].Coords.Lng, _ = strconv.ParseFloat(v.Lon, 64)
 		events[i].Identification = fmt.Sprintf("%d-%d", constant.ConnpassID, v.APIEventID)
-		events[i].Address = util.RemovePoscode(util.SimpleStringJoin(v.Address, v.Place))
-		events[i].Pref = util.ConvertIDFromAddress(v.Address)
-		events[i].Hash = createDataHash(events[i])
+		events[i].Address = util.FormatAddress(v.Address)
+		events[i].Place = util.FormatAddress(v.Place)
+		events[i].Area = util.GetAreaFromAddress(events[i].Address)
+		events[i].Pref = util.ConvertIDFromAddress(events[i].Address)
 	}
 	return events, nil
 }
@@ -134,27 +136,15 @@ func (p *Parser) doorkeeperJSONParse() (events []Events, err error) {
 		util.CopyStruct(v.Event, e)
 		events[i] = *e
 		events[i].APIID = constant.DoorkeeperID
-		events[i].Address = util.RemovePoscode(events[i].Address)
 		events[i].Coords.Lat, _ = strconv.ParseFloat(v.Event.Lat, 64)
 		events[i].Coords.Lng, _ = strconv.ParseFloat(v.Event.Long, 64)
 		events[i].Identification = fmt.Sprintf("%d-%d", constant.DoorkeeperID, v.Event.APIEventID)
-		events[i].Pref = util.ConvertIDFromAddress(v.Event.Address)
-		events[i].Hash = createDataHash(events[i])
+		events[i].Address = util.FormatAddress(v.Event.Address)
+		events[i].Place = ""
+		events[i].Area = util.GetAreaFromAddress(events[i].Address)
+		events[i].Pref = util.ConvertIDFromAddress(events[i].Address)
 	}
 	return events, nil
-}
-
-func createDataHash(e Events) string {
-	d := util.CommaDelimiterStringJoin(
-		e.Title,
-		e.Description,
-		e.URL,
-		e.Address,
-		string(e.Limit),
-		string(e.Accepted),
-		string(e.StartAt.Format("2006-01-02 15:04:05")),
-		string(e.EndAt.Format("2006-01-02 15:04:05")))
-	return util.GenHashFromString(d)
 }
 
 // ConvertingToJSON リクエストを投げてJSONパースをする

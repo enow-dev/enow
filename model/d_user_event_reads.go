@@ -67,9 +67,9 @@ func (db *UserEventReadsDB) UpdateExcludeRedEventQ(appCtx context.Context, execA
 		lastIndex := len(eventIDs) - 1
 		for k, eventID := range eventIDs {
 			if lastIndex == k {
-				excludeRedEventQ = util.SpaceDelimiterStringJoin(excludeRedEventQ, "NOT ID:", fmt.Sprint(eventID))
+				excludeRedEventQ = util.DelimiterByCharCon("", excludeRedEventQ, "NOT ID:", fmt.Sprint(eventID))
 			} else {
-				excludeRedEventQ = util.SpaceDelimiterStringJoin(excludeRedEventQ, "NOT ID:", fmt.Sprint(eventID), " AND")
+				excludeRedEventQ = util.DelimiterByCharCon("", excludeRedEventQ, "NOT ID:", fmt.Sprint(eventID), " AND")
 			}
 		}
 		u.ExcludeRedEventQ = excludeRedEventQ

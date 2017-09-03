@@ -156,9 +156,9 @@ func (db *SearchEventsDB) genQuery(appCtx context.Context) string {
 	lastIndex := len(db.queries) - 1
 	for k, v := range db.queries {
 		if k == lastIndex {
-			q = util.SpaceDelimiterStringJoin(q, fmt.Sprintf("%s", v))
+			q = util.DelimiterByCharCon("", q, fmt.Sprintf("%s", v))
 		} else {
-			q = util.SpaceDelimiterStringJoin(q, fmt.Sprintf("%s AND", v))
+			q = util.DelimiterByCharCon("", q, fmt.Sprintf("%s AND", v))
 		}
 	}
 	return q

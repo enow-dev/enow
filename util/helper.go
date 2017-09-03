@@ -78,12 +78,42 @@ func CopyStruct(src interface{}, dst interface{}) error {
 	return nil
 }
 
-var rePoscode = regexp.MustCompile(`〒\d{3}-\d{4}($|\s)`)
+var rePoscode = regexp.MustCompile(`〒*\d{3}.*\d{4}`)
 
 // RemovePoscode 郵便番号削除
 func RemovePoscode(str string) string {
 	str = rePoscode.ReplaceAllString(str, "")
 	return str
+}
+
+var reSpace = regexp.MustCompile(`( |　)`)
+
+// RemoveSpace 無駄なスペースを削除する
+func RemoveSpace(str string) string {
+	str = reSpace.ReplaceAllString(str, "")
+	return str
+}
+
+var reAddress = regexp.MustCompile(`((?:旭川|伊達|石狩|盛岡|奥州|田村|南相馬|那須塩原|東村山|武蔵村山|羽村|十日町|上越|富山|野々市|大町|蒲郡|四日市|姫路|大和郡山|廿日市|下松|岩国|田川|大村)市|.+?郡(?:玉村|大町|.+?)[町村]|.+?市.+?区|.+?[市区町村])`)
+
+// GetAreaFromAddress 住所から市区町村までを取得する
+func GetAreaFromAddress(address string) string {
+	vs := reAddress.FindSubmatch([]byte(address))
+	if len(vs) != 2 {
+		return ""
+	}
+	if vs[1] == nil {
+		return ""
+	}
+	return string(vs[1])
+}
+
+// FormatAddress 住所情報の整形をする　さらに情報が増えたら配列で引数を取る
+func FormatAddress(address string) string {
+	address = RemoveSpace(address)
+	address = RemovePoscode(address)
+	address = strings.TrimSpace(address)
+	return address
 }
 
 // nolint
@@ -99,31 +129,12 @@ func RemoveDuplicateInt64(args []int64) []int64 {
 	return results
 }
 
-// CommaDelimiterStringJoin 文字列結合（カンマ区切り）
-func CommaDelimiterStringJoin(strs ...string) string {
+// DelimiterByCharCon 指定区切り文字でも字を連結する
+func DelimiterByCharCon(delimiter string, strs ...string) string {
 	var concatenateStr bytes.Buffer
 	for _, v := range strs {
 		concatenateStr.Write([]byte(v))
-		concatenateStr.Write([]byte{','})
-	}
-	return concatenateStr.String()
-}
-
-// SimpleStringJoin 文字列結合
-func SimpleStringJoin(strs ...string) string {
-	var concatenateStr bytes.Buffer
-	for _, v := range strs {
-		concatenateStr.Write([]byte(v))
-	}
-	return concatenateStr.String()
-}
-
-// SpaceDelimiterStringJoin スペース区切りの文字結合
-func SpaceDelimiterStringJoin(strs ...string) string {
-	var concatenateStr bytes.Buffer
-	for _, v := range strs {
-		concatenateStr.Write([]byte(v))
-		concatenateStr.Write([]byte{' '})
+		concatenateStr.Write([]byte(delimiter))
 	}
 	return concatenateStr.String()
 }

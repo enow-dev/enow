@@ -26,9 +26,9 @@ type Events struct {
 	StartAt        time.Time          `json:"start_at" datastore:""`
 	EndAt          time.Time          `json:"end_at" datastore:""`
 	URL            string             `json:"url" datastore:",noindex"`
-	Hash           string             `json:"hash" datastore:""`
 	Address        string             `json:"address" datastore:""`
 	Place          string             `json:"place" datastore:""`
+	Area           string             `json:"area" datastore:""`
 	Coords         appengine.GeoPoint `json:"coords" datastore:""`
 	Tags           []string           `json:"tags" datastore:",noindex"`
 	Limit          int                `json:"limit" datastore:""`
@@ -176,6 +176,7 @@ func (e *Events) EventToEventShow() *app.EventShow {
 	event.URL = e.URL
 	event.Address = e.Address
 	event.Place = e.Place
+	event.Area = e.Area
 	event.Lat = e.Coords.Lat
 	event.Lon = e.Coords.Lng
 	// TODO: タグ機能実装したら対応する
