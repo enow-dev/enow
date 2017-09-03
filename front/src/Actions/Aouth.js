@@ -1,5 +1,6 @@
 import Cookies from 'universal-cookie';
 import * as types from '../Constants/ActionTypes';
+import getUrl from '../Utils/UrlScheme';
 
 const cookies = new Cookies();
 
@@ -14,15 +15,7 @@ export const loginFromQookie = aouth => (
 );
 export const logout = () => ({ type: types.LOGOUT });
 function login(code) {
-  let scheme = process.env.REACT_APP_API_Scheme;
-  if (scheme == null) {
-    scheme = process.env.Scheme;
-  }
-  let host = process.env.REACT_APP_API_Host;
-  if (host == null) {
-    host = process.env.Host;
-  }
-  const url = `http://localhost:8080/auth/login?code=${code}`;
+  const url = `${getUrl()}/auth/login?code=${code}`;
   return (dispatch) => {
     dispatch(fetchLogin());
     return fetch(url, {
@@ -97,7 +90,7 @@ export function isCookieAouth() {
 export function startAouthGithub() {
   const CLIENT_ID = '87a42765a18adc939d0a';
   return (dispatch) => {
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user:email&redirect_uri=http://localhost:3000/login`;
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user:email&redirect_uri=${getUrl()}/login`;
     return dispatch(startAouth());
   };
 }
