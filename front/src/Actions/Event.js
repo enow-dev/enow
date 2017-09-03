@@ -1,4 +1,5 @@
 import * as types from '../Constants/ActionTypes';
+import getUrl from '../Utils/UrlScheme';
 
 export const receiveEvent = event => (
   { type: types.RECEIVE_EVENT, event }
@@ -6,15 +7,7 @@ export const receiveEvent = event => (
 export const fetchEvent = () => ({ type: types.FETCH_EVENT });
 
 function getEvent(eventId) {
-  let scheme = process.env.REACT_APP_API_Scheme;
-  if (scheme == null) {
-    scheme = process.env.Scheme;
-  }
-  let host = process.env.REACT_APP_API_Host;
-  if (host == null) {
-    host = process.env.Host;
-  }
-  const url = `${scheme}${host}/api/events/${eventId}`;
+  const url = `${getUrl()}/api/events/${eventId}`;
   return (dispatch) => {
     dispatch(fetchEvent());
     return fetch(url, {
