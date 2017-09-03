@@ -36,8 +36,6 @@ const styles = theme =>({
   },
   suggestionsContainerOpen: {
     position: 'absolute',
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit * 3,
     left: 0,
     right: 0,
     zIndex: 2,
@@ -234,7 +232,6 @@ class Home extends React.Component {
 
   render() {
     const { classes,autosuggests } = this.props;
-    console.log(this.props);
     return (
       <Grid
         container
@@ -297,14 +294,14 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  classes: styles,
+  classes: PropTypes.object.isRequired,
   errorActions: PropTypes.shape({
     removeError: PropTypes.func,
   }),
 };
 
 Home.defaultProps = {
-  classes: styles,
+  classes: Object,
   errorActions: PropTypes.shape({
     removeError: null,
   }),

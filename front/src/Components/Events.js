@@ -122,8 +122,8 @@ class Events extends React.Component {
   renderEventsBox() {
     const { events } = this.props;
     return events.list.map((item,index) =>
-      <Grid item style={{ width: '100%' }}>
-        <EventBox key={index} event={item} handleEditJump={this.handleEditJump} handleProviderJump={this.handleProviderJump}/>
+      <Grid item key={index} style={{ width: '100%' }}>
+        <EventBox event={item} handleEditJump={this.handleEditJump} handleProviderJump={this.handleProviderJump}/>
       </Grid>,
     );
   }
@@ -282,8 +282,8 @@ class Events extends React.Component {
   render() {
     return (
       <Switch>
-        <Route exact path={`${this.props.match.url}`} render={this.renderComponent} />
-        <Route path={`${this.props.match.url}/:id`} component={EventDetail} />
+        <Route key={1} exact path={`${this.props.match.url}`} render={this.renderComponent} />
+        <Route key={2} path={`${this.props.match.url}/:id`} component={EventDetail} />
       </Switch>
     );
   }

@@ -168,7 +168,7 @@ class Header extends React.Component {
           </Toolbar>
         </AppBar>
         <MediaQuery query="(max-width:1024px)">
-          <SubHeader />
+          <SubHeader classes={classes}/>
         </MediaQuery>
         <AccountDialog
           isGithubAouth={aouth.isAouth}
@@ -181,18 +181,18 @@ class Header extends React.Component {
   }
 }
 Header.propTypes = {
-  classes: styles,
+  classes: PropTypes.object.isRequired,
   children: PropTypes.node,
 };
 Header.defaultProps = {
-  classes: styles,
+  classes: Object,
   children: null,
 };
 SubHeader.propTypes = {
-  classes: styles,
+  classes: PropTypes.object.isRequired,
 };
 SubHeader.defaultProps = {
-  classes: styles,
+  classes: Object,
 };
 
 const mapStateToProps = state => ({

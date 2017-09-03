@@ -134,40 +134,40 @@ class EventBox extends React.Component {
           spacing={24}
         >
           <Grid item>
-        <Typography
-          className={this.state.isTitleHover ? classes.cardTitleHover : classes.cardTitle}
-          type="headline"
-          component="a"
-          href="#"
-          align="left"
-          onClick={() => {
-            handleEditJump(event);
-            return false;
-          }}
-          onMouseEnter={() => {
-            this.setState({ isTitleHover: true });
-          }}
-          onMouseLeave={() => {
-            this.setState({ isTitleHover: false });
-          }}
-        >
-          {title}
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Button
-          className={
-            this.state.isFavorite ? classes.favoriteButton : classes.noFavoriteButton
-          }
-          dense
-          onClick={() => {
-            this.setState({ isFavorite: !this.state.isFavorite });
-          }}
-        >
-          {this.state.isFavorite ? 'お気に入り中' : 'お気に入りする'}
-        </Button>
-      </Grid>
-      </Grid>
+            <Typography
+              className={this.state.isTitleHover ? classes.cardTitleHover : classes.cardTitle}
+              type="headline"
+              component="a"
+              href="#"
+              align="left"
+              onClick={() => {
+                handleEditJump(event);
+                return false;
+              }}
+              onMouseEnter={() => {
+                this.setState({ isTitleHover: true });
+              }}
+              onMouseLeave={() => {
+                this.setState({ isTitleHover: false });
+              }}
+            >
+              {title}
+            </Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            className={
+              this.state.isFavorite ? classes.favoriteButton : classes.noFavoriteButton
+            }
+            dense
+            onClick={() => {
+              this.setState({ isFavorite: !this.state.isFavorite });
+            }}
+          >
+            {this.state.isFavorite ? 'お気に入り中' : 'お気に入りする'}
+          </Button>
+        </Grid>
+        </Grid>
         <CardContent>
           <List>
             <ListItem>
@@ -192,8 +192,8 @@ class EventBox extends React.Component {
             </ListItem>
             <ListItem>
               <Grid container direction="row" justify="flex-start" align="center">
-                {event.tags.map(item =>
-                  <Grid item>
+                {event.tags.map((item, index) =>
+                  <Grid item key={index}>
                     <Button dense className={classes.button}>
                       {item}
                     </Button>
@@ -237,7 +237,7 @@ class EventBox extends React.Component {
   }
 }
 EventBox.propTypes = {
-  classes: Object,
+  classes: PropTypes.object.isRequired,
   event: PropTypes.shape({
     startAt: PropTypes.string.isRequired,
     endAt: PropTypes.string.isRequired,
@@ -247,7 +247,7 @@ EventBox.propTypes = {
   }),
 };
 EventBox.defaultProps = {
-  classes: null,
+  classes: Object,
   event: PropTypes.shape({
     startAt: '',
     endAt: '',
