@@ -93,7 +93,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("end_at")
 		Attribute("url")
 		//Attribute("address")
-		Attribute("place")
+		//Attribute("place")
 		Attribute("area")
 		//Attribute("lat")
 		//Attribute("lon")
@@ -112,8 +112,8 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"end_at",
 			"url",
 			//"address",
-			"place",
-			//"area",
+			//"place",
+			"area",
 			//"lat",
 			//"lon",
 			"limit",

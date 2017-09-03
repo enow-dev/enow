@@ -167,6 +167,7 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 		s.StartAt = e.StartAt
 		s.EndAt = e.EndAt
 		s.Place = e.Place
+		s.Area = e.Area
 		s.Address = e.Address
 		s.Identification = e.Identification
 		s.Description = search.HTML(e.Description)

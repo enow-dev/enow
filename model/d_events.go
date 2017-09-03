@@ -153,7 +153,7 @@ func (e *Events) EventToEventTiny() *app.EventTiny {
 	event.StartAt = e.StartAt
 	event.EndAt = e.EndAt
 	event.URL = e.URL
-	event.Place = e.Place
+	event.Area = e.Area
 	// TODO: タグ機能実装したら対応する
 	//event.Tags          = e.Tags
 	event.Tags = []string{"js", "php"}

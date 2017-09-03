@@ -35,6 +35,7 @@ type SearchEvents struct {
 	URL            string
 	Address        string
 	Place          string
+	Area           string
 	Coords         appengine.GeoPoint
 	Tags           search.Atom
 	Limit          string
@@ -173,7 +174,7 @@ func (s *SearchEvents) SearchEventToEventTiny() *app.EventTiny {
 	event.StartAt = s.StartAt
 	event.EndAt = s.EndAt
 	event.URL = s.URL
-	event.Place = s.Place
+	event.Area = s.Area
 	// TODO: タグ機能実装したら対応する
 	//event.Tags = s.Tags
 	event.Tags = []string{"js", "php"}
