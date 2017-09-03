@@ -3,6 +3,12 @@ package controller
 import (
 	"time"
 
+	yaml "gopkg.in/yaml.v1"
+
+	"golang.org/x/oauth2"
+
+	"os"
+
 	"github.com/enow-dev/enow/app"
 	"github.com/enow-dev/enow/config"
 	"github.com/enow-dev/enow/model"
@@ -11,6 +17,7 @@ import (
 	"github.com/mjibson/goon"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
+	"google.golang.org/appengine/log"
 )
 
 // AuthController implements the auth resource.
@@ -44,13 +51,35 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 
 	// Put your logic here
 	appCtx := appengine.NewContext(ctx.Request)
-	oauthConfs, err := config.NewOauthsFromFile("../config/oauth.yaml")
-	if err != nil {
-		return ctx.InternalServerError(goa.ErrInternal(err))
-	}
-	oauthConf, err := oauthConfs.Get("github.com")
-	if err != nil {
-		return ctx.InternalServerError(goa.ErrInternal(err))
+	var oauthConf *oauth2.Config
+	// TODO: 関数を別で作成する
+	if os.Getenv("Op") == "develop" {
+		oauthConfs, err := config.NewOauthsFromFile("../config/oauth.yaml")
+		if err != nil {
+			log.Errorf(appCtx, "設定ファイル読み込みエラー(1): %v", err)
+			return ctx.InternalServerError(goa.ErrInternal(err))
+		}
+		oauthConf, err = oauthConfs.Get("github.com")
+		if err != nil {
+			log.Errorf(appCtx, "設定ファイル読み込みエラー(2): %v", err)
+			return ctx.InternalServerError(goa.ErrInternal(err))
+		}
+	} else {
+		cs, err := util.ReadFileFromBucket(appCtx, "oauth.yaml")
+		if err != nil {
+			log.Errorf(appCtx, "設定ファイル読み込みエラー(3): %v", err)
+			return ctx.InternalServerError(goa.ErrInternal(err))
+		}
+		var conf config.Oauths
+		if err = yaml.Unmarshal(cs, &conf); err != nil {
+			log.Errorf(appCtx, "設定ファイル読み込みエラー(4): %v", err)
+			return ctx.InternalServerError(goa.ErrInternal(err))
+		}
+		oauthConf, err = conf.Get("github.com")
+		if err != nil {
+			log.Errorf(appCtx, "設定ファイル読み込みエラー(5): %v", err)
+			return ctx.InternalServerError(goa.ErrInternal(err))
+		}
 	}
 
 	// Github OAuthトークン取得
