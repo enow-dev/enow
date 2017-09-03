@@ -60,6 +60,7 @@ build:
       name: dev.yamlを本番用のものを設定する
       code: |
         cp -f ${SRC}/env.yaml.staging ${SRC}/env.yaml
+        cp -f ${SRC}/front/.env.staging ${SRC}/front/.env
   - script:
       name: goapp build
       code: |
