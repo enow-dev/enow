@@ -4,6 +4,7 @@ import Header from './Components/Header';
 import Home from './Components/Home';
 import Login from './Components/Login';
 import Events from './Components/Events';
+import NotFound from './Components/NotFound';
 
 class App extends React.Component {
   render() {
@@ -14,6 +15,8 @@ class App extends React.Component {
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/events" component={Events} />
+            <Route path="/NotFound" component={NotFound} />
+            <Route component={NotFound} />
           </Switch>
         </Header>
       </Router>

@@ -36,7 +36,7 @@ class EventDetail extends React.Component {
   componentWillReceiveProps() {
     const { error, history } = this.props;
     if (error.isError) {
-      history.push('/');
+      history.push('/NotFound');
     }
   }
   renderMain() {
@@ -94,8 +94,8 @@ EventDetail.propTypes = {
   actions: PropTypes.shape({
     getEventIfNeeded: PropTypes.func.isRequired,
   }),
-  match: Object,
-  classes: Object,
+  match: PropTypes.object,
+  classes: PropTypes.object,
   event: PropTypes.shape({
     item: PropTypes.object.isRequired,
   }),
@@ -104,8 +104,8 @@ EventDetail.defaultProps = {
   actions: {
     getEventIfNeeded: null,
   },
-  match: {},
-  classes: styles,
+  match: Object,
+  classes: Object,
   event: {
     item: {
       title: '',

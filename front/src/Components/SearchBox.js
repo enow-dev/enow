@@ -80,8 +80,11 @@ class SearchBox extends React.Component {
     this.setState({keyword: event.target.value})
   }
   handleSubmit = () => {
-    const { eventsAction } = this.props;
+    const { eventsAction, handleSubmit } = this.props;
     const { alreadyCheck, keyword, selectedIndex } = this.state;
+    if(handleSubmit){
+      handleSubmit();
+    }
     eventsAction.getEventsIfNeeded(false, alreadyCheck, keyword, selectedIndex);
   }
   render() {
@@ -152,9 +155,11 @@ class SearchBox extends React.Component {
 }
 SearchBox.propTypes = {
   rootClass: PropTypes.string,
+  handleSubmit: PropTypes.func,
 };
 SearchBox.defaultProps = {
   rootClass: '',
+  handleSubmit: null,
 };
 
 const mapDispatchToProps = dispatch => ({
