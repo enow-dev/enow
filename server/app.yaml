@@ -2,7 +2,6 @@ application: enow-staging
 version: 1
 runtime: go
 api_version: go1.8
-instance_class: B8
 
 handlers:
 - url: /.*
