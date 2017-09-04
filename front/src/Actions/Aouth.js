@@ -5,12 +5,22 @@ import getGithubID from '../Utils/AouthClientID';
 
 const cookies = new Cookies();
 
+function setCookieAouth(aouth) {
+  cookies.remove('aouth', { path: '/' });
+  cookies.set('aouth', aouth, { path: '/', expires: new Date(aouth.expire) });
+}
+
 export const startAouth = () => ({ type: types.START_AOUTH });
 export const redirectAouth = () => ({ type: types.REDIRECT_AOUTH });
 export const fetchLogin = () => ({ type: types.FETCH_LOGIN });
-export const receiveLogin = aouth => (
-  { type: types.RECEIVE_LOGIN, aouth }
-);
+
+export function receiveLogin(aouth) {
+  return (dispatch) => {
+    setCookieAouth(aouth);
+    return dispatch({ type: types.RECEIVE_LOGIN, aouth });
+  };
+}
+
 export const loginFromQookie = aouth => (
   { type: types.LOGIN_FROM_QOOKIE, aouth }
 );
