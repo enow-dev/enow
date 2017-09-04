@@ -17,6 +17,7 @@ import { grey } from 'material-ui/colors';
 import PrefMenu from './PrefMenu';
 
 import * as EventsActions from '../Actions/Events';
+import * as SearchStashActions from '../Actions/SearchStash';
 
 const styles = theme => ({
   root: {},
@@ -68,25 +69,39 @@ class SearchBox extends React.Component {
     super(props);
     this.state = {
       keyword: '',
-      selectedIndex: 0,
-      alreadyCheck: false,
+      prefIndex: 0,
+      isRed: false,
+      fromDate: '',
     };
   }
 
-  handleChangeAleady = (event, checked) => {
-    this.setState({ alreadyCheck: checked });
-  };
-  handleChangeKeyword = (event) => {
-    this.setState({keyword: event.target.value})
+  componentWillMount() {
+    const { searchStash } = this.props;
+    this.setState({...searchStash});
   }
+
+  handleChangeAleady = (event, checked) => {
+    this.setState({ isRed: checked });
+  };
+
+  handleChangeKeyword = (event) => {
+    this.setState({keyword: event.target.value});
+  }
+
+  handleChangeFromDate = (event) => {
+    this.setState({fromDate: event.target.value});
+  }
+
   handleSubmit = () => {
-    const { eventsAction, handleSubmit } = this.props;
-    const { alreadyCheck, keyword, selectedIndex } = this.state;
+    const { eventsActions, handleSubmit, searchStashActions } = this.props;
+    const { isRed, keyword, prefIndex } = this.state;
     if(handleSubmit){
       handleSubmit();
     }
-    eventsAction.getEventsIfNeeded(false, alreadyCheck, keyword, selectedIndex);
+    searchStashActions.setSearchStash({...this.state});
+    eventsActions.getEventsIfNeeded(false, isRed, keyword, prefIndex);
   }
+
   render() {
     const { classes } = this.props;
     return (
@@ -120,15 +135,24 @@ class SearchBox extends React.Component {
             <TextField
               fullWidth
               placeholder="キーワード（PHP,UX）サジェスト？"
+              value={this.state.keyword}
               onChange={this.handleChangeKeyword}
             />
           </Grid>
           <Grid item className={classes.searchFormItem}>
-            <TextField fullWidth placeholder="開催日 From（自動的に入れる）" />
+            <TextField
+              fullWidth
+              placeholder="開催日 From（自動的に入れる）"
+              value={this.state.fromDate}
+              onChange={this.handleChangeFromDate}
+            />
           </Grid>
           <Grid item className={classes.searchFormItem}>
             <div className={classes.selectPlaceRoot}>
-              <PrefMenu onSelectPref={(event,index) => { this.setState({ selectedIndex: index}) }}/>
+              <PrefMenu
+                onSelectPref={(event,index) => { this.setState({ prefIndex: index}) }}
+                defaultPrefIndex={this.state.prefIndex}
+              />
             </div>
           </Grid>
           <Grid item className={classes.searchFormItem}>
@@ -136,7 +160,7 @@ class SearchBox extends React.Component {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={this.state.alreadyCheck}
+                    checked={this.state.isRed}
                     onChange={this.handleChangeAleady}
                     value="Aleady Check"
                   />
@@ -162,8 +186,12 @@ SearchBox.defaultProps = {
   handleSubmit: null,
 };
 
+const mapStateToProps = state => ({
+  searchStash: state.searchStash,
+})
 const mapDispatchToProps = dispatch => ({
-  eventsAction: bindActionCreators(EventsActions, dispatch),
+  eventsActions: bindActionCreators(EventsActions, dispatch),
+  searchStashActions: bindActionCreators(SearchStashActions, dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(SearchBox));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SearchBox));
