@@ -21,6 +21,7 @@ import PrefMenu from './PrefMenu';
 import * as ErrorActions from '../Actions/Error';
 import * as AutosuggestActions from '../Actions/Autosuggest';
 import * as EventsActions from '../Actions/Events';
+import * as SearchStashActions from '../Actions/SearchStash';
 
 const styles = theme =>({
   root: {
@@ -61,10 +62,16 @@ class Home extends React.Component {
     super(props);
     this.state={
       keyword: '',
-      selectedPrefIndex: 0,
+      prefIndex: 0,
     };
     props.errorActions.removeError();
   }
+
+  componentWillMount(){
+    const { searchStash } = this.props;
+    this.setState({...searchStash});
+  }
+
   renderInput(inputProps) {
     const { classes, home, value, ref, ...other } = inputProps;
 
@@ -160,9 +167,10 @@ class Home extends React.Component {
   };
 
   handleSubmit = () => {
-    const { eventsAction, history } = this.props;
-    const { keyword, selectedPrefIndex } = this.state;
-    eventsAction.getEventsIfNeeded(false,false, keyword, selectedPrefIndex);
+    const { eventsAction, history, searchStashActions } = this.props;
+    const { keyword, prefIndex } = this.state;
+    eventsAction.getEventsIfNeeded(false,false, keyword, prefIndex);
+    searchStashActions.setSearchStash({...this.state});
     history.push('/events');
   }
 
@@ -208,7 +216,10 @@ class Home extends React.Component {
                   onChange: this.handleKeywordChange,
                 }}
               />
-              <PrefMenu onSelectPref={(event,index) => { this.setState({selectedPrefIndex: index})}}/>
+              <PrefMenu
+                onSelectPref={(event,index) => { this.setState({prefIndex: index})}}
+                defaultPrefIndex={this.state.prefIndex}
+              />
               <Button
                 raised
                 color="primary"
@@ -246,11 +257,13 @@ Home.defaultProps = {
 const mapStateToProps = state => ({
   autosuggests: state.autosuggest,
   aouth: state.aouth,
+  searchStash: state.searchStash,
 });
 const mapDispatchToProps = dispatch => ({
   errorActions: bindActionCreators(ErrorActions, dispatch),
   autosuggestActions: bindActionCreators(AutosuggestActions, dispatch),
   eventsAction: bindActionCreators(EventsActions, dispatch),
+  searchStashActions: bindActionCreators(SearchStashActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Home));

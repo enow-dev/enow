@@ -62,11 +62,14 @@ class PrefMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      keyword: '',
       selectedPrefIndex: 0,
       isPrefOpen: false,
       anchorEl: undefined,
     };
+  }
+
+  componentDidMount(){
+    this.setState({ selectedPrefIndex: this.props.defaultPrefIndex});
   }
 
   handleClickPrefListItem = event => {
