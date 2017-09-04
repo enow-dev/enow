@@ -1,4 +1,3 @@
-import Cookies from 'universal-cookie';
 import {
   START_AOUTH,
   REDIRECT_AOUTH,
@@ -8,8 +7,6 @@ import {
   LOGIN_ERROR,
   LOGOUT,
 } from '../Constants/ActionTypes';
-
-const cookies = new Cookies();
 
 const initialState = {
   info: {
@@ -45,8 +42,6 @@ export default function aouth(state = initialState, action) {
       return Object.assign({}, state, { isFetching: true });
     case RECEIVE_LOGIN: {
       const newInfo = adaptionAouthInfo(action.aouth);
-      cookies.remove('aouth', { path: '/' });
-      cookies.set('aouth', newInfo, { path: '/', expires: newInfo.expireDate });
       return Object.assign({}, state, {
         isFetching: false,
         info: newInfo,
@@ -62,7 +57,7 @@ export default function aouth(state = initialState, action) {
         isError: true,
       });
     case LOGIN_FROM_QOOKIE: {
-      const newInfo = cookies.get('aouth');
+      const newInfo = adaptionAouthInfo(action.aouth);
       return Object.assign({}, state, {
         isFetching: false,
         info: newInfo,
