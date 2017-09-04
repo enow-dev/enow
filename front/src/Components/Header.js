@@ -20,6 +20,7 @@ import List, { ListItem, ListItemAvatar, ListItemText } from 'material-ui/List';
 import FacebookIcon from '../icons/facebook.svg';
 import GithubIcon from '../icons/github.svg';
 import * as AouthActions from '../Actions/Aouth';
+import * as SearchStashActions from '../Actions/SearchStash';
 
 import getGithubID from '../Utils/AouthClientID';
 import getUrl from '../Utils/UrlScheme';
@@ -97,9 +98,10 @@ class Header extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const { aouthActions } = this.props;
+  componentWillMount() {
+    const { aouthActions, searchStashActions } = this.props;
     aouthActions.isCookieAouth();
+    searchStashActions.isCookieST();
   }
 
   handleClickAvatar = () => {
@@ -204,6 +206,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   aouthActions: bindActionCreators(AouthActions, dispatch),
+  searchStashActions: bindActionCreators(SearchStashActions, dispatch),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header)));
