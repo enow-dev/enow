@@ -9,6 +9,7 @@ import (
 	"github.com/mjibson/goon"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
+	"google.golang.org/appengine/search"
 )
 
 // EventsDB DB
@@ -188,4 +189,28 @@ func (e *Events) EventToEventShow() *app.EventShow {
 	event.UpdatedAt = e.UpdatedAt
 	// TODO お気にい入り機能作ったら判定して格納する
 	return event
+}
+
+// EventToSearchEvents EventsをSearchEventsに格納する
+func (e *Events) EventToSearchEvents() *SearchEvents {
+	s := &SearchEvents{}
+	s.ID = fmt.Sprintf("%d", e.ID)
+	s.Title = e.Title
+	s.URL = e.URL
+	s.StartAt = e.StartAt
+	s.EndAt = e.EndAt
+	s.Place = e.Place
+	s.Area = e.Area
+	s.Address = e.Address
+	s.Identification = e.Identification
+	s.Description = search.HTML(e.Description)
+	s.Limit = fmt.Sprintf("%d", e.Limit)
+	s.Accepted = fmt.Sprintf("%d", e.Accepted)
+	s.Waiting = fmt.Sprintf("%d", e.Waiting)
+	s.Pref = fmt.Sprintf("%d", e.Pref)
+	s.APIID = fmt.Sprintf("%d", e.APIID)
+	s.Tags = "test"
+	s.CreatedAt = e.CreatedAt
+	s.UpdatedAt = e.UpdatedAt
+	return s
 }
