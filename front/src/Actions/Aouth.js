@@ -1,7 +1,5 @@
 import Cookies from 'universal-cookie';
 import * as types from '../Constants/ActionTypes';
-import getUrl from '../Utils/UrlScheme';
-import getGithubID from '../Utils/AouthClientID';
 
 const cookies = new Cookies();
 
@@ -26,7 +24,8 @@ export const loginFromQookie = aouth => (
 );
 export const logout = () => ({ type: types.LOGOUT });
 function login(code) {
-  const url = `${getUrl()}/auth/login?code=${code}`;
+  const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
+  const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/auth/login?code=${code}`;// eslint-disable-line
   return (dispatch) => {
     dispatch(fetchLogin());
     return fetch(url, {
@@ -100,7 +99,8 @@ export function isCookieAouth() {
 }
 export function startAouthGithub() {
   return (dispatch) => {
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${getGithubID()}&scope=user:email&redirect_uri=${getUrl()}/login`;
+    const { REACT_APP_ClientID, REACT_APP_API_Scheme, REACT_APP_FRONT_Host } = process.env;
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_ClientID}&scope=user:email&redirect_uri=${REACT_APP_API_Scheme}${REACT_APP_FRONT_Host}/login`;// eslint-disable-line
     return dispatch(startAouth());
   };
 }

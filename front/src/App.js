@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter as Router, withRouter } from 'react-router-dom';
-import Header from './Components/Header';
+import Aouth from './Components/Aouth';
 import Home from './Components/Home';
 import Login from './Components/Login';
 import Events from './Components/Events';
@@ -9,8 +9,8 @@ import NotFound from './Components/NotFound';
 class App extends React.Component {
   render() {
     return (
-      <Router>
-        <Header>
+      <Aouth>
+        <Router>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
@@ -18,8 +18,8 @@ class App extends React.Component {
             <Route path="/NotFound" component={NotFound} />
             <Route component={NotFound} />
           </Switch>
-        </Header>
-      </Router>
+        </Router>
+      </Aouth>
     );
   }
 }

@@ -6,6 +6,8 @@ import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import { CircularProgress } from 'material-ui/Progress';
 
+import Header from './Header';
+
 import * as AouthActions from '../Actions/Aouth';
 
 
@@ -53,7 +55,12 @@ class Login extends React.Component {
   render() {
     const {aouth, aouthActions} = this.props;
     aouthActions.checkAouth();
-    return  aouth.isFetching ? this.renderCenterProgress() :null;
+    return  aouth.isFetching ? (
+      <div>
+        <Header />
+        {this.renderCenterProgress()}
+      </div>
+    ) :null;
   }
 }
 const mapStateToProps = state => ({

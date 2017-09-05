@@ -22,15 +22,14 @@ import GithubIcon from '../icons/github.svg';
 import * as AouthActions from '../Actions/Aouth';
 import * as SearchStashActions from '../Actions/SearchStash';
 
-import getGithubID from '../Utils/AouthClientID';
-import getUrl from '../Utils/UrlScheme';
-
 const styles = theme => ({
+
   root: {
     width: '100%',
     height: '100%',
   },
   headerAppBar: {
+    color: '#fff',
 
   },
   subheader: {
@@ -99,8 +98,7 @@ class Header extends React.Component {
   }
 
   componentWillMount() {
-    const { aouthActions, searchStashActions } = this.props;
-    aouthActions.isCookieAouth();
+    const { searchStashActions } = this.props;
     searchStashActions.isCookieST();
   }
 
@@ -133,7 +131,8 @@ class Header extends React.Component {
   }
 
   render() {
-    const { classes, children, aouth, aouthActions } = this.props;
+    const { classes, children, aouth, aouthActions, tabsChildren } = this.props;
+    const { REACT_APP_ClientID, REACT_APP_API_Scheme, REACT_APP_API_Host, REACT_APP_FRONT_Host } = process.env;
     return (
       <div className={classes.root}>
         <AppBar position="static" className={classes.headerAppBar}>
@@ -151,16 +150,16 @@ class Header extends React.Component {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Typography type="display1" style={{ letterSpacing: 2 }}>
+                      <Typography type="display1" style={{ letterSpacing: 2, color: 'inherit' }}>
                         now
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Typography type="title" style={{ marginLeft: 20, marginTop: 10 }}>
+                      <Typography type="title" style={{ marginLeft: 20, marginTop: 10, color: 'inherit'}}>
                         IT勉強会・イベント検索
                       </Typography>
                     </Grid>
-                    {`ClientID=${getGithubID()}、Url=${getUrl()}`}
+                    {`ClientID=${REACT_APP_ClientID}、API_Scheme=${REACT_APP_API_Scheme}、API_Host=${REACT_APP_API_Host}、Front_Host=${REACT_APP_FRONT_Host}`}
                   </Grid>
                   </div>
               </Grid>
@@ -172,6 +171,7 @@ class Header extends React.Component {
               </Grid>
             </Grid>
           </Toolbar>
+          { tabsChildren ? tabsChildren : null }
         </AppBar>
         <MediaQuery query="(max-width:1024px)">
           <SubHeader classes={classes}/>

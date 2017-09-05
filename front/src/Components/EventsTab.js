@@ -1,24 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 
 function EventsTab(props) {
   return (
-    <AppBar position="static" className={props.appBarClass}>
-      <Tabs value={props.selectTabIndex} onChange={props.handleTabChange}>
-        <Tab label="開催昇順" />
-        <Tab label="開催降順" />
-        <Tab label="新着順" />
-      </Tabs>
-    </AppBar>
+    <Tabs value={props.selectTabIndex} onChange={props.handleTabChange}>
+      <Tab label="開催昇順" />
+      <Tab label="開催降順" />
+      <Tab label="新着順" />
+      <Tab label="お気に入り" />
+      <Tab label="過去の履歴" />
+    </Tabs>
   );
 }
 
 EventsTab.propTypes = {
   selectTabIndex: PropTypes.number,
   handleTabChange: PropTypes.func,
-  appBarClass: PropTypes.string,
 };
 
 EventsTab.defaultProps = {

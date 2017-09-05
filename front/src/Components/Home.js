@@ -17,6 +17,7 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 
 import PrefMenu from './PrefMenu';
+import Header from './Header';
 
 import * as ErrorActions from '../Actions/Error';
 import * as AutosuggestActions from '../Actions/Autosuggest';
@@ -177,65 +178,68 @@ class Home extends React.Component {
   render() {
     const { classes,autosuggests } = this.props;
     return (
-      <Grid
-        container
-        className={classes.root}
-        align="center"
-        direction="column"
-        justify="center"
-        spacing={40}
-      >
-        <Grid item>
-          <Typography type="display3">IT系勉強会・イベント検索</Typography>
+      <div>
+        <Header />
+        <Grid
+          container
+          className={classes.root}
+          align="center"
+          direction="column"
+          justify="center"
+          spacing={40}
+        >
+          <Grid item>
+            <Typography type="display3">IT系勉強会・イベント検索</Typography>
+          </Grid>
+          <Grid item>
+            <Typography type="headline" color="accent">検索結果：あなたにとっての新着情報 ◯◯件です</Typography>
+          </Grid>
+          <Grid item style={{ width: '50%' }}>
+            <Card>
+              <CardContent>
+                <Autosuggest
+                  theme={{
+                    container: classes.container,
+                    suggestionsContainerOpen: classes.suggestionsContainerOpen,
+                    suggestionsList: classes.suggestionsList,
+                    suggestion: classes.suggestion,
+                  }}
+                  renderInputComponent={this.renderInput}
+                  suggestions={autosuggests.suggests}
+                  onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+                  onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+                  renderSuggestionsContainer={this.renderSuggestionsContainer}
+                  getSuggestionValue={this.getSuggestionValue}
+                  renderSuggestion={this.renderSuggestion}
+                  inputProps={{
+                    autoFocus: true,
+                    classes,
+                    placeholder: 'Search a country (start with a)',
+                    value: this.state.keyword,
+                    onChange: this.handleKeywordChange,
+                  }}
+                />
+                <PrefMenu
+                  onSelectPref={(event,index) => { this.setState({prefIndex: index})}}
+                  defaultPrefIndex={this.state.prefIndex}
+                />
+                <Button
+                  raised
+                  color="primary"
+                  className={classes.submitButton}
+                  onClick={this.handleSubmit}
+                  >検索</Button>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item>
+            <Typography type="headline">クリエイターのみなさん朗報です</Typography>
+          </Grid>
+          <Grid item>
+            <Typography type="headline">昨日見た情報は検索結果に出ません</Typography>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Typography type="headline" color="accent">検索結果：あなたにとっての新着情報 ◯◯件です</Typography>
-        </Grid>
-        <Grid item style={{ width: '50%' }}>
-          <Card>
-            <CardContent>
-              <Autosuggest
-                theme={{
-                  container: classes.container,
-                  suggestionsContainerOpen: classes.suggestionsContainerOpen,
-                  suggestionsList: classes.suggestionsList,
-                  suggestion: classes.suggestion,
-                }}
-                renderInputComponent={this.renderInput}
-                suggestions={autosuggests.suggests}
-                onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-                onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-                renderSuggestionsContainer={this.renderSuggestionsContainer}
-                getSuggestionValue={this.getSuggestionValue}
-                renderSuggestion={this.renderSuggestion}
-                inputProps={{
-                  autoFocus: true,
-                  classes,
-                  placeholder: 'Search a country (start with a)',
-                  value: this.state.keyword,
-                  onChange: this.handleKeywordChange,
-                }}
-              />
-              <PrefMenu
-                onSelectPref={(event,index) => { this.setState({prefIndex: index})}}
-                defaultPrefIndex={this.state.prefIndex}
-              />
-              <Button
-                raised
-                color="primary"
-                className={classes.submitButton}
-                onClick={this.handleSubmit}
-                >検索</Button>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item>
-          <Typography type="headline">クリエイターのみなさん朗報です</Typography>
-        </Grid>
-        <Grid item>
-          <Typography type="headline">昨日見た情報は検索結果に出ません</Typography>
-        </Grid>
-      </Grid>
+      </div>
     );
   }
 }
