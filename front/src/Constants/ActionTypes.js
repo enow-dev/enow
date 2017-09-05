@@ -23,3 +23,10 @@ export const LOGOUT = 'LOGOUT';
 // Search Stash
 export const SET_SEARCH = 'SET_SEARCH';
 export const CLEAR_SEARCH = 'CLEAR_SEARCH';
+// Favorite
+export const FETCH_FAVORITE = 'FETCH_FAVORITE';
+export const RECEIVE_FAVORITE = 'RECEIVE_FAVORITE';
+export const PUT_FAVORITE = 'PUT_FAVORITE';
+export const PUT_RECEIVE_FAVORITE = 'PUT_RECEIVE_FAVORITE';
+export const DELETE_FAVORITE = 'DELETE_FAVORITE';
+export const DELETE_RECEIVE_FAVORITE = 'DELETE_RECEIVE_FAVORITE';

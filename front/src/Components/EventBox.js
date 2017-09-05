@@ -24,6 +24,7 @@ import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 
 import * as EventActions from '../Actions/Event';
+import * as FavoriteActions from '../Actions/Favorite';
 import propviderInfo from '../Constants/Provider';
 
 const styles = theme => ({
@@ -43,14 +44,14 @@ const styles = theme => ({
     color: `${grey[700]}`,
   },
   noFavoriteButton: {
-    border: `solid 1px ${theme.palette.primary.A700}`,
+    border: `solid 1px ${theme.palette.primary[500]}`,
     borderRadius: 10,
     backgroundColor: '#fff',
   },
   favoriteButton: {
-    border: `solid 1px ${theme.palette.primary.A700}`,
+    border: `solid 1px ${theme.palette.primary[500]}`,
     borderRadius: 10,
-    backgroundColor: `${theme.palette.primary.A700}`,
+    backgroundColor: `${theme.palette.primary[500]}`,
   },
 });
 
@@ -61,17 +62,22 @@ class EventBox extends React.Component {
       isOpenDrawer: false,
       isOpenedDrawer: false,
       eventDetail: null,
+      favorite: null,
       isTitleHover: false,
       isFavorite: false,
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.detail == null) {
-      return;
+    if (nextProps.detail !== null) {
+      if (nextProps.detail.item.id === this.props.event.id) {
+        this.setState({ eventDetail: nextProps.detail, isOpenDrawer: true, isOpenedDrawer: false });
+      }
     }
-    if (nextProps.detail.item.id === this.props.event.id) {
-      this.setState({ eventDetail: nextProps.detail, isOpenDrawer: true, isOpeedDrawer: false });
+    if(nextProps.favorite.resultEventId !== null) {
+      if(nextProps.favorite.resultEventId === this.props.event.id) {
+        this.setState({ isFavorite: !this.state.isFavorite});
+      }
     }
   }
 
@@ -84,9 +90,9 @@ class EventBox extends React.Component {
       this.setState({ isOpenDrawer: false });
       return;
     }
-    const { actions, event } = this.props;
+    const { eventActions, event } = this.props;
     if (this.state.isOpenedDrawer === false) {
-      actions.getEventIfNeeded(event.id);
+      eventActions.getEventIfNeeded(event.id);
     }
   }
 
@@ -108,7 +114,7 @@ class EventBox extends React.Component {
   }
 
   render() {
-    const { classes, event, handleEditJump, handleProviderJump } = this.props;
+    const { classes, event, handleEditJump, handleProviderJump, favoriteActions } = this.props;
     const startDate = new Date(event.startAt);
     const endDate = new Date(event.endAt);
     let title = String(event.title);
@@ -161,7 +167,8 @@ class EventBox extends React.Component {
             }
             dense
             onClick={() => {
-              this.setState({ isFavorite: !this.state.isFavorite });
+              favoriteActions.putFavoriteIfNeed(event.id)
+              //this.setState({ isFavorite: !this.state.isFavorite });
             }}
           >
             {this.state.isFavorite ? 'お気に入り中' : 'お気に入りする'}
@@ -259,10 +266,12 @@ EventBox.defaultProps = {
 
 const mapStateToProps = state => ({
   detail: state.event,
+  favorite: state.favorite,
   error: state.error,
 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(EventActions, dispatch),
+  eventActions: bindActionCreators(EventActions, dispatch),
+  favoriteActions: bindActionCreators(FavoriteActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EventBox));
