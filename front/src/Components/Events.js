@@ -11,6 +11,7 @@ import Typography from 'material-ui/Typography';
 import { grey, blue } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
 import { StickyContainer, Sticky } from 'react-sticky';
+import Header from './Header';
 import EventsTab from './EventsTab';
 import EventBox from './EventBox';
 import GithubIcon from '../icons/github.svg';
@@ -29,7 +30,8 @@ const styles = theme => ({
     marginTop: '20px',
   },
   tabsClass: {
-    backgroundColor: theme.palette.primary.A700,
+    backgroundColor: theme.palette.primary,
+    color: '#fff',
   },
   moreReadContainer: {
     paddingTop: '20px',
@@ -270,11 +272,7 @@ class Events extends React.Component {
     const { classes, events } = this.props;
     return (
       <div className={classes.root}>
-        <EventsTab
-          appBarClass={classes.tabsClass}
-          selectTabIndex={this.state.selectTabIndex}
-          handleTabChange={this.handleTabChange}
-        />
+        <Header tabsChildren={<EventsTab selectTabIndex={this.state.selectTabIndex} handleTabChange={this.handleTabChange} />}/>
         {events.isFetching ? this.renderCenterProgress() : this.renderMain()}
       </div>
     );

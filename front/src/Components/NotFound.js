@@ -6,6 +6,7 @@ import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 
+import Header from './Header';
 import SearchBox from './SearchBox';
 
 const styles = {
@@ -26,23 +27,26 @@ const styles = {
 
 function NotFound({ classes, history }) {
   return (
-    <Grid
-      container
-      className={classes.container}
-      align="center"
-      direction="column"
-      justify="center"
-    >
-      <Grid item className={classes.item}>
-        <Paper elevation={4}>
-          <div className={classes.message}>
-            <Typography gutterBottom type="display1">お探しのページは見つかりませんでした。</Typography>
-            <Typography type="headline">他のイベントを探してみませんか？</Typography>
-          </div>
-          <SearchBox handleSubmit={() => { history.push('/events'); }} />
-        </Paper>
+    <div>
+      <Header />
+      <Grid
+        container
+        className={classes.container}
+        align="center"
+        direction="column"
+        justify="center"
+      >
+        <Grid item className={classes.item}>
+          <Paper elevation={4}>
+            <div className={classes.message}>
+              <Typography gutterBottom type="display1">お探しのページは見つかりませんでした。</Typography>
+              <Typography type="headline">他のイベントを探してみませんか？</Typography>
+            </div>
+            <SearchBox handleSubmit={() => { history.push('/events'); }} />
+          </Paper>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }
 

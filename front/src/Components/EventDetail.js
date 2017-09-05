@@ -12,6 +12,8 @@ import Typography from 'material-ui/Typography';
 
 import * as EventActions from '../Actions/Event';
 
+import Header from './Header';
+
 const styles = {
   root: {
     width: '100%',
@@ -83,10 +85,12 @@ class EventDetail extends React.Component {
   }
   render() {
     const { error } = this.props;
-    if (error.isError) {
-      return this.renderEmpty();
-    }
-    return this.renderMain();
+    return (
+      <div>
+        <Header />
+        { error.isError ? this.renderEmpty() : this.renderMain() }
+      </div>
+    );
   }
 }
 
