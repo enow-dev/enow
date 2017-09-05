@@ -1,5 +1,7 @@
+import Cookies from 'universal-cookie';
 import * as types from '../Constants/ActionTypes';
 
+const cookies = new Cookies();
 export const receiveEvent = event => (
   { type: types.RECEIVE_EVENT, event }
 );
@@ -10,11 +12,12 @@ function getEvent(eventId) {
   const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/events/${eventId}`;// eslint-disable-line
   return (dispatch) => {
     dispatch(fetchEvent());
+    const aouth = cookies.get('aouth');
     return fetch(url, {
       method: 'GET',
       headers: {
         Accept: 'application/vnd.event+json', // eslint-disable-line
-        'X-Authorization': 'hogehoge',
+        'X-Authorization': `${aouth.token}`,
         'Content-Type': 'application/json',
       },
     })
