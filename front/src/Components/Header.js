@@ -22,9 +22,6 @@ import GithubIcon from '../icons/github.svg';
 import * as AouthActions from '../Actions/Aouth';
 import * as SearchStashActions from '../Actions/SearchStash';
 
-import getGithubID from '../Utils/AouthClientID';
-import getUrl from '../Utils/UrlScheme';
-
 const styles = theme => ({
 
   root: {
@@ -135,6 +132,7 @@ class Header extends React.Component {
 
   render() {
     const { classes, children, aouth, aouthActions, tabsChildren } = this.props;
+    const { REACT_APP_ClientID, REACT_APP_API_Scheme, REACT_APP_API_Host, REACT_APP_FRONT_Host } = process.env;
     return (
       <div className={classes.root}>
         <AppBar position="static" className={classes.headerAppBar}>
@@ -161,7 +159,7 @@ class Header extends React.Component {
                         IT勉強会・イベント検索
                       </Typography>
                     </Grid>
-                    {`ClientID=${getGithubID()}、Url=${getUrl()}`}
+                    {`ClientID=${REACT_APP_ClientID}、API_Scheme=${REACT_APP_API_Scheme}、API_Host=${REACT_APP_API_Host}、Front_Host=${REACT_APP_FRONT_Host}`}
                   </Grid>
                   </div>
               </Grid>
