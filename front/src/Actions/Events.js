@@ -1,5 +1,4 @@
 import * as types from '../Constants/ActionTypes';
-import getUrl from '../Utils/UrlScheme';
 
 export const receiveEvents = (events, isMoreRead) => (
   { type: types.RECEIVE_EVENTS, events, isMoreRead }
@@ -7,7 +6,8 @@ export const receiveEvents = (events, isMoreRead) => (
 export const fetchEvents = isMoreRead => ({ type: types.FETCH_EVENTS, isMoreRead });
 
 function getEvents(isFavorite, isRed, isMoreRead, q, pref) {
-  const url = `${getUrl()}/api/events?is_favorite=${isFavorite}&is_red=${isRed}${q ? `&q=${q}` : ''}${pref > 0 ? `&pref=${pref}` : ''}`;
+  const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
+  const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/events?is_favorite=${isFavorite}&is_red=${isRed}${q ? `&q=${q}` : ''}${pref > 0 ? `&pref=${pref}` : ''}`;// eslint-disable-line
   return (dispatch) => {
     dispatch(fetchEvents(isMoreRead));
     return fetch(url, {

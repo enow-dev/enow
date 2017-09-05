@@ -1,5 +1,4 @@
 import * as types from '../Constants/ActionTypes';
-import getUrl from '../Utils/UrlScheme';
 
 export const receiveEvent = event => (
   { type: types.RECEIVE_EVENT, event }
@@ -7,7 +6,8 @@ export const receiveEvent = event => (
 export const fetchEvent = () => ({ type: types.FETCH_EVENT });
 
 function getEvent(eventId) {
-  const url = `${getUrl()}/api/events/${eventId}`;
+  const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
+  const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/events/${eventId}`;// eslint-disable-line
   return (dispatch) => {
     dispatch(fetchEvent());
     return fetch(url, {
