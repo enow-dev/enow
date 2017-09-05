@@ -21,7 +21,9 @@ class Aouth extends React.Component {
 }
 
 Aouth.propTypes = {
-  aouthActions: PropTypes.func.isRequired,
+  aouthActions: PropTypes.shape({
+    isCookieAouth: PropTypes.func.isRequired,
+  }).isRequired,
   children: PropTypes.node,
 };
 Aouth.defaultProps = {
