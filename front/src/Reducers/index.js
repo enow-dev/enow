@@ -5,10 +5,12 @@ import autosuggest from './Autosuggest';
 import aouth from './Aouth';
 import searchStash from './SearchStash';
 import favorite from './Favorite';
+import listOfEvent from './Events/Events';
 
 const reducers = {
-  events,
-  event,
+  // events,
+  // event,
+  events: listOfEvent,
   error,
   autosuggest,
   aouth,
