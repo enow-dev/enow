@@ -22,7 +22,14 @@ export function receiveLogin(aouth) {
 export const loginFromQookie = aouth => (
   { type: types.LOGIN_FROM_QOOKIE, aouth }
 );
-export const logout = () => ({ type: types.LOGOUT });
+
+export function logout() {
+  return (dispatch) => {
+    cookies.remove('aouth', { path: '/' });
+    dispatch({ type: types.LOGOUT });
+  };
+}
+
 function login(code) {
   const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
   const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/auth/login?code=${code}`;// eslint-disable-line

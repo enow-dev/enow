@@ -189,7 +189,7 @@ class EventBox extends React.Component {
               <ListItemIcon>
                 <LocationONIcon />
               </ListItemIcon>
-              <ListItemText primary={`${event.place}`} />
+              <ListItemText primary={`${event.area}`} />
             </ListItem>
             <ListItem>
               <ListItemIcon>

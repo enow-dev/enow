@@ -10,24 +10,13 @@ const adaptationEvents = (events) => {
   const newEvents = [];
   events.map(item =>
     newEvents.push({
-      accepted: item.accepted,
-      address: item.address,
       apiId: item.api_id,
       createdAt: item.created_at,
-      description: item.description,
       endAt: item.end_at,
-      id: item.id,
       isFavorite: item.is_favorite,
-      lat: item.lat,
-      limit: item.limit,
-      lon: item.lon,
-      place: item.place,
       startAt: item.start_at,
-      title: item.title,
       updatedAt: item.update_at,
-      url: item.url,
-      waiting: item.waiting,
-      tags: item.tags,
+      ...item,
     }),
   );
   return newEvents;
