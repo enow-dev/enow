@@ -1,4 +1,4 @@
-import { RECEIVE_EVENTS, FETCH_EVENTS, SET_EVENTS } from '../../Constants/ActionTypes';
+import { RECEIVE_EVENTS, FETCH_EVENTS, SET_EVENTS, FETCH_EVENT, RECEIVE_EVENT } from '../../Constants/ActionTypes';
 import eventReducer from './Event';
 
 const initialState = {
@@ -30,19 +30,17 @@ const initialState = {
 
 function list(eventReducer, actionTypes) {
   return (state = initialState, action) => {
+    console.log(state, action);
     switch (action.type) {
       case actionTypes.RECEIVE_EVENTS: {
         const { events, ...rest } = action;
         if (typeof events !== 'undefined') {
-          return Object.assign(
-            {},
-            state,
-            {
-              isFetching: false,
-              isMoreFetching: false,
-              list: events.map(item => eventReducer(item, { type: SET_EVENTS })),
-            },
-          );
+          return {
+            ...state,
+            isFetching: false,
+            isMoreFetching: false,
+            list: events.map(item => eventReducer(item, { type: SET_EVENTS })),
+          };
         }
         return Object.assign({}, state, { isMoreFetching: false });
       }
@@ -52,13 +50,25 @@ function list(eventReducer, actionTypes) {
         }
         return Object.assign({}, state, { isFetching: true });
       }
-      default: {
-        const { index, ...rest } = action;
-        if (typeof index !== 'undefined') {
-          return state.events.map(item => eventReducer(item, rest));
+      case SET_EVENTS:
+      case FETCH_EVENT:
+      case RECEIVE_EVENT: {
+        const { event, ...rest } = action;
+        if (typeof event !== 'undefined') {
+          return {
+            ...state,
+            list: state.list.map(item => {
+              if (item.item.id === event.id) {
+                return eventReducer(event, rest);
+              }
+              return item;
+            }),
+          };
         }
         return state;
       }
+      default:
+        return state;
     }
   };
 }
