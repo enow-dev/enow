@@ -68,11 +68,6 @@ class EventBox extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.favorite.resultEventId !== null) {
-      if(nextProps.favorite.resultEventId === this.props.event.id) {
-        this.setState({ isFavorite: !this.state.isFavorite});
-      }
-    }
   }
 
   handleCloseDrawer = () => {
@@ -109,8 +104,8 @@ class EventBox extends React.Component {
 
   render() {
     const { classes, event, handleEditJump, handleProviderJump, favoriteActions } = this.props;
-    const startDate = new Date(event.item.startAt);
-    const endDate = new Date(event.item.endAt);
+    const startDate = new Date(event.item['start_at']);
+    const endDate = new Date(event.item['end_at']);
     let title = String(event.item.title);
     if (title.length > 36) {
       title =`${ title.substr(0,36)}...`
@@ -162,7 +157,7 @@ class EventBox extends React.Component {
             dense
             onClick={() => {
               favoriteActions.putFavoriteIfNeed(event.item.id)
-              //this.setState({ isFavorite: !this.state.isFavorite });
+              this.setState({ isFavorite: !this.state.isFavorite });
             }}
           >
             {this.state.isFavorite ? 'お気に入り中' : 'お気に入りする'}
@@ -259,7 +254,6 @@ EventBox.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  favorite: state.favorite,
   error: state.error,
 });
 const mapDispatchToProps = dispatch => ({

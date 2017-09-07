@@ -4,7 +4,7 @@ import * as types from '../Constants/ActionTypes';
 const cookies = new Cookies();
 
 export const putFavorite = () => ({ type: types.PUT_FAVORITE });
-export const putReceiveFavorite = eventId => ({ type: types.PUT_RECEIVE_FAVORITE, eventId });
+export const putReceiveFavorite = event => ({ type: types.PUT_RECEIVE_FAVORITE, event });
 
 export function putFavoriteIfNeed(eventId) {
   return (dispatch, getState) => {
@@ -23,9 +23,9 @@ export function putFavoriteIfNeed(eventId) {
         'Content-Type': 'application/json',
       },
     })
-      .then(response => dispatch(putReceiveFavorite(eventId)))
+      .then(() => dispatch(putReceiveFavorite({ id: eventId })))
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 }
