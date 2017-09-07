@@ -1,4 +1,7 @@
-import { PUT_FAVORITE, PUT_RECEIVE_FAVORITE } from '../Constants/ActionTypes';
+import {
+  PUT_FAVORITE,
+  PUT_RECEIVE_FAVORITE,
+} from '../../Constants/ActionTypes';
 
 const initialState = {
   isPutiing: false,

@@ -5,6 +5,7 @@ export const RECEIVE_EVENTS = 'RECEIVE_EVENTS';
 // Event
 export const FETCH_EVENT = 'FETCH_EVENT';
 export const RECEIVE_EVENT = 'RECEIVE_EVENT';
+export const SET_EVENTS = 'SET_EVENTS';
 // Error
 export const ADD_ERROR = 'ADD_ERROR';
 export const REMOVE_ERROR = 'REMOVE_ERROR';

@@ -61,7 +61,6 @@ class EventBox extends React.Component {
     this.state = {
       isOpenDrawer: false,
       isOpenedDrawer: false,
-      eventDetail: null,
       favorite: null,
       isTitleHover: false,
       isFavorite: false,
@@ -69,16 +68,6 @@ class EventBox extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.detail !== null) {
-      if (nextProps.detail.item.id === this.props.event.id) {
-        this.setState({ eventDetail: nextProps.detail, isOpenDrawer: true, isOpenedDrawer: false });
-      }
-    }
-    if(nextProps.favorite.resultEventId !== null) {
-      if(nextProps.favorite.resultEventId === this.props.event.id) {
-        this.setState({ isFavorite: !this.state.isFavorite});
-      }
-    }
   }
 
   handleCloseDrawer = () => {
@@ -90,17 +79,17 @@ class EventBox extends React.Component {
       this.setState({ isOpenDrawer: false });
       return;
     }
+    this.setState({ isOpenDrawer: true });
     const { eventActions, event } = this.props;
-    if (this.state.isOpenedDrawer === false) {
-      eventActions.getEventIfNeeded(event.id);
-    }
+    eventActions.getEventIfNeeded(event.item.id);
   }
 
   renderDrawer() {
+    const { event } = this.props;
     return (
       <div>
         <ListItem>
-          <div dangerouslySetInnerHTML={{ __html: `${this.state.eventDetail.item.description}` }} />
+          <div dangerouslySetInnerHTML={{ __html: `${event.item.description ? event.item.description : '' }` }} />
         </ListItem>
         <ListItem button onClick={this.handleCloseDrawer}>
           <Grid container align="center" direction="row" justify="center">
@@ -115,9 +104,9 @@ class EventBox extends React.Component {
 
   render() {
     const { classes, event, handleEditJump, handleProviderJump, favoriteActions } = this.props;
-    const startDate = new Date(event.startAt);
-    const endDate = new Date(event.endAt);
-    let title = String(event.title);
+    const startDate = new Date(event.item['start_at']);
+    const endDate = new Date(event.item['end_at']);
+    let title = String(event.item.title);
     if (title.length > 36) {
       title =`${ title.substr(0,36)}...`
     }
@@ -167,8 +156,8 @@ class EventBox extends React.Component {
             }
             dense
             onClick={() => {
-              favoriteActions.putFavoriteIfNeed(event.id)
-              //this.setState({ isFavorite: !this.state.isFavorite });
+              favoriteActions.putFavoriteIfNeed(event.item.id)
+              this.setState({ isFavorite: !this.state.isFavorite });
             }}
           >
             {this.state.isFavorite ? 'お気に入り中' : 'お気に入りする'}
@@ -189,17 +178,17 @@ class EventBox extends React.Component {
               <ListItemIcon>
                 <LocationONIcon />
               </ListItemIcon>
-              <ListItemText primary={`${event.area}`} />
+              <ListItemText primary={`${event.item.area}`} />
             </ListItem>
             <ListItem>
               <ListItemIcon>
                 <SupervisorAccount />
               </ListItemIcon>
-              <ListItemText primary={`${event.accepted}人/定員${event.limit}人`} />
+              <ListItemText primary={`${event.item.accepted}人/定員${event.item.limit}人`} />
             </ListItem>
             <ListItem>
               <Grid container direction="row" justify="flex-start" align="center">
-                {event.tags.map((item, index) =>
+                {event.item.tags.map((item, index) =>
                   <Grid item key={index}>
                     <Button dense className={classes.button}>
                       {item}
@@ -265,8 +254,6 @@ EventBox.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  detail: state.event,
-  favorite: state.favorite,
   error: state.error,
 });
 const mapDispatchToProps = dispatch => ({

@@ -122,7 +122,7 @@ class Events extends React.Component {
     window.location.href= event.url
   }
   renderEventsBox() {
-    const { events } = this.props;
+    const { events } = this.props
     return events.list.map((item,index) =>
       <Grid item key={index} style={{ width: '100%' }}>
         <EventBox event={item} handleEditJump={this.handleEditJump} handleProviderJump={this.handleProviderJump}/>
