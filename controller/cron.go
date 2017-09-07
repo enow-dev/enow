@@ -160,26 +160,7 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 		if err != nil {
 			log.Errorf(appCtx, "Datastoreから全件取得時エラー(10): %v", err)
 		}
-		s := model.SearchEvents{}
-		s.ID = fmt.Sprintf("%d", e.ID)
-		s.Title = e.Title
-		s.URL = e.URL
-		s.StartAt = e.StartAt
-		s.EndAt = e.EndAt
-		s.Place = e.Place
-		s.Area = e.Area
-		s.Address = e.Address
-		s.Identification = e.Identification
-		s.Description = search.HTML(e.Description)
-		s.Limit = fmt.Sprintf("%d", e.Limit)
-		s.Accepted = fmt.Sprintf("%d", e.Accepted)
-		s.Waiting = fmt.Sprintf("%d", e.Waiting)
-		s.Pref = fmt.Sprintf("%d", e.Pref)
-		s.APIID = fmt.Sprintf("%d", e.APIID)
-		s.Tags = "test"
-		s.CreatedAt = e.CreatedAt
-		s.UpdatedAt = e.UpdatedAt
-		_, err = index.Put(appCtx, v.StringID(), &s)
+		_, err = index.Put(appCtx, v.StringID(), e.EventToSearchEvents())
 		if err != nil {
 			log.Errorf(appCtx, "SearchAPIへのPUT操作エラー(10): %v", err)
 			return ctx.InternalServerError(goa.ErrInternal(err))
