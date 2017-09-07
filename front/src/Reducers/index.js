@@ -4,6 +4,7 @@ import error from './Error';
 import autosuggest from './Autosuggest';
 import aouth from './Aouth';
 import searchStash from './SearchStash';
+import favorite from './Favorite';
 
 const reducers = {
   events,
@@ -12,6 +13,7 @@ const reducers = {
   autosuggest,
   aouth,
   searchStash,
+  favorite,
 };
 
 export default reducers;
