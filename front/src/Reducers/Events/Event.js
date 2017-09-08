@@ -38,7 +38,7 @@ export default function event(state = initialState, action) {
     case PUT_RECEIVE_FAVORITE:
       return {
         ...state,
-        favorite: favoriteReducer(null, { ...action, eventId: state.id }),
+        favorite: favoriteReducer(null, { ...action, ...state }),
       };
     default:
       return state;

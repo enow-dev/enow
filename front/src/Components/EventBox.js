@@ -156,7 +156,7 @@ class EventBox extends React.Component {
             }
             dense
             onClick={() => {
-              favoriteActions.putFavoriteIfNeed(event.item.id)
+              favoriteActions.putFavoriteIfNeed(event)
               this.setState({ isFavorite: !this.state.isFavorite });
             }}
           >
