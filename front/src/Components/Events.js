@@ -97,6 +97,13 @@ class Events extends React.Component {
 
   handleTabChange = (event, value) => {
     this.setState({ selectTabIndex: value });
+    switch (value) {
+      case 3:
+        this.props.actions.getEventsIfNeeded(true, false, '', 0);
+        break;
+      default:
+        break;
+    }
   };
 
   renderCenterProgress() {
