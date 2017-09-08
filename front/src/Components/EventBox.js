@@ -103,7 +103,7 @@ class EventBox extends React.Component {
   }
 
   render() {
-    const { classes, event, handleEditJump, handleProviderJump, favoriteActions } = this.props;
+    const { classes, event, handleProviderJump, favoriteActions } = this.props;
     const startDate = new Date(event.item['start_at']);
     const endDate = new Date(event.item['end_at']);
     let title = String(event.item.title);
