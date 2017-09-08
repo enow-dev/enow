@@ -95,15 +95,29 @@ export function checkAouth() {
   };
 }
 
+export function geusLogin() {
+  const aouth = {
+    avater_url: 'none',
+    expire: '9999-99-99',
+    name: 'ゲスト',
+    token: 'guest',
+  };
+  setCookieAouth(aouth);
+  loginFromQookie(aouth);
+}
+
 export function isCookieAouth() {
   return (dispatch) => {
     const aouthCookie = cookies.get('aouth');
     if (aouthCookie === undefined) {
+      // ゲストログイン
+      geusLogin();
       return Promise.resolve();
     }
     return dispatch(loginFromQookie(aouthCookie));
   };
 }
+
 export function startAouthGithub() {
   return (dispatch) => {
     const { REACT_APP_ClientID, REACT_APP_API_Scheme, REACT_APP_FRONT_Host } = process.env;
