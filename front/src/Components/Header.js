@@ -139,7 +139,9 @@ class Header extends React.Component {
           <Toolbar>
             <Grid container direction="row" align="center" justify="space-between">
               <Grid item>
-                <div onClick={this.jumpHome}>
+                <div
+                  style={{cursor: 'pointer'}}
+                  onClick={this.jumpHome}>
                   <Grid container direction="row" align="center" justify="flex-start" spacing={0}>
                     <Grid item>
                       <Typography
@@ -165,6 +167,7 @@ class Header extends React.Component {
               </Grid>
               <Grid item>
                 <div
+                  style={{cursor: 'pointer'}}
                   onClick={this.handleClickAvatar}>
                   { this.renderAvatarIcon() }
                 </div>
