@@ -27,7 +27,7 @@ function getEvent(eventId) {
         }
         return response.json();
       })
-      .then(responseJson => dispatch(receiveEvent(responseJson)));
+      .then(responseJson => dispatch(receiveEvent({ item: responseJson })));
   };
 }
 

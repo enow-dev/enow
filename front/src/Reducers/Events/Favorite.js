@@ -14,7 +14,7 @@ export default function favorite(state = initialState, action) {
     case PUT_FAVORITE:
       return Object.assign({}, state, { isPutiing: true, resultEventId: null });
     case PUT_RECEIVE_FAVORITE:
-      return Object.assign({}, state, { isPutiing: false, resultEventId: action.eventId });
+      return Object.assign({}, state, { isPutiing: false, resultEventId: action.event.item.id });
     default:
       return state;
   }

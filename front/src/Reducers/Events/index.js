@@ -44,8 +44,8 @@ function list(eventReducer, actionTypes) {
           return {
             ...state,
             list: state.list.map((eventOfList) => {
-              if (eventOfList.item.id === event.id) {
-                return eventReducer(event, rest);
+              if (eventOfList.item.id === event.item.id) {
+                return eventReducer(event.item, rest);
               }
               return eventOfList;
             }),
