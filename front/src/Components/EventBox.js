@@ -112,7 +112,7 @@ class EventBox extends React.Component {
     }
     let logoUrl = null;
     propviderInfo.some(item => {
-      if (event.apiId === item.id) {
+      if (event.item['api_id'] === item.id) {
         logoUrl = item.logoUrl;
         return true;
       }
@@ -136,7 +136,7 @@ class EventBox extends React.Component {
               href="#"
               align="left"
               onClick={() => {
-                handleEditJump(event);
+                handleProviderJump(event);
                 return false;
               }}
               onMouseEnter={() => {
