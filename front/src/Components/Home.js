@@ -59,18 +59,34 @@ const styles = theme =>({
 });
 
 class Home extends React.Component {
+
   constructor(props) {
     super(props);
     this.state={
       keyword: '',
       prefIndex: 0,
+      slot: null,
+      searchNum: 0,
+      slotNum: 0,
     };
     props.errorActions.removeError();
   }
 
-  componentWillMount(){
+  componentWillMount() {
     const { searchStash } = this.props;
     this.setState({...searchStash});
+  }
+
+  componentDidMount() {
+    const slotInerval = setInterval(this.slot, 100);
+    this.setState({ slot: slotInerval });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { events } = nextProps;
+    if (events.list.length > 0) {
+      this.setState({searchNum: events.list.length});
+    }
   }
 
   renderInput(inputProps) {
@@ -175,6 +191,27 @@ class Home extends React.Component {
     history.push('/events');
   }
 
+  handleSelectPref = (event, index) => {
+    const { eventsAction } = this.props;
+    this.setState({prefIndex: index, slotNum: 0 });
+    eventsAction.getEventsIfNeeded(false,false, '', index);
+  }
+
+  slot = () => {
+    const { searchNum, slotNum, slotInerval } = this.state;
+    if (searchNum <= slotNum) {
+      clearInterval(slotInerval);
+    } else {
+      this.setState({ slotNum: slotNum+1 });
+    }
+  }
+
+  renderSlot() {
+    return (
+      <p>{this.state.slotNum}</p>
+    );
+  }
+
   render() {
     const { classes,autosuggests } = this.props;
     return (
@@ -192,7 +229,7 @@ class Home extends React.Component {
             <Typography type="display3">IT系勉強会・イベント検索</Typography>
           </Grid>
           <Grid item>
-            <Typography type="headline" color="accent">検索結果：あなたにとっての新着情報 ◯◯件です</Typography>
+            <Typography type="headline" color="accent">検索結果：あなたにとっての新着情報 {this.state.slotNum}件です</Typography>
           </Grid>
           <Grid item style={{ width: '50%' }}>
             <Card>
@@ -220,7 +257,7 @@ class Home extends React.Component {
                   }}
                 />
                 <PrefMenu
-                  onSelectPref={(event,index) => { this.setState({prefIndex: index})}}
+                  onSelectPref={this.handleSelectPref}
                   defaultPrefIndex={this.state.prefIndex}
                 />
                 <Button
@@ -262,6 +299,7 @@ const mapStateToProps = state => ({
   autosuggests: state.autosuggest,
   aouth: state.aouth,
   searchStash: state.searchStash,
+  events: state.events,
 });
 const mapDispatchToProps = dispatch => ({
   errorActions: bindActionCreators(ErrorActions, dispatch),
