@@ -10,6 +10,7 @@ bindata.go
 env.yaml
 api.yaml
 oauth.yaml
+datastore
 
 ### React ###
 .DS_STORE
