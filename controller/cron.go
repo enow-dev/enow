@@ -109,6 +109,14 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 
 	// 更新処理が発生した数をカウントする
 	updateCount := 0
+
+	// タグ情報を先に取得しておく
+	tDB := model.TagsDB{}
+	tags, err := tDB.GetAll(appCtx)
+	if err != nil {
+		log.Errorf(appCtx, "イベントを付加処理エラー(12): %v", err)
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
 	for _, p := range allParser {
 
 		// リクエストを投げて、レスポンスを受取る
@@ -118,13 +126,20 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 			log.Errorf(appCtx, "APIリクエストエラー(6): %v", err)
 		}
 		for _, v := range es {
-			// 存在しなければcreated_atを入れる
-			v.CreatedAt = time.Now()
-			// TODO あとでtagづけもする
-			v.Tags = []string{"php", "js"}
 			eDB := model.EventsDB{}
+			// イベントのタグ付け
+			for _, tag := range tags {
+				m, err := model.ExistsTargetTag(tag.Regex, v.Title, v.Description)
+				if err != nil {
+					log.Errorf(appCtx, "イベントを付加処理エラー(13): %v", err)
+				}
+				if m {
+					v.Tags = append(v.Tags, tag.Name)
+					log.Infof(appCtx, "event:%v, tag:%v", v.Title, tag.Name)
+				}
+			}
 			// 存在するイベントなら上書き処理、存在しなければ作成
-			isUpdate, err := eDB.Upsert(appCtx, &v)
+			isUpdate, err := eDB.Upsert(appCtx, &v, now)
 			if err != nil {
 				log.Errorf(appCtx, "Datastore イベント挿入時エラー(7): %v", err)
 			}
@@ -176,6 +191,41 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 	}
 	log.Infof(appCtx, "latestIndexName = %v", indexName)
 	// CronController_FetchEvents: end_implement
+	return nil
+}
+
+// UpgradeTags runs the upgradeTags action.
+func (c *CronController) UpgradeTags(ctx *app.UpgradeTagsCronContext) error {
+	// CronController_UpgradeTags: start_implement
+
+	// Put your logic here
+	appCtx := appengine.NewContext(ctx.Request)
+	tags, err := config.NewTagFromFile("tags.yaml")
+	if err != nil {
+		log.Errorf(appCtx, "設定ファイル読み込みエラー(1): %v", err)
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	uTags := []model.Tags{}
+	// 大タグごとにループする
+	for _, v := range tags.MajorTags {
+		// 小タグごとにループする
+		for _, v2 := range v.LittleTags {
+			t := model.Tags{}
+			t.MajorTags = v.MajorTags
+			t.Name = v2.Name
+			// タグ付け時に使う正規表現の指定が無ければ名前をそのまま使う
+			if len(v2.Regex) == 0 {
+				t.Regex = v2.Name
+			} else {
+				t.Regex = v2.Regex
+			}
+			uTags = append(uTags, t)
+			log.Infof(appCtx, "%v", uTags)
+		}
+	}
+	tDB := model.TagsDB{}
+	tDB.Upgrade(appCtx, &uTags)
+	// CronController_UpgradeTags: end_implement
 	return nil
 }
 

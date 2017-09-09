@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"strings"
+
 	"github.com/enow-dev/enow/app"
 	"github.com/mjibson/goon"
 	"google.golang.org/appengine"
@@ -68,7 +70,7 @@ func (db *EventsDB) Add(appCtx context.Context, event *Events) (*Events, error) 
 }
 
 // Upsert レコードが無ければ追加して、あれば更新する 更新したかどうかをboolで返す
-func (db *EventsDB) Upsert(appCtx context.Context, newEvent *Events) (bool, error) {
+func (db *EventsDB) Upsert(appCtx context.Context, newEvent *Events, createdAt time.Time) (bool, error) {
 	g := goon.FromContext(appCtx)
 	q := datastore.NewQuery(g.Kind(&Events{})).KeysOnly()
 	q = q.Filter("Identification = ", newEvent.Identification)
@@ -78,6 +80,7 @@ func (db *EventsDB) Upsert(appCtx context.Context, newEvent *Events) (bool, erro
 	}
 	// 1件も存在しない場合は作成する
 	if len(events) == 0 {
+		newEvent.CreatedAt = createdAt
 		_, err = g.Put(newEvent)
 		if err != nil {
 			return false, err
@@ -93,7 +96,8 @@ func (db *EventsDB) Upsert(appCtx context.Context, newEvent *Events) (bool, erro
 		return false, err
 	}
 	// データが更新されていなければreturnする
-	if newEvent.UpdatedAt.Unix() >= oldEvent.UpdatedAt.Unix() {
+	// 但しタグの調整などで増減がある場合は処理する
+	if newEvent.UpdatedAt.Unix() >= oldEvent.UpdatedAt.Unix() && len(newEvent.Tags) == len(oldEvent.Tags) {
 		return false, err
 	}
 	newEvent.ID = oldEvent.ID
@@ -155,9 +159,7 @@ func (e *Events) EventToEventTiny() *app.EventTiny {
 	event.EndAt = e.EndAt
 	event.URL = e.URL
 	event.Area = e.Area
-	// TODO: タグ機能実装したら対応する
-	//event.Tags          = e.Tags
-	event.Tags = []string{"js", "php"}
+	event.Tags = e.Tags
 	event.Limit = e.Limit
 	event.Accepted = e.Accepted
 	event.UpdatedAt = e.UpdatedAt
@@ -180,9 +182,7 @@ func (e *Events) EventToEventShow() *app.EventShow {
 	event.Area = e.Area
 	event.Lat = e.Coords.Lat
 	event.Lon = e.Coords.Lng
-	// TODO: タグ機能実装したら対応する
-	//event.Tags          = e.Tags
-	event.Tags = []string{"js", "php"}
+	event.Tags = e.Tags
 	event.Limit = e.Limit
 	event.Accepted = e.Accepted
 	event.Waiting = e.Waiting
@@ -209,7 +209,7 @@ func (e *Events) EventToSearchEvents() *SearchEvents {
 	s.Waiting = fmt.Sprintf("%d", e.Waiting)
 	s.Pref = fmt.Sprintf("%d", e.Pref)
 	s.APIID = fmt.Sprintf("%d", e.APIID)
-	s.Tags = "test"
+	s.Tags = strings.Join(e.Tags[:], ",")
 	s.CreatedAt = e.CreatedAt
 	s.UpdatedAt = e.UpdatedAt
 	return s

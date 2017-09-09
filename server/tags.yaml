@@ -1,0 +1,449 @@
+tags:
+ - majorTags: プログラム
+   littleTags:
+   - name: JavaScript
+     regex:
+   - name: jQuery
+     regex:
+   - name: Node
+     regex:
+   - name: Angular
+     regex:
+   - name: Backbone
+     regex:
+   - name: D3
+     regex:
+   - name: Yeoman
+     regex:
+   - name: enchant
+     regex:
+   - name: Knockout
+     regex:
+   - name: Ember
+     regex:
+   - name: Ext
+     regex:
+   - name: Broke
+     regex:
+   - name: batman
+     regex:
+   - name: eyeballs
+     regex:
+   - name: React
+     regex:
+   - name: Gulp
+     regex:
+   - name: Create
+     regex:
+   - name: Polymer
+     regex:
+   - name: Redux
+     regex:
+   - name: Riot
+     regex:
+   - name: asm
+     regex:
+   - name: React Native
+     regex:
+   - name: Cylon
+     regex:
+   - name: Vue
+     regex:
+   - name: Serverless
+     regex:
+   - name: three
+     regex:
+   - name: Mithril
+     regex:
+   - name: Meteor
+     regex:
+   - name: plotly
+     regex:
+   - name: PHP
+     regex:
+   - name: CakePHP
+     regex:
+   - name: FuelPHP
+     regex:
+   - name: Laravel
+     regex:
+   - name: Zend Framework
+     regex:
+   - name: Symfony
+     regex:
+   - name: CodeIgniter
+     regex:
+   - name: HHVM
+     regex:
+   - name: Phalcon
+     regex:
+   - name: Yii
+     regex:
+   - name: Ethna
+     regex:
+   - name: Kohana
+     regex:
+   - name: Limonade
+     regex:
+   - name: Pinoco
+     regex:
+   - name: Java
+     regex: Java(?!Script)
+   - name: Spring
+     regex:
+   - name: Play Framework
+     regex:
+   - name: Struts
+     regex:
+   - name: Seasar
+     regex:
+   - name: JSF
+     regex:
+   - name: Dropwizard
+     regex:
+   - name: Wicket
+     regex:
+   - name: Ruby
+     regex:
+   - name: Ruby on Rails
+     regex:
+   - name: Sinatra
+     regex:
+   - name: RubyMotion
+     regex:
+   - name: Haml
+     regex:
+   - name: Slim
+     regex:
+   - name: Merb
+     regex:
+   - name: Python
+     regex:
+   - name: Django
+     regex:
+   - name: Sphinx
+     regex:
+   - name: Flask
+     regex:
+   - name: Pyramid
+     regex:
+   - name: CherryPy
+     regex:
+   - name: IPython
+     regex:
+   - name: Perl
+     regex:
+   - name: Catalyst
+     regex:
+   - name: Scala
+     regex:
+   - name: Lift
+     regex:
+   - name: Haskell
+     regex:
+   - name: Yesod
+     regex:
+   - name: Ruby
+     regex:
+   - name: .NET
+     regex:
+   - name: ActionScript
+     regex:
+   - name: Agda
+     regex:
+   - name: Akka
+     regex:
+   - name: Babel
+     regex:
+   - name: BASIC
+     regex:
+   - name: C#
+     regex:
+   - name: Clojure
+     regex:
+   - name: C++
+     regex: C\+\+
+   - name: COBOL
+     regex:
+   - name: CoffeeScript
+     regex:
+   - name: Coq
+     regex:
+   - name: C言語
+     regex:
+   - name: Dart
+     regex:
+   - name: D言語
+     regex:
+   - name: Electron
+     regex:
+   - name: Elixir
+     regex:
+   - name: Erlang
+     regex:
+   - name: F#
+     regex:
+   - name: Flex
+     regex:
+   - name: Go
+     regex:
+   - name: Google Apps Script
+     regex:
+   - name: Groovy
+     regex:
+   - name: Hack
+     regex:
+   - name: Julia
+     regex:
+   - name: Kotlin
+     regex:
+   - name: Lisp
+     regex:
+   - name: Lua
+     regex:
+   - name: Objective-C
+     regex:
+   - name: OCaml
+     regex:
+   - name: Pascal
+     regex:
+   - name: Prolog
+     regex:
+   - name: QML
+     regex:
+   - name: ReactiveX
+     regex:
+   - name: Rust
+     regex:
+   - name: R言語
+     regex:
+   - name: Smalltalk
+     regex:
+   - name: Stan
+     regex:
+   - name: SuperCollider
+     regex:
+   - name: Swift
+     regex:
+   - name: TypeScript
+     regex:
+   - name: Visual Basic
+     regex:
+   - name: WebAssembly
+     regex:
+   - name: webpack
+     regex:
+   - name: アセンブラ
+     regex:
+   - name: Swift
+     regex:
+   - name: Objective-C
+     regex:
+   - name: Android
+     regex:
+   - name: kotlin
+     regex:
+   - name: Cocoa
+     regex:
+   - name: Cocos2d-js
+     regex:
+   - name: Cocos2d-x
+     regex:
+   - name: Corona SDK
+     regex:
+   - name: Ionic
+     regex:
+   - name: PhoneGap
+     regex:
+   - name: Photon
+     regex:
+   - name: Sencha Touch
+     regex:
+   - name: Titanium
+     regex:
+   - name: Unity
+     regex:
+ - majorTags: UI/UX
+   littleTags:
+   - name: UI
+     regex:
+   - name: UX
+     regex:
+   - name: アクセシビリティ
+     regex:
+   - name: ユーザービリティ
+     regex:
+ - majorTags: RDB
+   littleTags:
+   - name: MySQL
+     regex:
+   - name: MHA
+     regex:
+   - name: Vitess
+     regex:
+   - name: Crate.IO
+     regex:
+   - name: DB2
+     regex:
+   - name: Derby
+     regex:
+   - name: GraphQL
+     regex:
+   - name: MariaDB
+     regex:
+   - name: Oracle
+     regex:
+   - name: PostgreSQL
+     regex:
+   - name: Realm
+     regex:
+   - name: SQL
+     regex:
+   - name: SQLite
+     regex:
+   - name: SQLServer
+     regex:
+ - majorTags: NoSQL
+   littleTags:
+   - name: Aerospike
+     regex:
+   - name: BigTable
+     regex:
+   - name: Cassandra
+     regex:
+   - name: Couchbase
+     regex:
+   - name: CouchDB
+     regex:
+   - name: Datastore
+     regex:
+   - name: HBase
+     regex:
+   - name: Hypertable
+     regex:
+   - name: MongoDB
+     regex:
+   - name: Neo4j
+     regex:
+   - name: OrientDB
+     regex:
+   - name: Redis
+     regex:
+   - name: RethinkDB
+     regex:
+   - name: Riak
+     regex:
+ - majorTags: 全文検索エンジン
+   littleTags:
+   - name: ElasticSearch
+     regex:
+   - name: Groonga
+     regex:
+   - name: Mroonga
+     regex:
+   - name: Solr
+     regex:
+ - majorTags: BigData
+   littleTags:
+   - name: Hadoop
+     regex:
+   - name: Hive
+     regex:
+   - name: MapR
+     regex:
+   - name: Pig
+     regex:
+   - name: Sqoop
+     regex:
+   - name: Avro
+     regex:
+   - name: Apache Spark
+     regex:
+   - name: Shark
+     regex:
+   - name: Embulk
+     regex:
+   - name: Fluentd
+     regex:
+   - name: LogStash
+     regex:
+   - name: Norikra
+     regex:
+   - name: オープンデータ
+     regex:
+   - name: データマイニング
+     regex:
+   - name: ビッグデータ
+     regex:
+ - majorTags: サーバ構成管理
+   littleTags:
+   - name: Ansible
+     regex:
+   - name: Apache Mesos
+     regex:
+   - name: Chef
+     regex:
+   - name: Infrastructure as Code
+     regex:
+   - name: Puppet
+     regex:
+   - name: Rancher
+     regex:
+ - majorTags: 開発サポート
+   littleTags:
+   - name: CAE
+     regex:
+   - name: Capistrano
+     regex:
+   - name: CircleCI
+     regex:
+   - name: DeployGate
+     regex:
+   - name: Emscripten
+     regex:
+   - name: Fabric
+     regex:
+   - name: fastlane
+     regex:
+   - name: Git
+     regex:
+   - name: GitHub
+     regex:
+   - name: Jenkins
+     regex:
+ - majorTags: テストツール
+   littleTags:
+   - name: Appium
+     regex:
+   - name: Geb
+     regex:
+   - name: JMeter
+     regex:
+   - name: JUnit
+     regex:
+   - name: Selenium
+     regex:
+   - name: Serverspec
+     regex:
+ - majorTags: 開発手法
+   littleTags:
+   - name: リーン開発
+     regex:
+   - name: リーンスタートアップ
+     regex:
+   - name: ChatOps
+     regex:
+   - name: DevOps
+     regex:
+   - name: TDD
+     regex:
+   - name: TiDD
+     regex:
+   - name: アジャイル
+     regex:
+   - name: スクラム
+     regex:
+   - name: ドメイン駆動
+     regex:
+   - name: プロトタイピング
+     regex:
