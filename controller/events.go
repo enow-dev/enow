@@ -50,7 +50,10 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 	se.SetPeriodDate(appCtx, "EndAt > ", now)
 	se.SetPref(appCtx, ctx.Pref)
 	se.SetCursor(appCtx, ctx.Cursor)
-	se.SetNotSearchID(appCtx, userKey)
+	// 既読しているイベントも出す
+	if !ctx.IsRed {
+		se.SetNotSearchID(appCtx, userKey)
+	}
 	se.SetSearchKeyword(appCtx, ctx.Q)
 	iterator, err := se.Run(appCtx)
 	if err != nil {
@@ -65,13 +68,35 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 		} else if err != nil {
 			return ctx.InternalServerError(goa.ErrInternal(err))
 		}
-		events = append(events, event.SearchEventToEventTiny())
+		et := event.SearchEventToEventTiny()
+		int64EventID, err := util.ConvertIDIntoInt64(event.ID)
+		if err != nil {
+			log.Errorf(appCtx, "既読済み確認時エラー(1) %v", err)
+		}
+		if userKey != nil {
+			// 既読状態を判定する
+			uerDB := model.UserEventReadsDB{}
+			isRed, err := uerDB.IsRedEvent(appCtx, int64EventID, userKey.IntID())
+			if err != nil {
+				log.Errorf(appCtx, "既読済み確認時エラー(2) %v", err)
+			}
+			et.IsRed = isRed
+			// お気に入り状態を判定する
+			uefDB := model.UserEventFavoritesDB{}
+			isFavorite, err := uefDB.IsFavoriteEvent(appCtx, int64EventID, userKey)
+			if err != nil {
+				log.Errorf(appCtx, "お気に入り済み確認時エラー(3) %v", err)
+			}
+			et.IsFavorite = isFavorite
+		}
+		// お気に入り状態を判定する
+		events = append(events, et)
 
 		// 既読情報をつける
 		if userKey != nil {
 			eventID, err := util.ConvertIDIntoInt64(event.ID)
 			if err != nil {
-				log.Errorf(appCtx, "既読情報の挿入時エラー(1) %v", err)
+				log.Errorf(appCtx, "既読情報の挿入時エラー(4) %v", err)
 			}
 			userEventReads := &model.UserEventReads{
 				EventID:    eventID,
@@ -92,25 +117,41 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 }
 
 // Show runs the show action.
-// TODO: 詳しいロジックを実装したら消す
-// nolint
 func (c *EventsController) Show(ctx *app.ShowEventsContext) error {
 	// EventsController_Show: start_implement
 
 	// Put your logic here
-	eDB := model.EventsDB{}
+	appCtx := appengine.NewContext(ctx.Request)
 	int64ID, err := util.ConvertIDIntoInt64(ctx.ID)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
-	appCtx := appengine.NewContext(ctx.Request)
+	eDB := model.EventsDB{}
 	e, err := eDB.Get(appCtx, int64ID)
 	if err == datastore.ErrNoSuchEntity {
 		return ctx.NotFound()
 	} else if err != nil {
 		return ctx.BadRequest(goa.ErrBadRequest(err))
 	}
-
+	es := e.EventToEventShow()
+	// ユーザーがログインしている場合既読情報やお気に入り情報を確認する
+	userKey, _ := util.GetUserKey(ctx)
+	if userKey != nil {
+		// 既読状態を判定する
+		uerDB := model.UserEventReadsDB{}
+		isRed, err := uerDB.IsRedEvent(appCtx, int64ID, userKey.IntID())
+		if err != nil {
+			log.Errorf(appCtx, "既読済み確認時エラー(2) %v", err)
+		}
+		es.IsRed = isRed
+		// お気に入り状態を判定する
+		uefDB := model.UserEventFavoritesDB{}
+		isFavorite, err := uefDB.IsFavoriteEvent(appCtx, int64ID, userKey)
+		if err != nil {
+			log.Errorf(appCtx, "お気に入り済み確認時エラー(3) %v", err)
+		}
+		es.IsFavorite = isFavorite
+	}
 	// EventsController_Show: end_implement
 	return ctx.OKShow(e.EventToEventShow())
 }

@@ -102,10 +102,6 @@ func NewTestModeMiddleware() goa.Middleware {
 	return func(h goa.Handler) goa.Handler {
 		return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 			token := req.Header.Get(scheme.Name)
-			if len(token) == 0 {
-				goa.LogInfo(ctx, "failed api token auth")
-				return ErrUnauthorized("missing auth")
-			}
 			// サンプルユーザーの作成
 			g := goon.NewGoon(req)
 			q := datastore.NewQuery(g.Kind(new(model.Users))).Filter("Name =", "sampleName")

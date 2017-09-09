@@ -46,6 +46,23 @@ func (db *UserEventFavoritesDB) GetListFindByUserKey(appCtx context.Context, use
 	return appEvents, nil
 }
 
+// IsFavoriteEvent お気に入り済みイベントか
+func (db *UserEventFavoritesDB) IsFavoriteEvent(appCtx context.Context, eventID int64, userKey *datastore.Key) (bool, error) {
+	g := goon.FromContext(appCtx)
+	uefs := []*UserEventFavorites{}
+	q := datastore.NewQuery(g.Kind(new(UserEventFavorites)))
+	q = q.Ancestor(userKey)
+	q = q.Filter("EventID =", eventID)
+	keys, err := g.GetAll(q, &uefs)
+	if err != nil {
+		return false, err
+	}
+	if len(keys) == 0 {
+		return false, nil
+	}
+	return true, nil
+}
+
 // Add お気に入りを追加する　既に追加されている場合は無視する
 func (db *UserEventFavoritesDB) Add(appCtx context.Context, eventID int64, userKey *datastore.Key) error {
 	g := goon.FromContext(appCtx)
