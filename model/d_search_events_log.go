@@ -37,7 +37,7 @@ func (db *SearchEventsLogDB) Add(appCtx context.Context, sel *SearchEventsLog) (
 }
 
 // GetLatestVersion 最新のindexNameを取得する
-func (db *SearchEventsLogDB) GetLatestVersion(appCtx context.Context, createTime time.Time) (string, error) {
+func (db *SearchEventsLogDB) GetLatestVersion(appCtx context.Context) (string, error) {
 	g := goon.FromContext(appCtx)
 	q := datastore.NewQuery(g.Kind(&SearchEventsLog{})).KeysOnly()
 	q = q.Order("-CreatedAt")

@@ -39,7 +39,7 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 	// 未ログインでも許容する
 	userKey, _ := util.GetUserKey(ctx)
 	sel := model.SearchEventsLogDB{}
-	indexName, err := sel.GetLatestVersion(appCtx, time.Now())
+	indexName, err := sel.GetLatestVersion(appCtx)
 	if err != nil {
 		log.Errorf(appCtx, "index not found err=%v", err)
 		return ctx.InternalServerError(goa.ErrInternal(err))
@@ -124,7 +124,7 @@ func (c *EventsController) ShowCount(ctx *app.ShowCountEventsContext) error {
 	// 未ログインでも許容する
 	userKey, _ := util.GetUserKey(ctx)
 	sel := model.SearchEventsLogDB{}
-	indexName, err := sel.GetLatestVersion(appCtx, time.Now())
+	indexName, err := sel.GetLatestVersion(appCtx)
 	if err != nil {
 		log.Errorf(appCtx, "index not found err=%v", err)
 		return ctx.InternalServerError(goa.ErrInternal(err))
