@@ -8,3 +8,8 @@ cron:
   url: /api/cron/read_fix
   schedule: every 24 hours
   timezone: Asia/Tokyo
+
+- description: upgrade tags
+  url: /api/cron/upgrade_tags
+  schedule: every 24 hours
+  timezone: Asia/Tokyo

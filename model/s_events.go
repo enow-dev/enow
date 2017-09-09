@@ -7,6 +7,8 @@ import (
 
 	"fmt"
 
+	"strings"
+
 	"github.com/enow-dev/enow/app"
 	"github.com/enow-dev/enow/util"
 	"google.golang.org/appengine"
@@ -37,7 +39,7 @@ type SearchEvents struct {
 	Place          string
 	Area           string
 	Coords         appengine.GeoPoint
-	Tags           search.Atom
+	Tags           string
 	Limit          string
 	Accepted       string
 	Waiting        string
@@ -175,9 +177,7 @@ func (s *SearchEvents) SearchEventToEventTiny() *app.EventTiny {
 	event.EndAt = s.EndAt
 	event.URL = s.URL
 	event.Area = s.Area
-	// TODO: タグ機能実装したら対応する
-	//event.Tags = s.Tags
-	event.Tags = []string{"js", "php"}
+	event.Tags = strings.Split(s.Tags, ",")
 	event.Limit, _ = strconv.Atoi(s.Limit)
 	event.Accepted, _ = strconv.Atoi(s.Accepted)
 	event.UpdatedAt = s.UpdatedAt

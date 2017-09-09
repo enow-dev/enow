@@ -17,4 +17,9 @@ var _ = Resource("cron", func() {
 		Routing(GET("/read_fix"))
 		UseTrait(GAECronTrait)
 	})
+	Action("upgradeTags", func() {
+		Description("upgradeTags")
+		Routing(GET("/upgrade_tags"))
+		UseTrait(GAECronTrait)
+	})
 })

@@ -67,7 +67,7 @@ lint:
 
 local:
 	cp -f ./server/env.yaml.dev ./server/env.yaml
-	goapp serve ./server
+	dev_appserver.py --datastore_path=./datastore ./server
 
 staging-deploy:
 	cp -f ./server/env.yaml.staging ./server/env.yaml
