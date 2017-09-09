@@ -61,7 +61,7 @@ func (db *SearchEventsDB) Run(appCtx context.Context) (*search.Iterator, error) 
 		db.opts.Sort = &search.SortOptions{}
 	}
 	if db.opts.Cursor != "" {
-		return index.Search(appCtx, "", db.opts), nil
+		return index.Search(appCtx, db.genQuery(appCtx), db.opts), nil
 	}
 	return index.Search(appCtx, db.genQuery(appCtx), db.opts), nil
 }
@@ -112,7 +112,7 @@ func (db *SearchEventsDB) SetSearchKeyword(appCtx context.Context, q string) {
 	if q == "" {
 		return
 	}
-	db.queries = append(db.queries, fmt.Sprintf("(Description:%s OR Title:%s)", q, q))
+	db.queries = append(db.queries, fmt.Sprintf("(Descriptio:%s OR Title:%s OR Tags:%s)", q, q, q))
 }
 
 // SetPeriodDate 日付範囲検索

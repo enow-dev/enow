@@ -63,6 +63,9 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("is_favorite", Boolean, "お気に入り済み", func() {
 			Example(false)
 		})
+		Attribute("is_red", Boolean, "既読済み", func() {
+			Example(true)
+		})
 		Required(
 			"id",
 			"api_id",
@@ -81,6 +84,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"waiting",
 			"updated_at",
 			"is_favorite",
+			"is_red",
 			"tags",
 		)
 	})
@@ -101,7 +105,8 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("accepted")
 		//Attribute("waiting")
 		Attribute("updated_at")
-		//Attribute("is_favorite")
+		Attribute("is_favorite")
+		Attribute("is_red")
 		Attribute("tags")
 		Required(
 			"id",
@@ -120,7 +125,8 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"accepted",
 			//"waiting",
 			"updated_at",
-			//"is_favorite",
+			"is_favorite",
+			"is_red",
 			"tags",
 		)
 	})
@@ -142,6 +148,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("waiting")
 		Attribute("updated_at")
 		//Attribute("is_favorite")
+		//Attribute("is_red")
 		Attribute("tags")
 		Required(
 			"id",
@@ -161,6 +168,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"waiting",
 			"updated_at",
 			//"is_favorite",
+			//"is_red",
 			"tags",
 		)
 	})
@@ -182,6 +190,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("waiting")
 		Attribute("updated_at")
 		Attribute("is_favorite")
+		Attribute("is_red")
 		Attribute("tags")
 		Required(
 			"id",
@@ -201,6 +210,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"waiting",
 			"updated_at",
 			"is_favorite",
+			"is_red",
 			"tags",
 		)
 	})
@@ -222,6 +232,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 		Attribute("waiting")
 		Attribute("updated_at")
 		Attribute("is_favorite")
+		Attribute("is_red")
 		Attribute("tags")
 		Required(
 			"id",
@@ -241,6 +252,7 @@ var Event = MediaType("application/vnd.event+json", func() {
 			"waiting",
 			"updated_at",
 			"is_favorite",
+			"is_red",
 			"tags",
 		)
 	})

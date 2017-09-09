@@ -34,6 +34,23 @@ func (db *UserEventReadsDB) Add(appCtx context.Context, uer *UserEventReads) {
 	}
 }
 
+// IsRedEvent 既読済みイベントか
+func (db *UserEventReadsDB) IsRedEvent(appCtx context.Context, eventID int64, userID int64) (bool, error) {
+	g := goon.FromContext(appCtx)
+	uers := []*UserEventReads{}
+	q := datastore.NewQuery(g.Kind(new(UserEventReads)))
+	q = q.Filter("EventID =", eventID)
+	q = q.Filter("UserID =", userID)
+	keys, err := g.GetAll(q, &uers)
+	if err != nil {
+		return false, err
+	}
+	if len(keys) == 0 {
+		return false, nil
+	}
+	return true, nil
+}
+
 // UpdateExcludeRedEventQ ユーザーの全ての既読情報を取得し、既読したイベントを除外するためのクエリを更新する
 func (db *UserEventReadsDB) UpdateExcludeRedEventQ(appCtx context.Context, execAt time.Time) error {
 	g := goon.FromContext(appCtx)
@@ -67,9 +84,9 @@ func (db *UserEventReadsDB) UpdateExcludeRedEventQ(appCtx context.Context, execA
 		lastIndex := len(eventIDs) - 1
 		for k, eventID := range eventIDs {
 			if lastIndex == k {
-				excludeRedEventQ = util.DelimiterByCharCon("", excludeRedEventQ, "NOT ID:", fmt.Sprint(eventID))
+				excludeRedEventQ = util.DelimiterByCharCon(" ", excludeRedEventQ, "NOT ID:", fmt.Sprint(eventID))
 			} else {
-				excludeRedEventQ = util.DelimiterByCharCon("", excludeRedEventQ, "NOT ID:", fmt.Sprint(eventID), " AND")
+				excludeRedEventQ = util.DelimiterByCharCon(" ", excludeRedEventQ, "NOT ID:", fmt.Sprint(eventID), " AND")
 			}
 		}
 		u.ExcludeRedEventQ = excludeRedEventQ

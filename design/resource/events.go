@@ -21,9 +21,6 @@ var _ = Resource("events", func() {
 			Param("pref", Integer, "都道府県検索", func() {
 				Default(0)
 			})
-			Param("is_favorite", Boolean, "お気に入り済みのものも出す", func() {
-				Default(false)
-			})
 			Param("is_red", Boolean, "閲覧済みのものを出さない", func() {
 				Default(false)
 			})

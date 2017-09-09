@@ -135,7 +135,6 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 				}
 				if m {
 					v.Tags = append(v.Tags, tag.Name)
-					log.Infof(appCtx, "event:%v, tag:%v", v.Title, tag.Name)
 				}
 			}
 			// 存在するイベントなら上書き処理、存在しなければ作成
@@ -220,7 +219,6 @@ func (c *CronController) UpgradeTags(ctx *app.UpgradeTagsCronContext) error {
 				t.Regex = v2.Regex
 			}
 			uTags = append(uTags, t)
-			log.Infof(appCtx, "%v", uTags)
 		}
 	}
 	tDB := model.TagsDB{}
