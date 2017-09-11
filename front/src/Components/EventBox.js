@@ -63,11 +63,8 @@ class EventBox extends React.Component {
       isOpenedDrawer: false,
       favorite: null,
       isTitleHover: false,
-      isFavorite: false,
+      isFavorite: props.event.item['is_favorite'] ? props.event.item['is_favorite'] : false,
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
   }
 
   handleCloseDrawer = () => {
@@ -104,6 +101,7 @@ class EventBox extends React.Component {
 
   render() {
     const { classes, event, handleProviderJump, favoriteActions } = this.props;
+    console.log(event);
     const startDate = new Date(event.item['start_at']);
     const endDate = new Date(event.item['end_at']);
     let title = String(event.item.title);
@@ -235,22 +233,12 @@ class EventBox extends React.Component {
 EventBox.propTypes = {
   classes: PropTypes.object.isRequired,
   event: PropTypes.shape({
-    startAt: PropTypes.string.isRequired,
-    endAt: PropTypes.string.isRequired,
-    place: PropTypes.string.isRequired,
     accepted: PropTypes.number.isRequired,
     limit: PropTypes.number.isRequired,
   }),
 };
 EventBox.defaultProps = {
   classes: Object,
-  event: PropTypes.shape({
-    startAt: '',
-    endAt: '',
-    place: '',
-    accepted: 0,
-    limit: 0,
-  }),
 };
 
 const mapStateToProps = state => ({
