@@ -8,6 +8,7 @@ import NotFound from './Components/NotFound';
 
 class App extends React.Component {
   render() {
+    console.log(this);
     return (
       <Aouth>
         <Router>
@@ -16,7 +17,7 @@ class App extends React.Component {
             <Route path="/login" component={Login} />
             <Route path="/events" component={Events} />
             <Route path="/NotFound" component={NotFound} />
-            <Route component={NotFound} />
+            {/* <Route component={NotFound} /> */}
           </Switch>
         </Router>
       </Aouth>
