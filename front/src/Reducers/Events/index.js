@@ -12,19 +12,21 @@ const initialState = {
   list: [],
   isFetching: false,
   isMoreFetching: false,
+  link: null,
 };
 
 function list(eventReducer, actionTypes) {
   return (state = initialState, action) => {
     switch (action.type) {
       case actionTypes.RECEIVE_EVENTS: {
-        const { events } = action;
+        const { events, link } = action;
         if (typeof events !== 'undefined') {
           return {
             ...state,
             isFetching: false,
             isMoreFetching: false,
-            list: events.map(event => eventReducer({}, { type: RECEIVE_EVENT, item: event })),
+            list: [...state.list, ...events.map(event => eventReducer({}, { type: RECEIVE_EVENT, item: event }))],
+            link,
           };
         }
         return Object.assign({}, state, { isMoreFetching: false });

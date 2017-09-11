@@ -3,7 +3,7 @@ import { withStyles } from 'material-ui/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import * as EventsActions from '../Actions/Events';
+import Card, { CardHeader } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
@@ -11,6 +11,8 @@ import Typography from 'material-ui/Typography';
 import { grey, blue } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
 import { StickyContainer, Sticky } from 'react-sticky';
+
+import * as EventsActions from '../Actions/Events';
 import Header from './Header';
 import EventsTab from './EventsTab';
 import EventBox from './EventBox';
@@ -129,7 +131,17 @@ class Events extends React.Component {
     window.location.href= event.item.url
   }
   renderEventsBox() {
-    const { events } = this.props
+    const { events } = this.props;
+    if (events.list.length === 0) {
+      return (
+        <Grid item style={{ width: '100%' }}>
+          <Card>
+            <CardHeader
+              title="お探しのイベントはありませんでした。" />
+          </Card>
+        </Grid>
+      )
+    }
     return events.list.map((item,index) =>
       <Grid item key={index} style={{ width: '100%' }}>
         <EventBox event={item} handleEditJump={this.handleEditJump} handleProviderJump={this.handleProviderJump}/>
@@ -137,11 +149,14 @@ class Events extends React.Component {
     );
   }
   handleMoreRead = () => {
-    const { actions } = this.props;
-    actions.moreReadEventsIfNeeded(false, false);
+    const { actions, events } = this.props;
+    actions.moreReadEventsIfNeeded(false, false, events.link );
   };
   renderMoreRead() {
-    const { classes } = this.props;
+    const { classes, events } = this.props;
+    if (!events.link) {
+      return null;
+    }
     return (
       <Grid
         container
@@ -212,7 +227,7 @@ class Events extends React.Component {
           {this.renderEventsBox()}
         </Grid>
         <Grid item style={{ width: '100%' }}>
-          {events.isMoreFetching ? null : this.renderMoreRead()}
+          {events.isMoreFetching ? this.renderCenterProgress() : this.renderMoreRead()}
         </Grid>
         <Grid item style={{ width: '100%' }}>
           {events.isMoreFetching ? this.renderCenterProgress() : null}
@@ -227,7 +242,7 @@ class Events extends React.Component {
     );
   }
   renderMainWeb() {
-    const { classes } = this.props;
+    const { classes,events } = this.props;
     return (
       <Grid
         container
@@ -252,6 +267,9 @@ class Events extends React.Component {
           <Grid container spacing={8} align="flex-start" direction="row" justify="center">
             {this.renderEventsBox()}
           </Grid>
+          <Grid item style={{ width: '100%' }}>
+            {events.isMoreFetching ? this.renderCenterProgress() : this.renderMoreRead()}
+          </Grid>
         </Grid>
       </Grid>
     );
@@ -263,6 +281,7 @@ class Events extends React.Component {
       </StickyContainer>
     );
   }
+
   renderMain() {
     return (
       <div>
