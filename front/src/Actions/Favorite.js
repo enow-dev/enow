@@ -30,5 +30,29 @@ export function putFavoriteIfNeed(event) {
   };
 }
 
-export const deleteFavorite = eventId => ({ type: types.DELETE_FAVORITE, eventId });
-export const deleteReceiveFavorite = result => ({ type: types.DELETE_RECEIVE_FAVORITE, result });
+export const deleteFavorite = () => ({ type: types.DELETE_FAVORITE });
+export const deleteReceiveFavorite = event => ({ type: types.DELETE_RECEIVE_FAVORITE, event });
+
+export function deleteFavoriteIfNeed(event) {
+  return (dispatch, getState) => {
+    if (getState.deleting) {
+      return Promise.resolve();
+    }
+    dispatch(putFavorite());
+    const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
+    const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/events/${event.item.id}/favorites`;// eslint-disable-line
+    const aouth = cookies.get('aouth');
+    return fetch(url, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/vnd.event+json', // eslint-disable-line
+        'X-Authorization': `${aouth.token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(() => dispatch(putReceiveFavorite(event)))
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+}

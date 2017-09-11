@@ -168,7 +168,7 @@ class Events extends React.Component {
         direction="row"
         justify="center"
       >
-        <Grid item className={classes.moreReadItem} align="center" direction="row" justify="center">
+        <Grid item className={classes.moreReadItem}>
           <Button className={classes.moreReadButton} onClick={this.handleMoreRead}>
             続きを読み込む
           </Button>

@@ -8,7 +8,6 @@ import NotFound from './Components/NotFound';
 
 class App extends React.Component {
   render() {
-    console.log(this);
     return (
       <Aouth>
         <Router>
