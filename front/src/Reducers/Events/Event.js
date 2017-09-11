@@ -31,7 +31,13 @@ const initialState = {
 export default function event(state = initialState, action) {
   switch (action.type) {
     case RECEIVE_EVENT:
-      return Object.assign({ isFetching: false, item: state });
+      return {
+        isFetching: false,
+        item: {
+          ...state.item,
+          ...action.item,
+        },
+      };
     case FETCH_EVENT:
       return Object.assign({}, state, { isFetching: true });
     case PUT_FAVORITE:
