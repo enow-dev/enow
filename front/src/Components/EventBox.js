@@ -101,7 +101,6 @@ class EventBox extends React.Component {
 
   render() {
     const { classes, event, handleProviderJump, favoriteActions } = this.props;
-    console.log(event);
     const startDate = new Date(event.item['start_at']);
     const endDate = new Date(event.item['end_at']);
     let title = String(event.item.title);
@@ -146,21 +145,26 @@ class EventBox extends React.Component {
             >
               {title}
             </Typography>
-        </Grid>
-        <Grid item>
-          <Button
-            className={
-              this.state.isFavorite ? classes.favoriteButton : classes.noFavoriteButton
-            }
-            dense
-            onClick={() => {
-              favoriteActions.putFavoriteIfNeed(event)
-              this.setState({ isFavorite: !this.state.isFavorite });
-            }}
-          >
-            {this.state.isFavorite ? 'お気に入り中' : 'お気に入りする'}
-          </Button>
-        </Grid>
+          </Grid>
+          <Grid item>
+            <Button
+              className={
+                this.state.isFavorite ? classes.favoriteButton : classes.noFavoriteButton
+              }
+              dense
+              onClick={() => {
+                const { isFavorite } = this.state;
+                this.setState({ isFavorite: !isFavorite });
+                if (isFavorite) {
+                  favoriteActions.deleteFavoriteIfNeed(event);
+                } else {
+                  favoriteActions.putFavoriteIfNeed(event);
+                }
+              }}
+            >
+              {this.state.isFavorite ? 'お気に入り中' : 'お気に入りする'}
+            </Button>
+          </Grid>
         </Grid>
         <CardContent>
           <List>
@@ -233,12 +237,16 @@ class EventBox extends React.Component {
 EventBox.propTypes = {
   classes: PropTypes.object.isRequired,
   event: PropTypes.shape({
-    accepted: PropTypes.number.isRequired,
-    limit: PropTypes.number.isRequired,
+    accepted: PropTypes.number,
+    limit: PropTypes.number,
   }),
 };
 EventBox.defaultProps = {
   classes: Object,
+  event: PropTypes.shape({
+    accepted: 0,
+    limit: 0,
+  }),
 };
 
 const mapStateToProps = state => ({

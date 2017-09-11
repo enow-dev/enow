@@ -1,6 +1,8 @@
 import {
   PUT_FAVORITE,
   PUT_RECEIVE_FAVORITE,
+  DELETE_FAVORITE,
+  DELETE_RECEIVE_FAVORITE,
 } from '../../Constants/ActionTypes';
 
 const initialState = {
@@ -15,6 +17,10 @@ export default function favorite(state = initialState, action) {
       return Object.assign({}, state, { isPutiing: true, resultEventId: null });
     case PUT_RECEIVE_FAVORITE:
       return Object.assign({}, state, { isPutiing: false, resultEventId: action.event.id });
+    case DELETE_FAVORITE:
+      return Object.assign({}, state, { isDeleting: true, resultEventId: null });
+    case DELETE_RECEIVE_FAVORITE:
+      return Object.assign({}, state, { isDeleting: false, resultEventId: action.event.id });
     default:
       return state;
   }
