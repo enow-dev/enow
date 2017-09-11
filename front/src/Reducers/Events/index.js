@@ -24,7 +24,7 @@ function list(eventReducer, actionTypes) {
             ...state,
             isFetching: false,
             isMoreFetching: false,
-            list: events.map(event => eventReducer(event, { type: RECEIVE_EVENT })),
+            list: events.map(event => eventReducer({}, { type: RECEIVE_EVENT, item: event })),
           };
         }
         return Object.assign({}, state, { isMoreFetching: false });
@@ -45,7 +45,7 @@ function list(eventReducer, actionTypes) {
             ...state,
             list: state.list.map((eventOfList) => {
               if (eventOfList.item.id === event.item.id) {
-                return eventReducer(event.item, rest);
+                return eventReducer(eventOfList, { ...rest, item: event.item });
               }
               return eventOfList;
             }),
