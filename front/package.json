@@ -9,6 +9,7 @@
     "history": "^4.7.2",
     "material-ui": "^1.0.0-beta.7",
     "material-ui-icons": "^1.0.0-beta.5",
+    "parse-link-header": "^1.0.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-autosuggest": "^9.3.2",
