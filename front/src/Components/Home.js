@@ -82,6 +82,10 @@ class Home extends React.Component {
     this.setState({ slot: slotInerval });
   }
 
+  componentWillUnmount() {
+    clearInterval(this.state.slotInerval);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { events } = nextProps;
     if (events.list.length > 0) {
