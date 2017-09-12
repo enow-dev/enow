@@ -213,7 +213,7 @@ class Home extends React.Component {
     if (searchNum <= slotNum) {
       clearInterval(slotInerval);
     } else {
-      this.setState({ slotNum: slotNum+1 });
+      this.setState({ slotNum: slotNum + 1 });
     }
   }
 
