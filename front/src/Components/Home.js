@@ -76,6 +76,7 @@ class Home extends React.Component {
   componentWillMount() {
     const { searchStash } = this.props;
     this.setState({...searchStash});
+    this.handleSubmitEventsCount();
   }
 
   componentDidMount() {
@@ -198,9 +199,13 @@ class Home extends React.Component {
 
   handleSelectPref = (event, index) => {
     this.setState({prefIndex: index, slotNum: 0 });
+    this.handleSubmitEventsCount();
+  }
+
+  handleSubmitEventsCount = () => {
     const { eventsCountActions } = this.props;
     const { keyword, prefIndex } = this.state;
-    eventsCountActions.getEventsCountIfNeeded(keyword, index);
+    eventsCountActions.getEventsCountIfNeeded(keyword, prefIndex);
   }
 
   slot = () => {
