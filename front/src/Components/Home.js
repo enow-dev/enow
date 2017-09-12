@@ -21,6 +21,7 @@ import Header from './Header';
 
 import * as ErrorActions from '../Actions/Error';
 import * as AutosuggestActions from '../Actions/Autosuggest';
+import * as EventsActions from '../Actions/Events';
 import * as SearchStashActions from '../Actions/SearchStash';
 import * as EventsCountActions from '../Actions/EventsCount';
 
@@ -188,9 +189,9 @@ class Home extends React.Component {
   };
 
   handleSubmit = () => {
-    const { eventsAction, history, searchStashActions } = this.props;
+    const { eventsActions, history, searchStashActions } = this.props;
     const { keyword, prefIndex } = this.state;
-    eventsAction.getEventsIfNeeded(false,false, keyword, prefIndex);
+    eventsActions.getEventsIfNeeded(false,false, keyword, prefIndex);
     searchStashActions.setSearchStash({...this.state});
     history.push('/events');
   }
@@ -309,6 +310,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   errorActions: bindActionCreators(ErrorActions, dispatch),
   autosuggestActions: bindActionCreators(AutosuggestActions, dispatch),
+  eventsActions: bindActionCreators(EventsActions, dispatch),
   searchStashActions: bindActionCreators(SearchStashActions, dispatch),
   eventsCountActions: bindActionCreators(EventsCountActions, dispatch),
 });
