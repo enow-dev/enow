@@ -45,3 +45,7 @@ ignored = ["cloud.google.com/go/datastore"]
 [[constraint]]
   branch = "master"
   name = "github.com/tomnomnom/linkheader"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/huandu/facebook"
