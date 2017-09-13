@@ -159,6 +159,9 @@ func (e *Events) EventToEventTiny() *app.EventTiny {
 	event.EndAt = e.EndAt
 	event.URL = e.URL
 	event.Area = e.Area
+	if len(e.Tags) == 0 {
+		e.Tags = []string{}
+	}
 	event.Tags = e.Tags
 	event.Limit = e.Limit
 	event.Accepted = e.Accepted
@@ -182,6 +185,9 @@ func (e *Events) EventToEventShow() *app.EventShow {
 	event.Area = e.Area
 	event.Lat = e.Coords.Lat
 	event.Lon = e.Coords.Lng
+	if len(e.Tags) == 0 {
+		e.Tags = []string{}
+	}
 	event.Tags = e.Tags
 	event.Limit = e.Limit
 	event.Accepted = e.Accepted
