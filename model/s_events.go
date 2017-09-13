@@ -177,7 +177,11 @@ func (s *SearchEvents) SearchEventToEventTiny() *app.EventTiny {
 	event.EndAt = s.EndAt
 	event.URL = s.URL
 	event.Area = s.Area
-	event.Tags = strings.Split(s.Tags, ",")
+	if len(s.Tags) == 0 {
+		event.Tags = []string{}
+	} else {
+		event.Tags = strings.Split(s.Tags, ",")
+	}
 	event.Limit, _ = strconv.Atoi(s.Limit)
 	event.Accepted, _ = strconv.Atoi(s.Accepted)
 	event.UpdatedAt = s.UpdatedAt
