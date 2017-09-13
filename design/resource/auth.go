@@ -10,14 +10,18 @@ import (
 var _ = Resource("auth", func() {
 	BasePath("/auth")
 	DefaultMedia(media.Session)
+	Files("/login", "public/login.html")
 	Action("login", func() {
 		Description("ログイン&トークン発行")
 		Routing(POST("/login"))
 		Params(func() {
-			Param("code", String, "github OAuth2 code", func() {
+			Param("code", String, "OAuth2 code", func() {
 				Default("")
 			})
-			Required("code")
+			Param("provider", String, "OAuth2 provider", func() {
+				Enum("github", "facebook")
+			})
+			Required("code", "provider")
 		})
 		UseTrait(GeneralUserTrait)
 		NoSecurity()

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/enow-dev/enow/app"
+	"github.com/enow-dev/enow/config"
 	"github.com/mjibson/goon"
 	"google.golang.org/appengine/datastore"
 )
@@ -23,10 +24,10 @@ type Users struct {
 	Email            string    `json:"email" datastore:""`
 	AvaterURL        string    `json:"avater_url" datastore:",noindex"`
 	ExcludeRedEventQ string    `json:"exclude_red_event_q" datastore:",noindex"`
-	FacebookID       int       `json:"facebook_id" datastore:""`
-	TwitterID        int       `json:"twitter_id" datastore:""`
-	GithubID         int       `json:"github_id" datastore:""`
-	GoogleID         int       `json:"google_id" datastore:""`
+	FacebookID       int64     `json:"facebook_id" datastore:""`
+	TwitterID        int64     `json:"twitter_id" datastore:""`
+	GithubID         int64     `json:"github_id" datastore:""`
+	GoogleID         int64     `json:"google_id" datastore:""`
 	Expire           time.Time `json:"expire" datastore:""`
 	CreatedAt        time.Time `json:"created_at"`
 	UpdatedAt        time.Time `json:"updated_at"`
@@ -49,18 +50,22 @@ func (db *UsersDB) GetFindByName(appCtx context.Context, name string) ([]*app.Us
 }
 
 // nolint
-const (
-	FacebookOAuth = "FacebookID ="
-	TwitterOAuth  = "TwitterID ="
-	GithubOAuth   = "GithubID ="
-	GoogleOAuth   = "GoogleID ="
-)
-
-// nolint
-func (db *UsersDB) GetKeyFindByOauthID(appCtx context.Context, id int, oauthType string) (*datastore.Key, error) {
+func (db *UsersDB) GetKeyFindByOauthID(appCtx context.Context, id int64, oauthType string) (*datastore.Key, error) {
 	g := goon.FromContext(appCtx)
 	as := []*Users{}
-	q := datastore.NewQuery(g.Kind(new(Users))).Filter(oauthType, id).KeysOnly()
+
+	var filterTerm string
+	// TODO: GoogleとTwitterの対応もする
+	switch oauthType {
+	case config.FacebookOAuth:
+		filterTerm = "FacebookID ="
+	case config.GithubOAuth:
+		filterTerm = "GithubID ="
+	}
+
+	q := datastore.NewQuery(g.Kind(new(Users)))
+	q = q.Filter(filterTerm, id)
+	q = q.KeysOnly()
 	keys, err := g.GetAll(q, &as)
 	if err != nil {
 		return nil, err
