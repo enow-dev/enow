@@ -21,6 +21,18 @@ var _ = Resource("events", func() {
 			Param("pref", Integer, "都道府県検索", func() {
 				Default(0)
 			})
+			Param("start_at_sort", String, "開催日ソート（デフォルトは昇順）", func() {
+				Enum("asc", "desc")
+				Default("asc")
+			})
+			Param("period_from", String, "終了日付範囲指定（◯◯日から〜）Format: yyyy-mm-dd", func() {
+				Pattern(`^\d{4}\-\d{2}\-\d{2}$`)
+				Default("")
+			})
+			Param("period_to", String, "終了日付範囲指定（〜◯◯日まで）Format: yyyy-mm-dd", func() {
+				Pattern(`^\d{4}\-\d{2}\-\d{2}$`)
+				Default("")
+			})
 			Param("is_red", Boolean, "閲覧済みのものを出さない", func() {
 				Default(false)
 			})

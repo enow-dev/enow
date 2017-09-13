@@ -91,7 +91,7 @@ func (db *SearchEventsDB) SetCursor(appCtx context.Context, cursor string) {
 }
 
 // Sort ソートしたいプロパティと降順昇順を設定する
-func (db *SearchEventsDB) Sort(appCtx context.Context, expr string, isAsc bool) {
+func (db *SearchEventsDB) Sort(appCtx context.Context, expr string, sort string) {
 	if expr == "" {
 		return
 	}
@@ -101,9 +101,13 @@ func (db *SearchEventsDB) Sort(appCtx context.Context, expr string, isAsc bool) 
 	if db.opts.Sort == nil {
 		db.opts.Sort = &search.SortOptions{}
 	}
+	asc := true
+	if sort == "desc" {
+		asc = false
+	}
 	db.opts.Sort.Expressions = append(db.opts.Sort.Expressions, search.SortExpression{
 		Expr:    expr,
-		Reverse: isAsc,
+		Reverse: asc,
 	})
 }
 
@@ -116,11 +120,23 @@ func (db *SearchEventsDB) SetSearchKeyword(appCtx context.Context, q string) {
 }
 
 // SetPeriodDate 日付範囲検索
-func (db *SearchEventsDB) SetPeriodDate(appCtx context.Context, target string, t time.Time) {
-	if target == "" || t.IsZero() {
+func (db *SearchEventsDB) SetPeriodDate(appCtx context.Context, target string, t interface{}) {
+	date := ""
+	switch v := t.(type) {
+	case string:
+		if target == "" || v == "" {
+			return
+		}
+		date = v
+	case time.Time:
+		if target == "" || v.IsZero() {
+			return
+		}
+		date = v.Format("2006-01-02")
+	default:
 		return
 	}
-	db.queries = append(db.queries, fmt.Sprint(target, t.Format("2006-01-02")))
+	db.queries = append(db.queries, fmt.Sprint(target, date))
 }
 
 // SetPref 都道府県を設定する
