@@ -46,8 +46,15 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 	}
 	se := model.NewSearchEventsDB(indexName)
 	se.SetLimit(appCtx, 20)
-	se.Sort(appCtx, "StartAt", true)
-	se.SetPeriodDate(appCtx, "EndAt > ", now)
+	se.Sort(appCtx, "StartAt", ctx.StartAtSort)
+	// 日付指定が一切されていない時は開催終了前のものだけを出す
+	if ctx.PeriodFrom == "" && ctx.PeriodTo == "" {
+		se.SetPeriodDate(appCtx, "EndAt >=", now)
+	} else {
+		se.SetPeriodDate(appCtx, "EndAt >=", ctx.PeriodFrom)
+		se.SetPeriodDate(appCtx, "EndAt <=", ctx.PeriodTo)
+	}
+
 	se.SetPref(appCtx, ctx.Pref)
 	se.SetCursor(appCtx, ctx.Cursor)
 	// 既読しているイベントも出す
