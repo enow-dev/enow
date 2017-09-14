@@ -38,9 +38,11 @@ func (c *FavoritesController) Update(ctx *app.UpdateFavoritesContext) error {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 	ufeDB := &model.UserEventFavoritesDB{}
-	now := time.Time{}
+	now := time.Now()
 	err = ufeDB.Add(appCtx, int64ID, userKey, now)
-	if err != nil {
+	if err == fmt.Errorf("存在しないイベントIDが指定されています") {
+		return ctx.BadRequest(goa.ErrBadRequest(err))
+	} else if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 

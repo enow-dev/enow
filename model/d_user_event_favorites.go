@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"fmt"
+
 	"github.com/enow-dev/enow/app"
 	"github.com/mjibson/goon"
 	"google.golang.org/appengine/datastore"
@@ -82,6 +84,12 @@ func (db *UserEventFavoritesDB) IsFavoriteEvent(appCtx context.Context, eventID 
 // Add お気に入りを追加する　既に追加されている場合は無視する
 func (db *UserEventFavoritesDB) Add(appCtx context.Context, eventID int64, userKey *datastore.Key, createAt time.Time) error {
 	g := goon.FromContext(appCtx)
+	eDB := EventsDB{}
+	_, err := eDB.Get(appCtx, eventID)
+	if err == datastore.ErrNoSuchEntity {
+		return fmt.Errorf("存在しないイベントIDが指定されています")
+	}
+
 	q := datastore.NewQuery(g.Kind(new(UserEventFavorites)))
 	q = q.KeysOnly()
 	q = q.Ancestor(userKey)
@@ -95,8 +103,9 @@ func (db *UserEventFavoritesDB) Add(appCtx context.Context, eventID int64, userK
 		return nil
 	}
 	uef := &UserEventFavorites{
-		Users:   userKey,
-		EventID: eventID,
+		Users:     userKey,
+		EventID:   eventID,
+		CreatedAt: createAt,
 	}
 	_, err = g.Put(uef)
 	if err != nil {
