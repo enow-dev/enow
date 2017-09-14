@@ -5,6 +5,7 @@ import {
   RECEIVE_EVENT,
   PUT_FAVORITE,
   PUT_RECEIVE_FAVORITE,
+  CLEAR_EVENTS,
 } from '../../Constants/ActionTypes';
 import eventReducer from './Event';
 
@@ -55,6 +56,8 @@ function list(eventReducer, actionTypes) {
         }
         return state;
       }
+      case CLEAR_EVENTS:
+        return initialState;
       default:
         return state;
     }

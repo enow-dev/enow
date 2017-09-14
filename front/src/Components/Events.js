@@ -13,6 +13,7 @@ import MediaQuery from 'react-responsive';
 import { StickyContainer, Sticky } from 'react-sticky';
 
 import * as EventsActions from '../Actions/Events';
+import * as FavoriteEventsActions from '../Actions/FavoriteEvents';
 import Header from './Header';
 import EventsTab from './EventsTab';
 import EventBox from './EventBox';
@@ -99,9 +100,11 @@ class Events extends React.Component {
 
   handleTabChange = (event, value) => {
     this.setState({ selectTabIndex: value });
+    const { eventsActions, favoriteEventsActions } = this.props;
+    eventsActions.clearEvents();
     switch (value) {
       case 3:
-        this.props.actions.getEventsIfNeeded(true, false, '', 0);
+        favoriteEventsActions.getFavoriteEventsIfNeeded(false);
         break;
       default:
         break;
@@ -152,8 +155,8 @@ class Events extends React.Component {
     );
   }
   handleMoreRead = () => {
-    const { actions, events } = this.props;
-    actions.moreReadEventsIfNeeded(false, false, events.link );
+    const { eventsActions, events } = this.props;
+    eventsActions.moreReadEventsIfNeeded(false, false, events.link );
   };
   renderMoreRead() {
     const { classes, events } = this.props;
@@ -320,7 +323,8 @@ const mapStateToProps = state => ({
   events: state.events,
 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(EventsActions, dispatch),
+  eventsActions: bindActionCreators(EventsActions, dispatch),
+  favoriteEventsActions: bindActionCreators(FavoriteEventsActions, dispatch),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Events)));

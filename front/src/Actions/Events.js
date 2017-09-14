@@ -8,6 +8,7 @@ export const receiveEvents = (events, isMoreRead, link) => (
   { type: types.RECEIVE_EVENTS, events, isMoreRead, link }
 );
 export const fetchEvents = isMoreRead => ({ type: types.FETCH_EVENTS, isMoreRead });
+export const clearEvents = () => ({ type: types.CLEAR_EVENTS });
 
 function getEvents(isFavorite, isRed, isMoreRead, q, pref, link) {
   const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
