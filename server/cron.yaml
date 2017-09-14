@@ -13,3 +13,8 @@ cron:
   url: /api/cron/upgrade_tags
   schedule: every 24 hours
   timezone: Asia/Tokyo
+
+- description: send recommend mail
+  url: /api/cron/send_recommend_mail
+  schedule: every 24 hours
+  timezone: Asia/Tokyo

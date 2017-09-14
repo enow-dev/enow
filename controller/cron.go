@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -10,16 +11,13 @@ import (
 	"github.com/enow-dev/enow/model"
 	"github.com/enow-dev/enow/util"
 	"github.com/goadesign/goa"
-	"google.golang.org/appengine"
-
-	yaml "gopkg.in/yaml.v1"
-
-	"fmt"
-
 	"github.com/mjibson/goon"
+	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
 	"google.golang.org/appengine/log"
+	"google.golang.org/appengine/mail"
 	"google.golang.org/appengine/search"
+	yaml "gopkg.in/yaml.v1"
 )
 
 // CronController implements the cron resource.
@@ -118,7 +116,6 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 	for _, p := range allParser {
-
 		// リクエストを投げて、レスポンスを受取る
 		cli := model.NewParser(p.URL, p.APIType, p.Token, ctx.Request)
 		es, err := cli.ConvertingToJSON()
@@ -224,6 +221,29 @@ func (c *CronController) UpgradeTags(ctx *app.UpgradeTagsCronContext) error {
 	tDB := model.TagsDB{}
 	tDB.Upgrade(appCtx, &uTags)
 	// CronController_UpgradeTags: end_implement
+	return nil
+}
+
+// SendRecommendMail runs the sendRecommendMail action.
+func (c *CronController) SendRecommendMail(ctx *app.SendRecommendMailCronContext) error {
+	// CronController_SendRecommendMail: start_implement
+
+	// Put your logic here
+	appCtx := appengine.NewContext(ctx.Request)
+	msg := &mail.Message{
+		Sender:   "peeeei0804@gmail.com",
+		To:       []string{"peeeei0804@gmail.com"},
+		Subject:  "やっはろー",
+		Body:     "律っちゃんぺろぺろ",
+		HTMLBody: "<h1>律っちゃんぺろぺろ</h1>",
+	}
+	err := mail.Send(appCtx, msg)
+	if err != nil {
+		log.Errorf(appCtx, "%v", err)
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+
+	// CronController_SendRecommendMail: end_implement
 	return nil
 }
 
