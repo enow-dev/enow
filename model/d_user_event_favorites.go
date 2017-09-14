@@ -7,6 +7,7 @@ import (
 	"github.com/enow-dev/enow/app"
 	"github.com/mjibson/goon"
 	"google.golang.org/appengine/datastore"
+	"google.golang.org/appengine/log"
 )
 
 // UserEventFavoritesDB DB
@@ -19,31 +20,46 @@ type UserEventFavorites struct {
 	Users     *datastore.Key `datastore:"-" goon:"parent"`
 	EventID   int64          `json:"event_id" datastore:""`
 	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
 }
 
 // nolint
-func (db *UserEventFavoritesDB) GetListFindByUserKey(appCtx context.Context, userKey *datastore.Key) ([]*app.EventTiny, error) {
+func (db *UserEventFavoritesDB) GetListFindByUserKey(appCtx context.Context, userKey *datastore.Key, setCursor string) ([]*app.EventTiny, datastore.Cursor, error) {
 	g := goon.FromContext(appCtx)
-	uers := []*UserEventFavorites{}
 	q := datastore.NewQuery(g.Kind(new(UserEventFavorites)))
 	q = q.Ancestor(userKey)
-	_, err := g.GetAll(q, &uers)
-	if err != nil {
-		return nil, err
+	q = q.Limit(20)
+	cursor, err := datastore.DecodeCursor(setCursor)
+	if err == nil {
+		q = q.Start(cursor)
 	}
+	t := q.Run(appCtx)
 	var appEvents []*app.EventTiny
-	for _, v := range uers {
-		event := &Events{
-			ID: v.EventID,
+	for {
+		var uef UserEventFavorites
+		_, err := t.Next(&uef)
+		if err == datastore.Done {
+			break
 		}
-		err := g.Get(event)
 		if err != nil {
-			return nil, err
+			log.Errorf(appCtx, "%v", err)
+			break
 		}
-		appEvents = append(appEvents, event.EventToEventTiny())
+		eDB := EventsDB{}
+		event, err := eDB.Get(appCtx, uef.EventID)
+		if err != nil {
+			log.Errorf(appCtx, "%v", err)
+			break
+		}
+		e := event.EventToEventTiny()
+		e.IsFavorite = true
+		e.IsRed = true
+		appEvents = append(appEvents, e)
 	}
-	return appEvents, nil
+	cursor, err = t.Cursor()
+	if err != nil {
+		return nil, datastore.Cursor{}, err
+	}
+	return appEvents, cursor, nil
 }
 
 // IsFavoriteEvent お気に入り済みイベントか
@@ -64,7 +80,7 @@ func (db *UserEventFavoritesDB) IsFavoriteEvent(appCtx context.Context, eventID 
 }
 
 // Add お気に入りを追加する　既に追加されている場合は無視する
-func (db *UserEventFavoritesDB) Add(appCtx context.Context, eventID int64, userKey *datastore.Key) error {
+func (db *UserEventFavoritesDB) Add(appCtx context.Context, eventID int64, userKey *datastore.Key, createAt time.Time) error {
 	g := goon.FromContext(appCtx)
 	q := datastore.NewQuery(g.Kind(new(UserEventFavorites)))
 	q = q.KeysOnly()
