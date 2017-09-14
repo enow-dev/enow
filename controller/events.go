@@ -115,7 +115,7 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 			uerDB.Add(appCtx, userEventReads)
 		}
 	}
-	l := util.CreateLinkHeader(ctx.RequestData, os.Getenv("Scheme"), iterator.Cursor())
+	l := util.CreateLinkHeader(ctx.RequestData, os.Getenv("Scheme"), fmt.Sprint(iterator.Cursor()))
 	ctx.ResponseData.Header().Set("link", l.String())
 	ctx.ResponseData.Header().Set("x-search-hits-count", fmt.Sprint(iterator.Count()))
 

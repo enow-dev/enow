@@ -51,6 +51,10 @@ var _ = API("enow", func() {
 		Header("link")
 		Required("x-search-hits-count", "link")
 	})
+	Trait(PaginatorHeaderTrait2, func() {
+		Header("link")
+		Required("link")
+	})
 	Trait(GAECronTrait, func() {
 		Security(GAECronAuth)
 		Response(OK)

@@ -1,6 +1,11 @@
 package controller
 
 import (
+	"fmt"
+	"os"
+
+	"time"
+
 	"github.com/enow-dev/enow/app"
 	"github.com/enow-dev/enow/model"
 	"github.com/enow-dev/enow/util"
@@ -33,7 +38,8 @@ func (c *FavoritesController) Update(ctx *app.UpdateFavoritesContext) error {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 	ufeDB := &model.UserEventFavoritesDB{}
-	err = ufeDB.Add(appCtx, int64ID, userKey)
+	now := time.Time{}
+	err = ufeDB.Add(appCtx, int64ID, userKey, now)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
@@ -77,10 +83,12 @@ func (c *FavoritesController) SelfList(ctx *app.SelfListFavoritesContext) error 
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
 	ufeDB := &model.UserEventFavoritesDB{}
-	events, err := ufeDB.GetListFindByUserKey(appCtx, userKey)
+	events, cursor, err := ufeDB.GetListFindByUserKey(appCtx, userKey, ctx.Cursor)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
+	l := util.CreateLinkHeader(ctx.RequestData, os.Getenv("Scheme"), fmt.Sprint(cursor))
+	ctx.ResponseData.Header().Set("link", l.String())
 
 	// FavoritesController_SelfList: end_implement
 	return ctx.OKTiny(events)

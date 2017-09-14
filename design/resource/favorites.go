@@ -14,15 +14,23 @@ var _ = Resource("favorites", func() {
 		Description("ユーザーのお気に入り情報を返す（ユーザー判別はtokenで行う）")
 		Routing(GET("self/favorites"))
 		Params(func() {
+			Param("cursor", String, "ページングカーソル", func() {
+				Default("")
+			})
 			Param("isEnd", Boolean, "終了したイベントを取得する", func() {
 				Default(false)
 			})
 			Required("isEnd")
 		})
-		Response(OK, CollectionOf(media.Event, func() {
-			View("default")
-			View("tiny")
-		}))
+		Response(OK, func() {
+			Media(CollectionOf(media.Event, func() {
+				View("default")
+				View("tiny")
+			}))
+			Headers(func() {
+				UseTrait(PaginatorHeaderTrait)
+			})
+		})
 		UseTrait(GeneralUserTrait)
 	})
 	Action("update", func() {
