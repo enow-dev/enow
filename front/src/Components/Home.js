@@ -23,6 +23,7 @@ import * as ErrorActions from '../Actions/Error';
 import * as AutosuggestActions from '../Actions/Autosuggest';
 import * as EventsActions from '../Actions/Events';
 import * as SearchStashActions from '../Actions/SearchStash';
+import * as EventsCountActions from '../Actions/EventsCount';
 
 const styles = theme =>({
   root: {
@@ -75,6 +76,7 @@ class Home extends React.Component {
   componentWillMount() {
     const { searchStash } = this.props;
     this.setState({...searchStash});
+    this.handleSubmitEventsCount();
   }
 
   componentDidMount() {
@@ -87,9 +89,9 @@ class Home extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { events } = nextProps;
-    if (events.list.length > 0) {
-      this.setState({searchNum: events.list.length});
+    const { eventsCount } = nextProps;
+    if(eventsCount.count >= 0) {
+      this.setState({searchNum: eventsCount.count});
     }
   }
 
@@ -188,17 +190,22 @@ class Home extends React.Component {
   };
 
   handleSubmit = () => {
-    const { eventsAction, history, searchStashActions } = this.props;
+    const { eventsActions, history, searchStashActions } = this.props;
     const { keyword, prefIndex } = this.state;
-    eventsAction.getEventsIfNeeded(false,false, keyword, prefIndex);
+    eventsActions.getEventsIfNeeded(false,false, keyword, prefIndex);
     searchStashActions.setSearchStash({...this.state});
     history.push('/events');
   }
 
   handleSelectPref = (event, index) => {
-    const { eventsAction } = this.props;
     this.setState({prefIndex: index, slotNum: 0 });
-    eventsAction.getEventsIfNeeded(false,false, '', index);
+    this.handleSubmitEventsCount();
+  }
+
+  handleSubmitEventsCount = () => {
+    const { eventsCountActions } = this.props;
+    const { keyword, prefIndex } = this.state;
+    eventsCountActions.getEventsCountIfNeeded(keyword, prefIndex);
   }
 
   slot = () => {
@@ -206,7 +213,7 @@ class Home extends React.Component {
     if (searchNum <= slotNum) {
       clearInterval(slotInerval);
     } else {
-      this.setState({ slotNum: slotNum+1 });
+      this.setState({ slotNum: slotNum + 1 });
     }
   }
 
@@ -303,13 +310,14 @@ const mapStateToProps = state => ({
   autosuggests: state.autosuggest,
   aouth: state.aouth,
   searchStash: state.searchStash,
-  events: state.events,
+  eventsCount: state.eventsCount,
 });
 const mapDispatchToProps = dispatch => ({
   errorActions: bindActionCreators(ErrorActions, dispatch),
   autosuggestActions: bindActionCreators(AutosuggestActions, dispatch),
-  eventsAction: bindActionCreators(EventsActions, dispatch),
+  eventsActions: bindActionCreators(EventsActions, dispatch),
   searchStashActions: bindActionCreators(SearchStashActions, dispatch),
+  eventsCountActions: bindActionCreators(EventsCountActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Home));
