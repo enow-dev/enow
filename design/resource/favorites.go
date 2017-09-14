@@ -28,7 +28,7 @@ var _ = Resource("favorites", func() {
 				View("tiny")
 			}))
 			Headers(func() {
-				UseTrait(PaginatorHeaderTrait)
+				UseTrait(PaginatorHeaderTrait2)
 			})
 		})
 		UseTrait(GeneralUserTrait)
