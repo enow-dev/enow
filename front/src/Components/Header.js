@@ -56,7 +56,7 @@ function SubHeader({classes}) {
   );
 }
 
-function AccountDialog({classes, aouthActions, isOpen, onRequestClose, isGithubAouth}){
+function AccountDialog({classes, aouthActions, isOpen, onRequestClose, isGithubAouth, isFacebookAouth}){
   return (
     <Dialog open={isOpen}>
       <DialogTitle>ログイン</DialogTitle>
@@ -74,7 +74,12 @@ function AccountDialog({classes, aouthActions, isOpen, onRequestClose, isGithubA
             </ListItemAvatar>
             <ListItemText primary={isGithubAouth ? "ログアウント" : "Githubでログイン"} />
           </ListItem>
-          <ListItem button onClick={()=>{}}>
+          <ListItem button onClick={()=>{
+            !isFacebookAouth ?
+            aouthActions.startOauthFacebook() :
+            aouthActions.logout() ;
+            onRequestClose();
+            }}>
             <ListItemAvatar>
               <Avatar src={FacebookIcon} style={{backgroundColor: 'blue'}} />
             </ListItemAvatar>

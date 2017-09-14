@@ -30,9 +30,9 @@ export function logout() {
   };
 }
 
-function login(code) {
+function login(code, provider) {
   const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
-  const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/auth/login?code=${code}`;// eslint-disable-line
+  const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/auth/login?code=${code}&provider=${provider}`;// eslint-disable-line
   return (dispatch) => {
     dispatch(fetchLogin());
     return fetch(url, {
@@ -67,13 +67,13 @@ function getQueryString() {
   return result;
 }
 
-export function loginIfNeeded(code) {
+export function loginIfNeeded(code, provider) {
   return (dispatch, getState) => {
     const { aouth } = getState();
     if (aouth.isFetching || aouth.isError || aouth.isAouth) {
       return Promise.resolve();
     }
-    return dispatch(login(code));
+    return dispatch(login(code, provider));
   };
 }
 
@@ -88,7 +88,7 @@ export function checkAouth() {
     const attr = getQueryString();
     if ('code' in attr) {
       dispatch(redirectAouth());
-      return dispatch(loginIfNeeded(attr.code));
+      return dispatch(loginIfNeeded(attr.code, attr.provider));
     }
     // error
     return Promise.resolve();
@@ -120,8 +120,15 @@ export function isCookieAouth() {
 
 export function startAouthGithub() {
   return (dispatch) => {
-    const { REACT_APP_ClientID, REACT_APP_API_Scheme, REACT_APP_FRONT_Host } = process.env;
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_ClientID}&scope=user:email&redirect_uri=${REACT_APP_API_Scheme}${REACT_APP_FRONT_Host}/login`;// eslint-disable-line
+    const { REACT_APP_Github_ClientID, REACT_APP_API_Scheme, REACT_APP_FRONT_Host } = process.env;
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_Github_ClientID}&scope=user:email&redirect_uri=${REACT_APP_API_Scheme}${REACT_APP_FRONT_Host}/login?provider=github`;// eslint-disable-line
+    return dispatch(startAouth());
+  };
+}
+export function startOauthFacebook() {
+  return (dispatch) => {
+    const { REACT_APP_Facebook_ClientID, REACT_APP_API_Scheme, REACT_APP_FRONT_Host } = process.env;
+    window.location.href = `https://www.facebook.com/dialog/oauth?client_id=${REACT_APP_Facebook_ClientID}&redirect_uri=${REACT_APP_API_Scheme}${REACT_APP_FRONT_Host}/login/&response_type=code&scope=public_profile+email&provider=facebook`;// eslint-disable-line
     return dispatch(startAouth());
   };
 }
