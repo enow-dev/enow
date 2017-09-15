@@ -77,4 +77,47 @@ var _ = Resource("events", func() {
 		Response(OK, Integer)
 		UseTrait(GuestUserTrait)
 	})
+	Action("selfFavoriteList", func() {
+		Description("ユーザーのお気に入り情報を返す（ユーザー判別はtokenで行う）")
+		Routing(GET("self/favorites"))
+		Params(func() {
+			Param("cursor", String, "ページングカーソル", func() {
+				Default("")
+			})
+			Param("isEnd", Boolean, "終了したイベントを取得する", func() {
+				Default(false)
+			})
+			Required("isEnd")
+		})
+		Response(OK, func() {
+			Media(CollectionOf(media.Event, func() {
+				View("default")
+				View("tiny")
+			}))
+			Headers(func() {
+				UseTrait(PaginatorHeaderTrait2)
+			})
+		})
+		UseTrait(GeneralUserTrait)
+	})
+	Action("updateFavorite", func() {
+		Description("お気に入りに追加する（追加した時点で出さないようにする）")
+		Routing(PUT("/:id/favorites"))
+		Params(func() {
+			Param("id")
+			Required("id")
+		})
+		Response(OK)
+		UseTrait(GeneralUserTrait)
+	})
+	Action("deleteFavorite", func() {
+		Description("お気に入りから削除する")
+		Routing(DELETE("/:id/favorites"))
+		Params(func() {
+			Param("id")
+			Required("id")
+		})
+		Response(OK)
+		UseTrait(GeneralUserTrait)
+	})
 })

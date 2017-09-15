@@ -23,7 +23,17 @@ var _ = API("enow", func() {
 		}
 		return "localhost:8080"
 	}())
-	Scheme("http", "https")
+	Scheme(func() string {
+		switch os.Getenv("Op") {
+		case "develop":
+			return "http"
+		case "staging":
+			return "https"
+		case "production":
+			return "https"
+		}
+		return "http"
+	}())
 	BasePath("/")
 	Trait(AdminUserTrait, func() {
 		Security(AdminAuth)
