@@ -34,6 +34,9 @@ func (s *Server) mountController() {
 	// Mount "events" controller
 	events := controller.NewEventsController(s.service)
 	app.MountEventsController(s.service, events)
+	// Mount "users" controller
+	users := controller.NewUsersController(s.service)
+	app.MountUsersController(s.service, users)
 	// Mount "front" controller
 	front := controller.NewFrontController(s.service)
 	app.MountFrontController(s.service, front)

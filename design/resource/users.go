@@ -18,7 +18,7 @@ var _ = Resource("users", func() {
 	})
 	Action("update", func() {
 		Description("update")
-		Routing(DELETE("/self"))
+		Routing(PUT("/self"))
 		Payload(func() {
 			Param("name", String, "ユーザー名")
 			Required("name")
