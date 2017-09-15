@@ -8,7 +8,7 @@ import (
 )
 
 var _ = Resource("auth", func() {
-	BasePath("/auth")
+	BasePath("/api/auth")
 	DefaultMedia(media.Session)
 	Action("login", func() {
 		Description("ログイン&トークン発行")

@@ -8,7 +8,7 @@ import (
 )
 
 var _ = Resource("users", func() {
-	BasePath("/users")
+	BasePath("/api/users")
 	DefaultMedia(media.User)
 	Action("show", func() {
 		Description("show")
@@ -18,11 +18,7 @@ var _ = Resource("users", func() {
 	})
 	Action("update", func() {
 		Description("update")
-		Routing(PUT("/:id"))
-		Params(func() {
-			Param("id", Integer, "id")
-			Required("id")
-		})
+		Routing(DELETE("/self"))
 		Payload(func() {
 			Param("name", String, "ユーザー名")
 			Required("name")
