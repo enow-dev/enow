@@ -7,11 +7,10 @@ import (
 
 	"github.com/goadesign/goa"
 	"github.com/tomnomnom/linkheader"
-	"google.golang.org/appengine/search"
 )
 
 // CreateLinkHeader レスポンスヘッダのLinkに付加するページングリンク情報を作成する
-func CreateLinkHeader(reqData *goa.RequestData, scheme string, cursor search.Cursor) linkheader.Link {
+func CreateLinkHeader(reqData *goa.RequestData, scheme string, cursor string) linkheader.Link {
 	if cursor == "" {
 		return linkheader.Link{}
 	}

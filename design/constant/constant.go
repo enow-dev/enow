@@ -4,11 +4,12 @@ package constant
 // UserTrait
 //---------------------------------------------
 const (
-	AdminUserTrait       = "AdminUserTrait"
-	GeneralUserTrait     = "GeneralUserTrait"
-	GuestUserTrait       = "GuestUserTrait"
-	PaginatorHeaderTrait = "PaginatorHeaderTrait"
-	GAECronTrait         = "PaginatorHeader"
+	AdminUserTrait        = "AdminUserTrait"
+	GeneralUserTrait      = "GeneralUserTrait"
+	GuestUserTrait        = "GuestUserTrait"
+	PaginatorHeaderTrait  = "PaginatorHeaderTrait"
+	PaginatorHeaderTrait2 = "PaginatorHeaderTrait2"
+	GAECronTrait          = "PaginatorHeader"
 )
 
 //---------------------------------------------

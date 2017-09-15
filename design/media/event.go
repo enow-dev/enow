@@ -9,8 +9,8 @@ var Event = MediaType("application/vnd.event+json", func() {
 	Description("event")
 	Attributes(func() {
 		Attribute("id", String, "id", func() {
-			Example("9223372036854775807")
-			Pattern("^[0-9]{1,19}$")
+			Example("5646954281304064")
+			Pattern("^[0-9]{16}$")
 		})
 		Attribute("api_id", Integer, "APIの種別", func() {
 			Example(1)

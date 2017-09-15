@@ -8,9 +8,8 @@ import (
 )
 
 var _ = Resource("auth", func() {
-	BasePath("/auth")
+	BasePath("/api/auth")
 	DefaultMedia(media.Session)
-	Files("/login", "public/login.html")
 	Action("login", func() {
 		Description("ログイン&トークン発行")
 		Routing(POST("/login"))

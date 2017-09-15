@@ -115,7 +115,7 @@ func (c *EventsController) List(ctx *app.ListEventsContext) error {
 			uerDB.Add(appCtx, userEventReads)
 		}
 	}
-	l := util.CreateLinkHeader(ctx.RequestData, os.Getenv("Scheme"), iterator.Cursor())
+	l := util.CreateLinkHeader(ctx.RequestData, os.Getenv("Scheme"), fmt.Sprint(iterator.Cursor()))
 	ctx.ResponseData.Header().Set("link", l.String())
 	ctx.ResponseData.Header().Set("x-search-hits-count", fmt.Sprint(iterator.Count()))
 
@@ -200,4 +200,77 @@ func (c *EventsController) ShowCount(ctx *app.ShowCountEventsContext) error {
 	// EventsController_ShowCount: end_implement
 	return ctx.OK(iterator.Count())
 	//return ctx.OK(iterator.Count())
+}
+
+// SelfFavoriteList runs the selfFavoriteList action.
+func (c *EventsController) SelfFavoriteList(ctx *app.SelfFavoriteListEventsContext) error {
+	// EventsController_SelfFavoriteList: start_implement
+
+	// Put your logic here
+	appCtx := appengine.NewContext(ctx.Request)
+	userKey, err := util.GetUserKey(ctx)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	ufeDB := &model.UserEventFavoritesDB{}
+	events, cursor, err := ufeDB.GetListFindByUserKey(appCtx, userKey, ctx.Cursor)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	l := util.CreateLinkHeader(ctx.RequestData, os.Getenv("Scheme"), fmt.Sprint(cursor))
+	ctx.ResponseData.Header().Set("link", l.String())
+
+	// EventsController_SelfFavoriteList: end_implement
+	return ctx.OKTiny(events)
+}
+
+// DeleteFavorite runs the deleteFavorite action.
+func (c *EventsController) DeleteFavorite(ctx *app.DeleteFavoriteEventsContext) error {
+	// EventsController_DeleteFavorite: start_implement
+
+	// Put your logic here
+	appCtx := appengine.NewContext(ctx.Request)
+	userKey, err := util.GetUserKey(ctx)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	int64ID, err := util.ConvertIDIntoInt64(ctx.ID)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	ufeDB := &model.UserEventFavoritesDB{}
+	err = ufeDB.Delete(appCtx, int64ID, userKey)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+
+	// EventsController_DeleteFavorite: end_implement
+	return nil
+}
+
+// UpdateFavorite runs the updateFavorite action.
+func (c *EventsController) UpdateFavorite(ctx *app.UpdateFavoriteEventsContext) error {
+	// EventsController_UpdateFavorite: start_implement
+
+	// Put your logic here
+	appCtx := appengine.NewContext(ctx.Request)
+	userKey, err := util.GetUserKey(ctx)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	int64ID, err := util.ConvertIDIntoInt64(ctx.ID)
+	if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+	ufeDB := &model.UserEventFavoritesDB{}
+	now := time.Now()
+	err = ufeDB.Add(appCtx, int64ID, userKey, now)
+	if err == fmt.Errorf("存在しないイベントIDが指定されています") {
+		return ctx.BadRequest(goa.ErrBadRequest(err))
+	} else if err != nil {
+		return ctx.InternalServerError(goa.ErrInternal(err))
+	}
+
+	// EventsController_UpdateFavorite: end_implement
+	return nil
 }
