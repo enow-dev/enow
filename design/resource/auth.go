@@ -13,12 +13,14 @@ var _ = Resource("auth", func() {
 	Action("login", func() {
 		Description("ログイン&トークン発行")
 		Routing(POST("/login"))
-		Params(func() {
-			Param("code", String, "OAuth2 code", func() {
+		Payload(func() {
+			Attribute("code", String, "OAuth2 code", func() {
 				Default("")
+				Example("6274356c1435a375d2fc")
 			})
-			Param("provider", String, "OAuth2 provider", func() {
+			Attribute("provider", String, "OAuth2 provider", func() {
 				Enum("github", "facebook")
+				Example("github")
 			})
 			Required("code", "provider")
 		})

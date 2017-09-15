@@ -63,7 +63,7 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 			log.Errorf(appCtx, "設定ファイル読み込みエラー(1): %v", err)
 			return ctx.InternalServerError(goa.ErrInternal(err))
 		}
-		oauthConf, err = oauthConfs.Get(ctx.Provider)
+		oauthConf, err = oauthConfs.Get(ctx.Payload.Provider)
 		if err != nil {
 			log.Errorf(appCtx, "設定ファイル読み込みエラー(2): %v", err)
 			return ctx.InternalServerError(goa.ErrInternal(err))
@@ -79,7 +79,7 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 			log.Errorf(appCtx, "設定ファイル読み込みエラー(4): %v", err)
 			return ctx.InternalServerError(goa.ErrInternal(err))
 		}
-		oauthConf, err = conf.Get(ctx.Provider)
+		oauthConf, err = conf.Get(ctx.Payload.Provider)
 		if err != nil {
 			log.Errorf(appCtx, "設定ファイル読み込みエラー(5): %v", err)
 			return ctx.InternalServerError(goa.ErrInternal(err))
@@ -88,7 +88,7 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 	log.Infof(appCtx, "%v", oauthConf.AuthCodeURL(""))
 
 	// OAuthトークン取得
-	tok, err := oauthConf.Exchange(appCtx, ctx.Code)
+	tok, err := oauthConf.Exchange(appCtx, ctx.Payload.Code)
 	if err != nil {
 		return ctx.BadRequest(goa.ErrBadRequest(err))
 	}
@@ -98,7 +98,7 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 	newUser := &model.Users{}
 	var loginUserKey *datastore.Key
 	var ID int64
-	switch ctx.Provider {
+	switch ctx.Payload.Provider {
 	case config.FacebookOAuth:
 		// TODO ここらへん使いまわすので、関数化したい
 		session := facebook.Session{
@@ -156,7 +156,7 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 
 	// 既にユーザーが存在しているか確認する
 	uDB := model.UsersDB{}
-	loginUserKey, err = uDB.GetKeyFindByOauthID(appCtx, ID, ctx.Provider)
+	loginUserKey, err = uDB.GetKeyFindByOauthID(appCtx, ID, ctx.Payload.Provider)
 	if err != nil {
 		return ctx.InternalServerError(goa.ErrInternal(err))
 	}
