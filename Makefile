@@ -8,7 +8,6 @@ install:
 	$(MAKE) vendoring
 	$(MAKE) gen
 	cd front && npm install && npm run build
-	$(MAKE) bindata
 	$(MAKE) local
 
 ##### depend #####
@@ -17,7 +16,6 @@ install:
 depend:
 	go get -u github.com/goadesign/goa
 	go get -u github.com/goadesign/goa/goagen
-	go get -u github.com/jteeuwen/go-bindata/...
 	go get -u github.com/deadcheat/goacors
 	go get -u github.com/golang/dep/cmd/dep
 
