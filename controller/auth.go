@@ -50,7 +50,7 @@ type email struct {
 	Verified bool   `json:"verified"`
 }
 
-const errType = "auth"
+const errTypeAuth = "auth"
 
 // Login runs the login action.
 func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
@@ -63,36 +63,36 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 	if os.Getenv("Op") == "develop" {
 		oauthConfs, err := config.NewOauthsFromFile("../config/oauth.yaml")
 		if err != nil {
-			log.Errorf(appCtx, "%s 設定ファイル読み込みエラー(1): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 1)))
+			log.Errorf(appCtx, "%s 設定ファイル読み込みエラー(1): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 1)))
 		}
 		oauthConf, err = oauthConfs.Get(ctx.Payload.Provider)
 		if err != nil {
-			log.Errorf(appCtx, "%s 設定ファイル読み込みエラー(2): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 2)))
+			log.Errorf(appCtx, "%s 設定ファイル読み込みエラー(2): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 2)))
 		}
 	} else {
 		cs, err := util.ReadFileFromBucket(appCtx, "oauth.yaml")
 		if err != nil {
-			log.Errorf(appCtx, "%s 設定ファイル読み込みエラー(3): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 3)))
+			log.Errorf(appCtx, "%s 設定ファイル読み込みエラー(3): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 3)))
 		}
 		var conf config.Oauths
 		if err = yaml.Unmarshal(cs, &conf); err != nil {
-			log.Errorf(appCtx, "%s 設定ファイル読み込みエラー(4): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 4)))
+			log.Errorf(appCtx, "%s 設定ファイル読み込みエラー(4): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 4)))
 		}
 		oauthConf, err = conf.Get(ctx.Payload.Provider)
 		if err != nil {
-			log.Errorf(appCtx, "%s 設定ファイル読み込みエラー(5): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 5)))
+			log.Errorf(appCtx, "%s 設定ファイル読み込みエラー(5): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 5)))
 		}
 	}
 	// OAuthトークン取得
 	tok, err := oauthConf.Exchange(appCtx, ctx.Payload.Code)
 	if err != nil {
-		log.Errorf(appCtx, "%s token発行エラー(6): %v", errType, err)
-		return ctx.BadRequest(goa.ErrBadRequest(fmt.Errorf(constant.BadRequestErr, errType, 6)))
+		log.Errorf(appCtx, "%s token発行エラー(6): %v", errTypeAuth, err)
+		return ctx.BadRequest(goa.ErrBadRequest(fmt.Errorf(constant.BadRequestErr, errTypeAuth, 6)))
 	}
 	client := oauthConf.Client(appCtx, tok)
 	// プロバイダごとに処理が違うので分岐する
@@ -109,18 +109,18 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 		}
 		res, err := session.Get("/me?fields=id,name,email,picture.type(large)", nil)
 		if err != nil {
-			log.Errorf(appCtx, "%s facebook プロフィール画像の取得エラー(7): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 7)))
+			log.Errorf(appCtx, "%s facebook プロフィール画像の取得エラー(7): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 7)))
 		}
 		strID, ok := res["id"].(string)
 		if !ok {
-			log.Errorf(appCtx, "%s facebook IDを取得エラー(8): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 8)))
+			log.Errorf(appCtx, "%s facebook IDを取得エラー(8): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 8)))
 		}
 		int64ID, err := strconv.ParseInt(strID, 10, 64)
 		if err != nil {
-			log.Errorf(appCtx, "%s facebook IDを取得し、変換時のエラー(9): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 9)))
+			log.Errorf(appCtx, "%s facebook IDを取得し、変換時のエラー(9): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 9)))
 		}
 		ID = int64ID
 		name := res["name"].(string)
@@ -137,15 +137,15 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 		githubuser := GithubUser{}
 		err = util.FetchAPIresponse(client, "https://api.github.com/user", &githubuser)
 		if err != nil {
-			log.Errorf(appCtx, "%s github プロフィールを取得エラー(10): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 10)))
+			log.Errorf(appCtx, "%s github プロフィールを取得エラー(10): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 10)))
 		}
 		// Githubに登録しているメールアドレスを取得(非公開でも取れる)
 		emails := []email{}
 		err = util.FetchAPIresponse(client, "https://api.github.com/user/emails", &emails)
 		if err != nil {
-			log.Errorf(appCtx, "%s github email取得エラー(11): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 11)))
+			log.Errorf(appCtx, "%s github email取得エラー(11): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 11)))
 		}
 		// メインのメアドを使う
 		for _, v := range emails {
@@ -165,8 +165,8 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 	uDB := model.UsersDB{}
 	loginUserKey, err = uDB.GetKeyFindByOauthID(appCtx, ID, ctx.Payload.Provider)
 	if err != nil {
-		log.Errorf(appCtx, "%s GetKeyFindByOauthID エラー(12): %v", errType, err)
-		return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 12)))
+		log.Errorf(appCtx, "%s GetKeyFindByOauthID エラー(12): %v", errTypeAuth, err)
+		return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 12)))
 	}
 	g := goon.FromContext(appCtx)
 	// tokenを生成するが、被っている可能生があるのでチェックする
@@ -189,14 +189,14 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 		newUser.Token = token
 		loginUserKey, err = g.Put(newUser)
 		if err != nil {
-			log.Errorf(appCtx, "%s ユーザー作成エラー(13): %v", errType, err)
-			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 13)))
+			log.Errorf(appCtx, "%s ユーザー作成エラー(13): %v", errTypeAuth, err)
+			return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 13)))
 		}
 	}
 	loginUser, err := uDB.UpdateToken(appCtx, loginUserKey, now, token)
 	if err != nil {
-		log.Errorf(appCtx, "%s token更新エラー(14): %v", errType, err)
-		return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errType, 14)))
+		log.Errorf(appCtx, "%s token更新エラー(14): %v", errTypeAuth, err)
+		return ctx.InternalServerError(goa.ErrInternal(fmt.Errorf(constant.InternalErr, errTypeAuth, 14)))
 	}
 	// AuthController_Login: end_implement
 	res := &app.Session{

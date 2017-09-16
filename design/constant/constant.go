@@ -35,6 +35,6 @@ const SearchPeriod = 1
 //---------------------------------------------
 
 const (
-	InternalErr   = "サーバーとの通信中にエラーが発生しました type: %s code: %d"
-	BadRequestErr = "リクエスト内容に不備があります type: %s code: %d"
+	InternalErr   = "サーバーとの通信中にエラーが発生しました type: %s number: %d"
+	BadRequestErr = "リクエスト内容に不備があります type: %s number: %d"
 )
