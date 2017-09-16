@@ -32,7 +32,7 @@ export function logout() {
 
 function login(code, provider) {
   const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
-  const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/auth/login?code=${code}&provider=${provider}`;// eslint-disable-line
+  const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/auth/login?code=${code}&provider=github`;// eslint-disable-line
   return (dispatch) => {
     dispatch(fetchLogin());
     return fetch(url, {
