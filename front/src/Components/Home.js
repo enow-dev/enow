@@ -76,7 +76,7 @@ class Home extends React.Component {
   componentWillMount() {
     const { searchStash } = this.props;
     this.setState({...searchStash});
-    this.handleSubmitEventsCount();
+    //this.handleSubmitEventsCount();
   }
 
   componentDidMount() {

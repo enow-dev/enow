@@ -15,6 +15,7 @@ const initialState = {
     name: '',
     token: '',
   },
+  provider: '',
   error: null,
   isError: false,
   isAouthing: false,
@@ -35,7 +36,10 @@ const adaptionAouthInfo = (info) => {
 export default function aouth(state = initialState, action) {
   switch (action.type) {
     case START_AOUTH:
-      return Object.assign({}, state, { isAouthing: true, isRedirect: false });
+      return Object.assign({}, state, {
+        isAouthing: true,
+        isRedirect: false,
+      });
     case REDIRECT_AOUTH:
       return Object.assign({}, state, { isRedirect: true, isAouthing: true });
     case FETCH_LOGIN:
@@ -66,12 +70,7 @@ export default function aouth(state = initialState, action) {
       });
     }
     case LOGOUT:
-      return Object.assign({}, state, {
-        isAouth: false,
-        isFetching: false,
-        isRedirect: false,
-        isAouthing: false,
-      });
+      return initialState;
     default:
       return state;
   }
