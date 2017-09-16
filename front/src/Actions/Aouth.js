@@ -32,7 +32,7 @@ export function logout() {
 
 function login(code, provider) {
   const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
-  const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/auth/login?code=${code}&provider=github`;// eslint-disable-line
+  const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/auth/login`;// eslint-disable-line
   return (dispatch) => {
     dispatch(fetchLogin());
     return fetch(url, {
@@ -41,6 +41,10 @@ function login(code, provider) {
         'Accept': 'application/vnd.event+json', // eslint-disable-line
         // 'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        code,
+        provider,
+      }),
     })
       .then((response) => {
         if (response.status !== 200) {
