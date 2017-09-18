@@ -126,12 +126,12 @@ func (c *CronController) FetchEvents(ctx *app.FetchEventsCronContext) error {
 			eDB := model.EventsDB{}
 			// イベントのタグ付け
 			for _, tag := range tags {
-				m, err := model.ExistsTargetTag(tag.Regex, v.Title, v.Description)
+				m, err := tDB.ExistsTargetTag(tag.Regex, v.Title, v.Description)
 				if err != nil {
 					log.Errorf(appCtx, "イベントを付加処理エラー(13): %v", err)
 				}
 				if m {
-					v.Tags = append(v.Tags, tag.Name)
+					v.Tags = append(v.Tags, tag.LittleTag)
 				}
 			}
 			// 存在するイベントなら上書き処理、存在しなければ作成
@@ -207,8 +207,8 @@ func (c *CronController) UpgradeTags(ctx *app.UpgradeTagsCronContext) error {
 		// 小タグごとにループする
 		for _, v2 := range v.LittleTags {
 			t := model.Tags{}
-			t.MajorTags = v.MajorTags
-			t.Name = v2.Name
+			t.MajorTag = v.MajorTags
+			t.LittleTag = v2.Name
 			// タグ付け時に使う正規表現の指定が無ければ名前をそのまま使う
 			if len(v2.Regex) == 0 {
 				t.Regex = v2.Name

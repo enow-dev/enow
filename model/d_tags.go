@@ -18,8 +18,8 @@ type TagsDB struct {
 // Tags イベント情報
 type Tags struct {
 	ID        int64  `datastore:"-" goon:"id" json:"id"`
-	MajorTags string `json:"magor_tags" datastore:""`
-	Name      string `json:"name" datastore:""`
+	MajorTag  string `json:"magor_tag" datastore:""`
+	LittleTag string `json:"littke_tag" datastore:""`
 	Regex     string `json:"regex" datastore:""`
 }
 
