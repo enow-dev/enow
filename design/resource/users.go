@@ -32,4 +32,24 @@ var _ = Resource("users", func() {
 		Response(OK)
 		UseTrait(GeneralUserTrait)
 	})
+	Action("updateTag", func() {
+		Description("お気に入りタグに追加する")
+		Routing(PUT("/self/:tag"))
+		Params(func() {
+			Param("tag", String, "タグ")
+			Required("tag")
+		})
+		Response(OK)
+		UseTrait(GeneralUserTrait)
+	})
+	Action("deleteTag", func() {
+		Description("お気に入りタグから削除する")
+		Routing(DELETE("/self/:tag"))
+		Params(func() {
+			Param("tag", String, "タグ")
+			Required("tag")
+		})
+		Response(OK)
+		UseTrait(GeneralUserTrait)
+	})
 })

@@ -282,7 +282,7 @@ func (c *EventsController) UpdateFavorite(ctx *app.UpdateFavoriteEventsContext) 
 	ufeDB := &model.UserEventFavoritesDB{}
 	now := time.Now()
 	err = ufeDB.Add(appCtx, int64ID, userKey, now)
-	if err == fmt.Errorf("存在しないイベントIDが指定されています") {
+	if err != nil && err.Error() == fmt.Errorf("存在しないイベントIDが指定されています").Error() {
 		log.Errorf(appCtx, "%s 存在しないイベントのお気に入り追加エラー(17): %v", errTypeEvents, err)
 		return ctx.BadRequest(goa.ErrBadRequest(fmt.Errorf(constant.BadRequestErr, errTypeEvents, 17)))
 	} else if err != nil {
