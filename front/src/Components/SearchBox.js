@@ -17,7 +17,7 @@ import Checkbox from 'material-ui/Checkbox';
 import Button from 'material-ui/Button';
 import { grey } from 'material-ui/colors';
 
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 import PrefMenu from './PrefMenu';
@@ -85,7 +85,11 @@ class SearchBox extends React.Component {
 
   componentWillMount() {
     const { searchStash } = this.props;
-    this.setState({...searchStash});
+    this.setState({
+      ...searchStash,
+      startDate: moment(searchStash.startDate),
+      endDate: moment(searchStash.endDate),
+    });
   }
 
   handleChangeAleady = (event, checked) => {
