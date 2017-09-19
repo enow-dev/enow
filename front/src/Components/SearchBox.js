@@ -4,6 +4,9 @@ import { withStyles } from 'material-ui/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import moment from 'moment';
+import 'moment/locale/ja';
+
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import SearchIcon from 'material-ui-icons/Search';
@@ -13,6 +16,9 @@ import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
 import Button from 'material-ui/Button';
 import { grey } from 'material-ui/colors';
+
+import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
 
 import PrefMenu from './PrefMenu';
 
@@ -50,7 +56,7 @@ const styles = theme => ({
     backgroundColor: '#fff',
   },
   searchFormItem: {
-    width: '80%',
+    width: '90%',
   },
   selectPlaceRoot: {
     maxWidth: 360,
@@ -71,7 +77,9 @@ class SearchBox extends React.Component {
       keyword: '',
       prefIndex: 0,
       isRed: false,
-      fromDate: '',
+      startDate: null,
+      endDate: null,
+      focusedDatePicker: null,
     };
   }
 
@@ -88,22 +96,19 @@ class SearchBox extends React.Component {
     this.setState({keyword: event.target.value});
   }
 
-  handleChangeFromDate = (event) => {
-    this.setState({fromDate: event.target.value});
-  }
-
   handleSubmit = () => {
     const { eventsActions, handleSubmit, searchStashActions } = this.props;
-    const { isRed, keyword, prefIndex } = this.state;
+    const { isRed, keyword, prefIndex, startDate, endDate } = this.state;
     if(handleSubmit){
       handleSubmit();
     }
     searchStashActions.setSearchStash({...this.state});
-    eventsActions.getEventsIfNeeded(false, isRed, keyword, prefIndex);
+    eventsActions.getEventsIfNeeded(false, isRed, keyword, prefIndex, startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'));
   }
 
   render() {
     const { classes } = this.props;
+    moment.locale('ja');
     return (
       <div className={this.props.rootClass}>
         <Paper elevation={0} className={classes.paper}>
@@ -140,11 +145,16 @@ class SearchBox extends React.Component {
             />
           </Grid>
           <Grid item className={classes.searchFormItem}>
-            <TextField
-              fullWidth
-              placeholder="開催日 From（自動的に入れる）"
-              value={this.state.fromDate}
-              onChange={this.handleChangeFromDate}
+            <DateRangePicker
+              startDatePlaceholderText="開催日 From"
+              endDatePlaceholderText="開催日 End"
+              monthFormat="YYYY[年]MM[月]"
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })}
+              focusedInput={this.state.focusedDatePicker}
+              onFocusChange={focusedDatePicker => this.setState({ focusedDatePicker })}
+              weekDayFormat="dd"
             />
           </Grid>
           <Grid item className={classes.searchFormItem}>
