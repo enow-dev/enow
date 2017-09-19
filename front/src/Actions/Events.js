@@ -10,9 +10,15 @@ export const receiveEvents = (events, isMoreRead, link) => (
 export const fetchEvents = isMoreRead => ({ type: types.FETCH_EVENTS, isMoreRead });
 export const clearEvents = () => ({ type: types.CLEAR_EVENTS });
 
-function getEvents(isFavorite, isRed, isMoreRead, q, pref, link) {
+function getEvents(isFavorite, isRed, isMoreRead, q, pref, link, startDate, endDate) {
   const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
-  let url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/events?is_favorite=${isFavorite}&is_red=${isRed}${q ? `&q=${q}` : ''}${pref > 0 ? `&pref=${pref}` : ''}`;// eslint-disable-line
+  let url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/events?` +// eslint-disable-line
+            `is_favorite=${isFavorite}` +
+            `&is_red=${isRed}` +
+            `${q ? `&q=${q}` : ''}` +
+            `${pref > 0 ? `&pref=${pref}` : ''}` +
+            `${endDate && endDate !== '' ? `&period_to=${endDate}` : ''}` +
+            `${startDate && startDate !== '' ? `&period_from=${startDate}` : ''}`;
   if (link) {
     url = link.next.url;
   }
@@ -37,12 +43,12 @@ function getEvents(isFavorite, isRed, isMoreRead, q, pref, link) {
   };
 }
 
-export function getEventsIfNeeded(isFavorite, isRed, q, pref) {
+export function getEventsIfNeeded(isFavorite, isRed, q, pref, startDate, endDate) {
   return (dispatch, getState) => {
     if (getState().isFetching) {
       return Promise.resolve();
     }
-    return dispatch(getEvents(isFavorite, isRed, false, q, pref));
+    return dispatch(getEvents(isFavorite, isRed, false, q, pref, false, startDate, endDate));
   };
 }
 
