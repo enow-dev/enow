@@ -7,6 +7,7 @@ import Card, { CardHeader } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
+import { grey } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
 
 import * as EventsActions from '../../../Actions/Events';
