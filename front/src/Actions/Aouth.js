@@ -1,11 +1,13 @@
 import Cookies from 'universal-cookie';
 import * as types from '../Constants/ActionTypes';
+import MyAexios from '../Constants/MyAexios';
 
 const cookies = new Cookies();
 
 function setCookieAouth(aouth) {
   cookies.remove('aouth', { path: '/' });
   cookies.set('aouth', aouth, { path: '/', expires: new Date(aouth.expire) });
+  MyAexios.defaults.headers.common['X-Authorization'] = aouth.token;
 }
 
 export const startAouth = () => ({ type: types.START_AOUTH });
@@ -32,7 +34,6 @@ function login(code, provider) {
       method: 'POST',
       headers: {
         'Accept': 'application/vnd.event+json', // eslint-disable-line
-        // 'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         code,
