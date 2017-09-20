@@ -30,23 +30,21 @@ function login(code, provider) {
   const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/auth/login`;// eslint-disable-line
   return (dispatch) => {
     dispatch(fetchLogin());
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/vnd.event+json', // eslint-disable-line
-      },
-      body: JSON.stringify({
+    MyAexios.post('/aouth/login', {
+      data: {
         code,
         provider,
-      }),
+      },
     })
       .then((response) => {
         if (response.status !== 200) {
           dispatch({ type: types.LOGIN_ERROR, error: response });
         }
-        return response.json();
+        dispatch(receiveLogin(response.data));
       })
-      .then(responseJson => dispatch(receiveLogin(responseJson)));
+      .catch((error) => {
+        dispatch({ type: types.LOGIN_ERROR, error });
+      });
   };
 }
 
