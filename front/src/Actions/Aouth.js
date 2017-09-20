@@ -23,13 +23,6 @@ export const loginFromQookie = aouth => (
   { type: types.LOGIN_FROM_QOOKIE, aouth }
 );
 
-export function logout() {
-  return (dispatch) => {
-    cookies.remove('aouth', { path: '/' });
-    dispatch({ type: types.LOGOUT });
-  };
-}
-
 function login(code, provider) {
   const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
   const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/auth/login`;// eslint-disable-line
@@ -108,6 +101,14 @@ export function geusLogin() {
   };
   setCookieAouth(aouth);
   loginFromQookie(aouth);
+}
+
+export function logout() {
+  return (dispatch) => {
+    cookies.remove('aouth', { path: '/' });
+    dispatch({ type: types.LOGOUT });
+    geusLogin();
+  };
 }
 
 export function isCookieAouth() {
