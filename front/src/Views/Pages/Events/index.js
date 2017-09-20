@@ -23,6 +23,9 @@ import SearchBox from '../../Components/SearchBox';
 
 import EventDetail from '../EventDetail';
 
+import Web from './Web';
+import Native from './Native';
+
 const styles = theme => ({
   root: {
     backgroundColor: grey[100],
@@ -49,53 +52,14 @@ const styles = theme => ({
     backgroundColor: `${grey[300]}`,
     color: `${grey[700]}`,
   },
-  createAccountContainer: {},
-  createAccountItem: {
-    width: '80%',
-  },
-  createAccountPR: {
-    color: `${blue[600]}`,
-  },
-  githubIcon: {
-    width: '30px',
-    height: '30px',
-    position: 'absolute',
-    left: 3,
-    top: 3,
-    borderRight: `solid 1px ${grey[500]}`,
-    paddingRight: '10px',
-  },
-  faceBookIcon: {
-    width: '30px',
-    height: '30px',
-    position: 'absolute',
-    left: 3,
-    top: 3,
-    borderRight: `solid 1px ${grey[500]}`,
-    paddingRight: '10px',
-  },
-  oathButton: {
-    width: '100%',
-    padding: '10px',
-    color: `#fff`,
-  },
-  webRoot: {
-    marginTop: '10px',
-  },
-  webSearchBox: { border: `solid 1px ${theme.palette.primary.A700}` },
 });
 class Events extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       selectTabIndex: 0,
+
     };
-  }
-  componentDidMount() {
-    // setTimeout(() => {
-    //   this.setState({ isLoading: false });
-    // }, 5000);
-    //this.props.actions.getEventsIfNeeded(false, false);
   }
 
   handleTabChange = (event, value) => {
@@ -121,21 +85,19 @@ class Events extends React.Component {
       </Grid>
     );
   }
-  handleEdit = event => {
-    // const { history, match } = this.props;
-    // console.log(event, history, match);
-    // history.push(`${match.url}/${event.id}`);
-  };
+
   handleEditJump = event => {
      const { history, match } = this.props;
      history.push(`${match.url}/${event.id}`);
   }
+
   handleProviderJump = event => {
     window.open(
       event.item.url,
       '_blank',
     );
   }
+
   renderEventsBox() {
     const { events } = this.props;
     if (events.list.length === 0) {
@@ -154,10 +116,12 @@ class Events extends React.Component {
       </Grid>,
     );
   }
+
   handleMoreRead = () => {
     const { eventsActions, events } = this.props;
     eventsActions.moreReadEventsIfNeeded(false, false, events.link );
   };
+
   renderMoreRead() {
     const { classes, events } = this.props;
     if (!events.link) {
@@ -179,123 +143,26 @@ class Events extends React.Component {
       </Grid>
     );
   }
-  renderCreateAccount() {
-    const { classes } = this.props;
-    return (
-      <Grid
-        container
-        style={{width: '100%'}}
-        align="center"
-        direction="row"
-        justify="center"
-        className={classes.createAccountContainer}
-      >
-        <Grid item className={classes.createAccountItem}>
-          <Typography type="subheading" className={classes.createAccountPR}>
-            昨日見た情報は検索結果に出ませんが 複数端末で出ないようにするには
-          </Typography>
-          <Typography type="subheading">アカウント作成で実現出来ます</Typography>
-        </Grid>
-        <Grid
-          item
-          style={{
-            backgroundColor: `${grey[800]}`,
-            padding: '3px',
-            borderRadius: '10px',
-            marginBottom: '10px',
-          }}
-          className={classes.createAccountItem}
-        >
-          <div style={{ width: '100%', position: 'relative', display: 'inline-block' }}>
-            <img src={GithubIcon} className={classes.githubIcon} alt="Github" />
-            <Button className={classes.oathButton}>Sigin In Github</Button>
-          </div>
-        </Grid>
-        <Grid
-          item
-          style={{ backgroundColor: `${blue[800]}`, padding: '3px', borderRadius: '10px' }}
-          className={classes.createAccountItem}
-        >
-          <div style={{ width: '100%', position: 'relative', display: 'inline-block' }}>
-            <img src={FacebookIcon} className={classes.faceBookIcon} alt="Facebook" />
-            <Button className={classes.oathButton}>Sigin In Facebook</Button>
-          </div>
-        </Grid>
-      </Grid>
-    );
-  }
-
-  renderMainNative() {
-    const { events } = this.props;
-    return (
-      <Grid container style={{width:'100%',margin:0}} spacing={24} align="center" direction="column" justify="center">
-        <Grid item>
-          {this.renderEventsBox()}
-        </Grid>
-        <Grid item style={{ width: '100%' }}>
-          {events.isMoreFetching ? this.renderCenterProgress() : this.renderMoreRead()}
-        </Grid>
-        <Grid item style={{ width: '100%' }}>
-          {events.isMoreFetching ? this.renderCenterProgress() : null}
-        </Grid>
-        <Grid item>
-          {this.renderCreateAccount()}
-        </Grid>
-        <Grid item style={{ width: '100%' }}>
-          <SearchBox />
-        </Grid>
-      </Grid>
-    );
-  }
-  renderMainWeb() {
-    const { classes,events } = this.props;
-    return (
-      <Grid
-        container
-        className={classes.webRoot}
-        spacing={24}
-        align="flex-start"
-        direction="row"
-        justify="center"
-      >
-        <Grid item xs={3}>
-          <Sticky>
-            {props => {
-              return (
-                <div style={props.style}>
-                  <SearchBox rootClass={classes.webSearchBox} />
-                </div>
-              );
-            }}
-          </Sticky>
-        </Grid>
-        <Grid item xs={8}>
-          <Grid container spacing={8} align="flex-start" direction="row" justify="center">
-            {this.renderEventsBox()}
-          </Grid>
-          <Grid item style={{ width: '100%' }}>
-            {events.isMoreFetching ? this.renderCenterProgress() : this.renderMoreRead()}
-          </Grid>
-        </Grid>
-      </Grid>
-    );
-  }
-  renderSticky() {
-    return (
-      <StickyContainer>
-        {this.renderMainWeb()}
-      </StickyContainer>
-    );
-  }
 
   renderMain() {
+    const { events } = this.props;
     return (
       <div>
         <MediaQuery query="(max-width: 1024px)">
-          {this.renderMainNative()}
+          <Native
+            isMoreFetching={events.isMoreFetching}
+            eventListComponent={this.renderEventsBox()}
+            progressComponent={this.renderCenterProgress()}
+            moreReadComponent={this.renderMoreRead()}
+          />
         </MediaQuery>
         <MediaQuery query="(min-width: 1025px)">
-          {this.renderSticky()}
+          <Web
+            isMoreFetching={events.isMoreFetching}
+            eventListComponent={this.renderEventsBox()}
+            progressComponent={this.renderCenterProgress()}
+            moreReadComponent={this.renderMoreRead()}
+          />
         </MediaQuery>
       </div>
     );
