@@ -12,16 +12,16 @@ import { grey, blue } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
 import { StickyContainer, Sticky } from 'react-sticky';
 
-import * as EventsActions from '../Actions/Events';
-import * as FavoriteEventsActions from '../Actions/FavoriteEvents';
-import Header from './Header';
-import EventsTab from './EventsTab';
-import EventBox from './EventBox';
+import * as EventsActions from '../../Actions/Events';
+import * as FavoriteEventsActions from '../../Actions/FavoriteEvents';
+import Header from '../Components/Header';
+import EventsTab from '../Components/EventsTab';
+import EventBox from '../Components/EventBox';
 import GithubIcon from '../icons/github.svg';
 import FacebookIcon from '../icons/facebook.svg';
-import SearchBox from './SearchBox';
+import SearchBox from '../Components/SearchBox';
 
-import EventDetail from './EventDetail';
+import EventDetail from '../Pages/EventDetail';
 
 const styles = theme => ({
   root: {

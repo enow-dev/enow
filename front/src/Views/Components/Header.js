@@ -19,8 +19,8 @@ import List, { ListItem, ListItemAvatar, ListItemText } from 'material-ui/List';
 
 import FacebookIcon from '../icons/facebook.svg';
 import GithubIcon from '../icons/github.svg';
-import * as AouthActions from '../Actions/Aouth';
-import * as SearchStashActions from '../Actions/SearchStash';
+import * as AouthActions from '../../Actions/Aouth';
+import * as SearchStashActions from '../../Actions/SearchStash';
 
 const styles = theme => ({
 

@@ -6,8 +6,8 @@ import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 
-import Header from './Header';
-import SearchBox from './SearchBox';
+import Header from '../Components/Header';
+import SearchBox from '../Components/SearchBox';
 
 const styles = {
   container: {

@@ -10,9 +10,9 @@ import Grid from 'material-ui/Grid';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 
-import * as EventActions from '../Actions/Event';
+import * as EventActions from '../../Actions/Event';
 
-import Header from './Header';
+import Header from '../Components/Header';
 
 const styles = {
   root: {

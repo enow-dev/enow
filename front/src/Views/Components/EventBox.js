@@ -23,9 +23,9 @@ import KeyboardArrowUp from 'material-ui-icons/KeyboardArrowUp';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 
-import * as EventActions from '../Actions/Event';
-import * as FavoriteActions from '../Actions/Favorite';
-import propviderInfo from '../Constants/Provider';
+import * as EventActions from '../../Actions/Event';
+import * as FavoriteActions from '../../Actions/Favorite';
+import propviderInfo from '../../Constants/Provider';
 
 const styles = theme => ({
   cardTitle: {
