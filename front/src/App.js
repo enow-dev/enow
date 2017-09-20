@@ -3,7 +3,7 @@ import { Switch, Route, BrowserRouter as Router, withRouter } from 'react-router
 import Aouth from './Views/Components/Aouth';
 import Home from './Views/Pages/Home';
 import Login from './Views/Pages/Login';
-import Events from './Views/Pages/Events';
+import Events from './Views/Pages/Events/';
 import NotFound from './Views/Pages/NotFound';
 
 class App extends React.Component {
