@@ -8,6 +8,8 @@ const MyAexios = axios.create({
   header: {
     Accept: 'application/vnd.event+json', // eslint-disable-line
   },
+  mode: 'cors',
+  responseType: 'json',
 });
 
 export default MyAexios;

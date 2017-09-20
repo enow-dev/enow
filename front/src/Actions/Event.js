@@ -9,10 +9,7 @@ export const fetchEvent = () => ({ type: types.FETCH_EVENT });
 function getEvent(eventId) {
   return (dispatch) => {
     dispatch(fetchEvent());
-    MyAexios.get(`events/${eventId}`, {
-      mode: 'cors',
-      responseType: 'json',
-    })
+    MyAexios.get(`events/${eventId}`)
       .then((response) => {
         if (response.status !== 200) {
           dispatch({ type: types.ADD_ERROR, error: response });

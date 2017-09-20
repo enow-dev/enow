@@ -32,9 +32,7 @@ function getEvents(isFavorite, isRed, isMoreRead, q, pref, link, startDate, endD
     if (endDate && endDate !== '') { params.append('period_to', endDate); }
     if (startDate && startDate !== '') { params.append('period_from', startDate); }
     MyAexios.get('/events', {
-      mode: 'cors',
       params,
-      responseType: 'json',
     })
       .then((response) => {
         responseLink = parse(response.headers.link);
