@@ -7,10 +7,7 @@ import Card, { CardHeader } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import { CircularProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
-import { grey, blue } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
-import { StickyContainer, Sticky } from 'react-sticky';
 
 import * as EventsActions from '../../../Actions/Events';
 import * as FavoriteEventsActions from '../../../Actions/FavoriteEvents';
@@ -19,9 +16,6 @@ import * as FavoriteActions from '../../../Actions/Favorite';
 import Header from '../../Components/Header';
 import EventsTab from '../../Components/EventsTab';
 import EventBox from '../../Components/EventBox';
-import GithubIcon from '../../icons/github.svg';
-import FacebookIcon from '../../icons/facebook.svg';
-import SearchBox from '../../Components/SearchBox';
 
 import EventDetail from '../EventDetail';
 
