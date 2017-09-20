@@ -94,7 +94,10 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 		log.Errorf(appCtx, "%s token発行エラー(6): %v", errTypeAuth, err)
 		return ctx.BadRequest(goa.ErrBadRequest(fmt.Errorf(constant.BadRequestErr, errTypeAuth, 6)))
 	}
-	client := oauthConf.Client(appCtx, tok)
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: tok.AccessToken},
+	)
+	client := oauth2.NewClient(appCtx, ts)
 	// プロバイダごとに処理が違うので分岐する
 	// Github ユーザー情報取得
 	newUser := &model.Users{}

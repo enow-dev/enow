@@ -18,16 +18,29 @@ type TagsDB struct {
 // Tags イベント情報
 type Tags struct {
 	ID        int64  `datastore:"-" goon:"id" json:"id"`
-	MajorTags string `json:"magor_tags" datastore:""`
-	Name      string `json:"name" datastore:""`
+	MajorTag  string `json:"magor_tag" datastore:""`
+	LittleTag string `json:"littke_tag" datastore:""`
 	Regex     string `json:"regex" datastore:""`
 }
 
-// nolint
+// GetAll タグを全件取得する
 func (db *TagsDB) GetAll(appCtx context.Context) ([]*Tags, error) {
 	g := goon.FromContext(appCtx)
 	ts := []*Tags{}
 	q := datastore.NewQuery(g.Kind(new(Tags)))
+	_, err := g.GetAll(q, &ts)
+	if err != nil {
+		return nil, err
+	}
+	return ts, nil
+}
+
+// GetFindByTag 指定したタグを取得する
+func (db *TagsDB) GetFindByTag(appCtx context.Context, tagName string) ([]*Tags, error) {
+	g := goon.FromContext(appCtx)
+	ts := []*Tags{}
+	q := datastore.NewQuery(g.Kind(new(Tags)))
+	q = q.Filter("LittleTag =", tagName)
 	_, err := g.GetAll(q, &ts)
 	if err != nil {
 		return nil, err
@@ -123,7 +136,7 @@ func (db *TagsDB) Upgrade(appCtx context.Context, tags *[]Tags) error {
 }
 
 // ExistsTargetTag イベントの情報からタグ付けをする（Javaに限っては例外処理あり）
-func ExistsTargetTag(regex string, target ...string) (bool, error) {
+func (db *TagsDB) ExistsTargetTag(regex string, target ...string) (bool, error) {
 	r, err := regexp2.Compile(fmt.Sprint(`(?i)`, regex), 0) // Do we have an 'N' or 'n' at the beginning?
 	if err != nil {
 		return false, err

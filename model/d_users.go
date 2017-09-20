@@ -28,6 +28,7 @@ type Users struct {
 	TwitterID        int64     `json:"twitter_id" datastore:""`
 	GithubID         int64     `json:"github_id" datastore:""`
 	GoogleID         int64     `json:"google_id" datastore:""`
+	FavoriteTags     []string  `json:"favorite_tags" datastore:""`
 	Expire           time.Time `json:"expire" datastore:""`
 	CreatedAt        time.Time `json:"created_at"`
 	UpdatedAt        time.Time `json:"updated_at"`
@@ -175,6 +176,79 @@ func (db *UsersDB) GetUserKeyFindByToken(appCtx context.Context, token string) (
 		return nil, nil
 	}
 	return keys[0], nil
+}
+
+// AddFavoriteTag お気に入りタグを登録する　既に登録されている場合はエラーとせず終了する
+func (db *UsersDB) AddFavoriteTag(appCtx context.Context, tagName string, userKey *datastore.Key) error {
+	g := goon.FromContext(appCtx)
+	// タグの存在チェック
+	tDB := TagsDB{}
+	tags, err := tDB.GetFindByTag(appCtx, tagName)
+	if err != nil {
+		return err
+	}
+	if len(tags) == 0 {
+		return fmt.Errorf("存在しないタグが指定されています")
+	}
+	// お気に入りタグ追加
+	user, err := db.Get(appCtx, userKey.IntID())
+	if err != nil {
+		return err
+	}
+	// まだお気に入り登録がされていない
+	if len(user.FavoriteTags) == 0 {
+		user.FavoriteTags = append(user.FavoriteTags, tagName)
+	} else {
+		// 既に登録されているタグの場合は終了する
+		if isExistsAlready(user.FavoriteTags, tagName) {
+			return nil
+		}
+		// 既に存在している場合はタグ追加
+		user.FavoriteTags = append(user.FavoriteTags, tagName)
+	}
+	_, err = g.Put(user)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteFavoriteTag お気に入りタグを削除する　登録されていない又は該当タグがない場合はエラーとせず終了する
+func (db *UsersDB) DeleteFavoriteTag(appCtx context.Context, tagName string, userKey *datastore.Key) error {
+	g := goon.FromContext(appCtx)
+	user, err := db.Get(appCtx, userKey.IntID())
+	if err != nil {
+		return err
+	}
+	if len(user.FavoriteTags) == 0 {
+		return nil
+	}
+	// 該当のタグを削除
+	user.FavoriteTags = deleteSliceSpecifiedString(user.FavoriteTags, tagName)
+	_, err = g.Put(user)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func deleteSliceSpecifiedString(strings []string, search string) []string {
+	result := []string{}
+	for _, v := range strings {
+		if v != search {
+			result = append(result, v)
+		}
+	}
+	return result
+}
+
+func isExistsAlready(s []string, e string) bool {
+	for _, v := range s {
+		if e == v {
+			return true
+		}
+	}
+	return false
 }
 
 // nolint

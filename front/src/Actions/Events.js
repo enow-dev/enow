@@ -1,8 +1,7 @@
-import Cookies from 'universal-cookie';
 import parse from 'parse-link-header';
 import * as types from '../Constants/ActionTypes';
+import MyAexios from '../Constants/MyAexios';
 
-const cookies = new Cookies();
 
 export const receiveEvents = (events, isMoreRead, link) => (
   { type: types.RECEIVE_EVENTS, events, isMoreRead, link }
@@ -24,22 +23,24 @@ function getEvents(isFavorite, isRed, isMoreRead, q, pref, link, startDate, endD
   }
   return (dispatch) => {
     dispatch(fetchEvents(isMoreRead));
-    const aouth = cookies.get('aouth');
     let responseLink = '';
-    return fetch(url, {
-      mode: 'cors',
-      method: 'GET',
-      headers: {
-        Accept: 'application/vnd.event+json', // eslint-disable-line
-        'X-Authorization': `${aouth.token}`,
-        'Content-Type': 'application/json',
-      },
+    const params = new URLSearchParams();
+    params.append('is_favorite', isFavorite);
+    params.append('is_red', isRed);
+    if (q) { params.append('q', q); }
+    if (pref > 0) { params.append('pref', pref); }
+    if (endDate && endDate !== '') { params.append('period_to', endDate); }
+    if (startDate && startDate !== '') { params.append('period_from', startDate); }
+    MyAexios.get('/events', {
+      params,
     })
       .then((response) => {
-        responseLink = parse(response.headers.get('Link'));
-        return response.json();
+        responseLink = parse(response.headers.link);
+        dispatch(receiveEvents(response.data, isMoreRead, responseLink));
       })
-      .then(responseJson => dispatch(receiveEvents(responseJson, isMoreRead, responseLink)));
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 }
 

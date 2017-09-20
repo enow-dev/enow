@@ -205,7 +205,7 @@ class Home extends React.Component {
   handleSubmitEventsCount = () => {
     const { eventsCountActions } = this.props;
     const { keyword, prefIndex } = this.state;
-    eventsCountActions.getEventsCountIfNeeded(keyword, prefIndex);
+    eventsCountActions.getEventsCountIfNeeded(prefIndex, keyword);
   }
 
   slot = () => {

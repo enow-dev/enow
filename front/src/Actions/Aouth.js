@@ -1,11 +1,13 @@
 import Cookies from 'universal-cookie';
 import * as types from '../Constants/ActionTypes';
+import MyAexios from '../Constants/MyAexios';
 
 const cookies = new Cookies();
 
 function setCookieAouth(aouth) {
   cookies.remove('aouth', { path: '/' });
   cookies.set('aouth', aouth, { path: '/', expires: new Date(aouth.expire) });
+  MyAexios.defaults.headers.common['X-Authorization'] = aouth.token;
 }
 
 export const startAouth = () => ({ type: types.START_AOUTH });
@@ -23,36 +25,26 @@ export const loginFromQookie = aouth => (
   { type: types.LOGIN_FROM_QOOKIE, aouth }
 );
 
-export function logout() {
-  return (dispatch) => {
-    cookies.remove('aouth', { path: '/' });
-    dispatch({ type: types.LOGOUT });
-  };
-}
-
 function login(code, provider) {
   const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
   const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/auth/login`;// eslint-disable-line
   return (dispatch) => {
     dispatch(fetchLogin());
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/vnd.event+json', // eslint-disable-line
-        // 'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    MyAexios.post('/aouth/login', {
+      data: {
         code,
         provider,
-      }),
+      },
     })
       .then((response) => {
         if (response.status !== 200) {
           dispatch({ type: types.LOGIN_ERROR, error: response });
         }
-        return response.json();
+        dispatch(receiveLogin(response.data));
       })
-      .then(responseJson => dispatch(receiveLogin(responseJson)));
+      .catch((error) => {
+        dispatch({ type: types.LOGIN_ERROR, error });
+      });
   };
 }
 
@@ -108,6 +100,14 @@ export function geusLogin() {
   };
   setCookieAouth(aouth);
   loginFromQookie(aouth);
+}
+
+export function logout() {
+  return (dispatch) => {
+    cookies.remove('aouth', { path: '/' });
+    dispatch({ type: types.LOGOUT });
+    geusLogin();
+  };
 }
 
 export function isCookieAouth() {
