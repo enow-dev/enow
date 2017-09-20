@@ -16,14 +16,14 @@ import Button from 'material-ui/Button';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 
-import PrefMenu from './PrefMenu';
-import Header from './Header';
+import PrefMenu from '../Components/PrefMenu';
+import Header from '../Components/Header';
 
-import * as ErrorActions from '../Actions/Error';
-import * as AutosuggestActions from '../Actions/Autosuggest';
-import * as EventsActions from '../Actions/Events';
-import * as SearchStashActions from '../Actions/SearchStash';
-import * as EventsCountActions from '../Actions/EventsCount';
+import * as ErrorActions from '../../Actions/Error';
+import * as AutosuggestActions from '../../Actions/Autosuggest';
+import * as EventsActions from '../../Actions/Events';
+import * as SearchStashActions from '../../Actions/SearchStash';
+import * as EventsCountActions from '../../Actions/EventsCount';
 
 const styles = theme =>({
   root: {

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter as Router, withRouter } from 'react-router-dom';
-import Aouth from './Components/Aouth';
-import Home from './Components/Home';
-import Login from './Components/Login';
-import Events from './Components/Events';
-import NotFound from './Components/NotFound';
+import Aouth from './Views/Components/Aouth';
+import Home from './Views/Pages/Home';
+import Login from './Views/Pages/Login';
+import Events from './Views/Pages/Events/';
+import NotFound from './Views/Pages/NotFound';
 
 class App extends React.Component {
   render() {

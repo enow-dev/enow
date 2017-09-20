@@ -6,9 +6,9 @@ import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import { CircularProgress } from 'material-ui/Progress';
 
-import Header from './Header';
+import Header from '../Components/Header';
 
-import * as AouthActions from '../Actions/Aouth';
+import * as AouthActions from '../../Actions/Aouth';
 
 
 

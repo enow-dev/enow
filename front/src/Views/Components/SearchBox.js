@@ -22,8 +22,8 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import PrefMenu from './PrefMenu';
 
-import * as EventsActions from '../Actions/Events';
-import * as SearchStashActions from '../Actions/SearchStash';
+import * as EventsActions from '../../Actions/Events';
+import * as SearchStashActions from '../../Actions/SearchStash';
 
 const styles = theme => ({
   root: {},

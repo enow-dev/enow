@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as AouthActions from '../Actions/Aouth';
+import * as AouthActions from '../../Actions/Aouth';
 
 class Aouth extends React.Component {
   componentWillMount() {
