@@ -1,8 +1,6 @@
-import Cookies from 'universal-cookie';
 import parse from 'parse-link-header';
 import * as types from '../Constants/ActionTypes';
-
-const cookies = new Cookies();
+import MyAexios from '../Constants/MyAexios';
 
 export const receiveFavoriteEvents = (events, isEnd, link) => (
   { type: types.RECEIVE_EVENTS, events, link }
@@ -17,22 +15,19 @@ function getFavoriteEvents(isEnd, link) {
   }
   return (dispatch) => {
     dispatch(fetchFavoriteEvents());
-    const aouth = cookies.get('aouth');
     let responseLink = '';
-    return fetch(url, {
-      mode: 'cors',
-      method: 'GET',
-      header: {
-        Accept: 'application/vnd.event+json', // eslint-disable-line
-        'X-Authorization': `${aouth.token}`,
-        'Content-Type': 'application/json',
-      },
+    const params = new URLSearchParams();
+    params.append('isEnd', isEnd);
+    MyAexios.get('/events/self/favorites', {
+      params,
     })
       .then((response) => {
-        responseLink = parse(response.headers.get('Link'));
-        return response.json();
+        responseLink = parse(response.headers.link);
+        dispatch(receiveFavoriteEvents(response.data, isEnd, responseLink));
       })
-      .then(responseJson => dispatch(receiveFavoriteEvents(responseJson, isEnd, responseLink)));
+      .catch((error) => {
+        console.log(error);
+      });
   };
 }
 
