@@ -14,6 +14,8 @@ import { StickyContainer, Sticky } from 'react-sticky';
 
 import * as EventsActions from '../../../Actions/Events';
 import * as FavoriteEventsActions from '../../../Actions/FavoriteEvents';
+import * as FavoriteActions from '../../../Actions/Favorite';
+
 import Header from '../../Components/Header';
 import EventsTab from '../../Components/EventsTab';
 import EventBox from '../../Components/EventBox';
@@ -99,7 +101,7 @@ class Events extends React.Component {
   }
 
   renderEventsBox() {
-    const { events } = this.props;
+    const { events, favoriteActions } = this.props;
     if (events.list.length === 0) {
       return (
         <Grid item style={{ width: '100%' }}>
@@ -112,7 +114,13 @@ class Events extends React.Component {
     }
     return events.list.map((item,index) =>
       <Grid item key={index} style={{ width: '100%' }}>
-        <EventBox event={item} handleEditJump={this.handleEditJump} handleProviderJump={this.handleProviderJump}/>
+        <EventBox
+          event={item}
+          handleEditJump={this.handleEditJump}
+          handleProviderJump={this.handleProviderJump}
+          onClickDeleteFavorite={(event)=> { favoriteActions.deleteFavoriteIfNeed(event)} }
+          onClickPutFavorite={(event)=> { favoriteActions.putFavoriteIfNeed(event)} }
+        />
       </Grid>,
     );
   }
@@ -192,6 +200,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   eventsActions: bindActionCreators(EventsActions, dispatch),
   favoriteEventsActions: bindActionCreators(FavoriteEventsActions, dispatch),
+  favoriteActions: bindActionCreators(FavoriteActions, dispatch),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Events)));

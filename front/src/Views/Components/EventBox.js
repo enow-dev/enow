@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
 import Card, { CardContent } from 'material-ui/Card';
 import List, {
@@ -23,8 +21,6 @@ import KeyboardArrowUp from 'material-ui-icons/KeyboardArrowUp';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 
-import * as EventActions from '../../Actions/Event';
-import * as FavoriteActions from '../../Actions/Favorite';
 import propviderInfo from '../../Constants/Provider';
 
 const styles = theme => ({
@@ -77,8 +73,8 @@ class EventBox extends React.Component {
       return;
     }
     this.setState({ isOpenDrawer: true });
-    const { eventActions, event } = this.props;
-    eventActions.getEventIfNeeded(event.item.id);
+    const { event, onCkickEdit } = this.props;
+    onCkickEdit(event);
   }
 
   renderDrawer() {
@@ -100,7 +96,7 @@ class EventBox extends React.Component {
   }
 
   render() {
-    const { classes, event, handleProviderJump, favoriteActions } = this.props;
+    const { classes, event, handleProviderJump, onClickDeleteFavorite, onClickPutFavorite } = this.props;
     const startDate = new Date(event.item['start_at']);
     const endDate = new Date(event.item['end_at']);
     let title = String(event.item.title);
@@ -156,9 +152,9 @@ class EventBox extends React.Component {
                 const { isFavorite } = this.state;
                 this.setState({ isFavorite: !isFavorite });
                 if (isFavorite) {
-                  favoriteActions.deleteFavoriteIfNeed(event);
+                  onClickDeleteFavorite(event);
                 } else {
-                  favoriteActions.putFavoriteIfNeed(event);
+                  onClickPutFavorite(event);
                 }
               }}
             >
@@ -249,12 +245,4 @@ EventBox.defaultProps = {
   }),
 };
 
-const mapStateToProps = state => ({
-  error: state.error,
-});
-const mapDispatchToProps = dispatch => ({
-  eventActions: bindActionCreators(EventActions, dispatch),
-  favoriteActions: bindActionCreators(FavoriteActions, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EventBox));
+export default withStyles(styles)(EventBox);
