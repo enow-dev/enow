@@ -99,7 +99,7 @@ export function geusLogin() {
     token: 'guest',
   };
   setCookieAouth(aouth);
-  loginFromQookie(aouth);
+  return dispatch => (dispatch({ type: types.GEUST_LOGIN, aouth }));
 }
 
 export function logout() {
@@ -111,11 +111,13 @@ export function logout() {
 }
 
 export function isCookieAouth() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const aouthCookie = cookies.get('aouth');
     if (aouthCookie === undefined) {
       // ゲストログイン
       geusLogin();
+      return Promise.resolve();
+    } else if (aouthCookie.token === 'guest') {
       return Promise.resolve();
     }
     return dispatch(loginFromQookie(aouthCookie));

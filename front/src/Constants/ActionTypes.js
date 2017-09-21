@@ -20,6 +20,7 @@ export const REDIRECT_AOUTH = 'REDIRECT_AOUHT';
 export const FETCH_LOGIN = 'FETCH_LOGIN';
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
 export const LOGIN_FROM_QOOKIE = 'LOGIN_FROM_QOOKIE';
+export const GEUST_LOGIN = 'GEUST_LOGIN';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGOUT = 'LOGOUT';
 // Search Stash

@@ -5,6 +5,7 @@ import {
   RECEIVE_LOGIN,
   LOGIN_FROM_QOOKIE,
   LOGIN_ERROR,
+  GEUST_LOGIN,
   LOGOUT,
 } from '../Constants/ActionTypes';
 
@@ -69,6 +70,11 @@ export default function aouth(state = initialState, action) {
         isAouthing: false,
       });
     }
+    case GEUST_LOGIN:
+      return {
+        ...initialState,
+        info: action.aouth,
+      };
     case LOGOUT:
       return initialState;
     default:
