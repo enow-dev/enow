@@ -98,8 +98,10 @@ class EventBox extends React.Component {
       return;
     }
     this.setState({ isOpenDrawer: true });
-    const { event, onCkickEdit } = this.props;
-    onCkickEdit(event);
+    const { event, onClickEdit } = this.props;
+    if (onClickEdit) {
+      onClickEdit(event);
+    }
   }
 
   renderDrawer() {
