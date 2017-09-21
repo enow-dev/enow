@@ -15,11 +15,12 @@ import SupervisorAccount from 'material-ui-icons/SupervisorAccount';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import Divider from 'material-ui/Divider';
-import { grey, blue } from 'material-ui/colors';
+import { grey, blue, orange } from 'material-ui/colors';
 import dateFormat from 'dateformat';
 import KeyboardArrowUp from 'material-ui-icons/KeyboardArrowUp';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
+import FavoriteIcon from 'material-ui-icons/Favorite';
 
 import propviderInfo from '../../Constants/Provider';
 
@@ -40,15 +41,39 @@ const styles = theme => ({
     color: `${grey[700]}`,
   },
   noFavoriteButton: {
-    border: `solid 1px ${theme.palette.primary[500]}`,
+    minWidth: 200,
+    border: `solid 1px ${orange[500]}`,
     borderRadius: 10,
     backgroundColor: '#fff',
+    padding: '15px 30px',
+    color: orange[500],
   },
   favoriteButton: {
-    border: `solid 1px ${theme.palette.primary[500]}`,
+    minWidth: 200,
+    border: `solid 1px ${orange[500]}`,
     borderRadius: 10,
-    backgroundColor: `${theme.palette.primary[500]}`,
+    backgroundColor: `${orange[500]}`,
+    padding: '15px 30px',
+    color: '#fff',
   },
+  favoriteIcon : {
+    width: 25,
+    height: 25,
+    position: 'absolute',
+    left: 10,
+    top: 10,
+    fill: '#fff',
+    zIndex: 1,
+  },
+  noFavoriteIcon: {
+    width: 25,
+    height: 25,
+    position: 'absolute',
+    left: 5,
+    top: 10,
+    fill: orange[500],
+    zIndex: 1,
+  }
 });
 
 class EventBox extends React.Component {
@@ -73,8 +98,10 @@ class EventBox extends React.Component {
       return;
     }
     this.setState({ isOpenDrawer: true });
-    const { event, onCkickEdit } = this.props;
-    onCkickEdit(event);
+    const { event, onClickEdit } = this.props;
+    if (onClickEdit) {
+      onClickEdit(event);
+    }
   }
 
   renderDrawer() {
@@ -143,23 +170,29 @@ class EventBox extends React.Component {
             </Typography>
           </Grid>
           <Grid item>
-            <Button
-              className={
-                this.state.isFavorite ? classes.favoriteButton : classes.noFavoriteButton
-              }
-              dense
-              onClick={() => {
-                const { isFavorite } = this.state;
-                this.setState({ isFavorite: !isFavorite });
-                if (isFavorite) {
-                  onClickDeleteFavorite(event);
-                } else {
-                  onClickPutFavorite(event);
+            <div style={{ width: '100%', position: 'relative', display: 'inline-block' }}>
+              <FavoriteIcon className={
+                  this.state.isFavorite ? classes.favoriteIcon : classes.noFavoriteIcon
                 }
-              }}
-            >
-              {this.state.isFavorite ? 'お気に入り中' : 'お気に入りする'}
-            </Button>
+              />
+              <Button
+                className={
+                  this.state.isFavorite ? classes.favoriteButton : classes.noFavoriteButton
+                }
+                dense
+                onClick={() => {
+                  const { isFavorite } = this.state;
+                  this.setState({ isFavorite: !isFavorite });
+                  if (isFavorite) {
+                    onClickDeleteFavorite(event);
+                  } else {
+                    onClickPutFavorite(event);
+                  }
+                }}
+              >
+                {this.state.isFavorite ? 'お気に入り中' : 'お気に入りに追加する'}
+              </Button>
+            </div>
           </Grid>
         </Grid>
         <CardContent>

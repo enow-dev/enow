@@ -11,6 +11,7 @@ import { grey } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
 
 import * as EventsActions from '../../../Actions/Events';
+import * as EventActions from '../../../Actions/Event';
 import * as FavoriteEventsActions from '../../../Actions/FavoriteEvents';
 import * as FavoriteActions from '../../../Actions/Favorite';
 
@@ -111,6 +112,9 @@ class Events extends React.Component {
       <Grid item key={index} style={{ width: '100%' }}>
         <EventBox
           event={item}
+          onClickEdit={(event) => {
+            this.props.eventActions.getEventIfNeeded(event.item.id);
+          }}
           handleEditJump={this.handleEditJump}
           handleProviderJump={this.handleProviderJump}
           onClickDeleteFavorite={(event)=> { favoriteActions.deleteFavoriteIfNeed(event)} }
@@ -194,6 +198,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   eventsActions: bindActionCreators(EventsActions, dispatch),
+  eventActions: bindActionCreators(EventActions, dispatch),
   favoriteEventsActions: bindActionCreators(FavoriteEventsActions, dispatch),
   favoriteActions: bindActionCreators(FavoriteActions, dispatch),
 });
