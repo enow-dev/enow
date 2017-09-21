@@ -54,7 +54,6 @@ const styles = theme => ({
     borderRadius: 10,
     backgroundColor: `${orange[500]}`,
     padding: '15px 30px',
-    backgroundColor: orange[500],
     color: '#fff',
   },
   favoriteIcon : {
