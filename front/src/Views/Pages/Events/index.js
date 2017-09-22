@@ -176,11 +176,11 @@ class Events extends React.Component {
     );
   }
   renderComponent = () => {
-    const { classes, events } = this.props;
+    const { classes } = this.props;
     return (
       <div className={classes.root}>
         <Header tabsChildren={<EventsTab selectTabIndex={this.state.selectTabIndex} handleTabChange={this.handleTabChange} />}/>
-      {/*events.isFetching ? this.renderCenterProgress() : */ this.renderMain()}
+        {this.renderMain()}
       </div>
     );
   };
