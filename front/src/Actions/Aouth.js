@@ -30,11 +30,14 @@ function login(code, provider) {
   const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/auth/login`;// eslint-disable-line
   return (dispatch) => {
     dispatch(fetchLogin());
+    const params = new URLSearchParams();
+    params.append('code', code);
+    params.append('provider', provider);
     MyAexios.post('/aouth/login', {
-      data: {
-        code,
-        provider,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
+      params,
     })
       .then((response) => {
         if (response.status !== 200) {
