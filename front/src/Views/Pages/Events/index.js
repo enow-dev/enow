@@ -98,7 +98,7 @@ class Events extends React.Component {
 
   renderEventsBox() {
     const { events, favoriteActions } = this.props;
-    if (events.list.length === 0) {
+    if (events.list.length === 0 && !events.isFetching) {
       return (
         <Grid item style={{ width: '100%' }}>
           <Card>
@@ -165,6 +165,7 @@ class Events extends React.Component {
         </MediaQuery>
         <MediaQuery query="(min-width: 1025px)">
           <Web
+            isFetching={events.isFetching}
             isMoreFetching={events.isMoreFetching}
             eventListComponent={this.renderEventsBox()}
             progressComponent={this.renderCenterProgress()}
@@ -179,7 +180,7 @@ class Events extends React.Component {
     return (
       <div className={classes.root}>
         <Header tabsChildren={<EventsTab selectTabIndex={this.state.selectTabIndex} handleTabChange={this.handleTabChange} />}/>
-        {events.isFetching ? this.renderCenterProgress() : this.renderMain()}
+      {/*events.isFetching ? this.renderCenterProgress() : */ this.renderMain()}
       </div>
     );
   };

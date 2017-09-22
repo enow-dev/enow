@@ -9,21 +9,11 @@ export const receiveEvents = (events, isMoreRead, link) => (
 export const fetchEvents = isMoreRead => ({ type: types.FETCH_EVENTS, isMoreRead });
 export const clearEvents = () => ({ type: types.CLEAR_EVENTS });
 
-function getEvents(isFavorite, isRed, isMoreRead, q, pref, link, startDate, endDate) {
-  const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
-  let url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/events?` +// eslint-disable-line
-            `is_favorite=${isFavorite}` +
-            `&is_red=${isRed}` +
-            `${q ? `&q=${q}` : ''}` +
-            `${pref > 0 ? `&pref=${pref}` : ''}` +
-            `${endDate && endDate !== '' ? `&period_to=${endDate}` : ''}` +
-            `${startDate && startDate !== '' ? `&period_from=${startDate}` : ''}`;
-  if (link) {
-    url = link.next.url;
-  }
+function getEvents(isFavorite, isRed, isMoreRead, q, pref, link = '', startDate, endDate) {
   return (dispatch) => {
     dispatch(fetchEvents(isMoreRead));
     let responseLink = '';
+
     const params = new URLSearchParams();
     params.append('is_favorite', isFavorite);
     params.append('is_red', isRed);
@@ -31,14 +21,15 @@ function getEvents(isFavorite, isRed, isMoreRead, q, pref, link, startDate, endD
     if (pref > 0) { params.append('pref', pref); }
     if (endDate && endDate !== '') { params.append('period_to', endDate); }
     if (startDate && startDate !== '') { params.append('period_from', startDate); }
-    MyAexios.get('/events', {
+
+    MyAexios.get(`${!link || link === '' ? '/events' : `${link.next.url}`}`, {
       params,
     })
       .then((response) => {
         responseLink = parse(response.headers.link);
         dispatch(receiveEvents(response.data, isMoreRead, responseLink));
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };
