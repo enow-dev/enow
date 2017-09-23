@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter as Router, withRouter } from 'react-router-dom';
-import Aouth from './Views/Components/Aouth';
+import OAuth from './Views/Components/OAuth';
 import Home from './Views/Pages/Home';
 import Login from './Views/Pages/Login';
 import Events from './Views/Pages/Events/';
@@ -9,7 +9,7 @@ import NotFound from './Views/Pages/NotFound';
 class App extends React.Component {
   render() {
     return (
-      <Aouth>
+      <OAuth>
         <Router>
           <Switch>
             <Route exact path="/" component={Home} />
@@ -19,7 +19,7 @@ class App extends React.Component {
             {/* <Route component={NotFound} /> */}
           </Switch>
         </Router>
-      </Aouth>
+      </OAuth>
     );
   }
 }

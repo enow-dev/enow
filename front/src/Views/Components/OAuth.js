@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as AouthActions from '../../Actions/Aouth';
+import * as oauthActions from '../../Actions/OAuth';
 
-class Aouth extends React.Component {
+class OAuth extends React.Component {
   componentWillMount() {
-    const { aouthActions } = this.props;
-    aouthActions.isCookieAouth();
+    const { oauthActions } = this.props;
+    oauthActions.isCookieOAuth();
   }
   render() {
     const { children } = this.props;
@@ -20,18 +20,18 @@ class Aouth extends React.Component {
   }
 }
 
-Aouth.propTypes = {
-  aouthActions: PropTypes.shape({
-    isCookieAouth: PropTypes.func.isRequired,
+OAuth.propTypes = {
+  oauthActions: PropTypes.shape({
+    isCookieOAuth: PropTypes.func.isRequired,
   }).isRequired,
   children: PropTypes.node,
 };
-Aouth.defaultProps = {
+OAuth.defaultProps = {
   children: null,
 };
 
 const mapDispatchToProps = dispatch => ({
-  aouthActions: bindActionCreators(AouthActions, dispatch),
+  oauthActions: bindActionCreators(oauthActions, dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(Aouth);
+export default connect(null, mapDispatchToProps)(OAuth);

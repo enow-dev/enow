@@ -1,6 +1,6 @@
 import {
-  START_AOUTH,
-  REDIRECT_AOUTH,
+  START_OAUTH,
+  REDIRECT_OAUTH,
   FETCH_LOGIN,
   RECEIVE_LOGIN,
   LOGIN_FROM_QOOKIE,
@@ -19,13 +19,13 @@ const initialState = {
   provider: '',
   error: null,
   isError: false,
-  isAouthing: false,
+  isOAuthing: false,
   isFetching: false,
-  isAouth: false,
+  isOAuth: false,
   isRedirect: false,
 };
 
-const adaptionAouthInfo = (info) => {
+const adaptionOauthInfo = (info) => {
   const newInfo = {
     avaterUrl: info.avater_url,
     expireDate: new Date(info.expire),
@@ -34,46 +34,46 @@ const adaptionAouthInfo = (info) => {
   return newInfo;
 };
 
-export default function aouth(state = initialState, action) {
+export default function oauth(state = initialState, action) {
   switch (action.type) {
-    case START_AOUTH:
+    case START_OAUTH:
       return Object.assign({}, state, {
-        isAouthing: true,
+        isOAuthing: true,
         isRedirect: false,
       });
-    case REDIRECT_AOUTH:
-      return Object.assign({}, state, { isRedirect: true, isAouthing: true });
+    case REDIRECT_OAUTH:
+      return Object.assign({}, state, { isRedirect: true, isOAuthing: true });
     case FETCH_LOGIN:
       return Object.assign({}, state, { isFetching: true });
     case RECEIVE_LOGIN: {
-      const newInfo = adaptionAouthInfo(action.aouth);
+      const newInfo = adaptionOauthInfo(action.oauth);
       return Object.assign({}, state, {
         isFetching: false,
         info: newInfo,
-        isAouth: true,
-        isAouthing: false,
+        isOAuth: true,
+        isOAuthing: false,
       });
     }
     case LOGIN_ERROR:
       return Object.assign({}, state, {
         error: action.error,
         isFetching: false,
-        isAouth: false,
+        isOAuth: false,
         isError: true,
       });
     case LOGIN_FROM_QOOKIE: {
-      const newInfo = adaptionAouthInfo(action.aouth);
+      const newInfo = adaptionOauthInfo(action.oauth);
       return Object.assign({}, state, {
         isFetching: false,
         info: newInfo,
-        isAouth: true,
-        isAouthing: false,
+        isOAuth: true,
+        isOAuthing: false,
       });
     }
     case GEUST_LOGIN:
       return {
         ...initialState,
-        info: action.aouth,
+        info: action.oauth,
       };
     case LOGOUT:
       return initialState;

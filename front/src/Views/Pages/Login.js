@@ -8,7 +8,7 @@ import { CircularProgress } from 'material-ui/Progress';
 
 import Header from '../Components/Header';
 
-import * as AouthActions from '../../Actions/Aouth';
+import * as OAuthActions from '../../Actions/OAuth';
 
 
 
@@ -25,12 +25,12 @@ const styles = theme => ({
 class Login extends React.Component {
 
   handleOnClick = () => {
-    this.startAouth();
+    this.startOauth();
   }
 
-  startAouth = () => {
-    const { aouthActions } = this.props;
-    aouthActions.startAouthGithub();
+  startOauth = () => {
+    const { oauthActions } = this.props;
+    oauthActions.startOauthGithub();
   }
 
   renderCenterProgress(){
@@ -45,17 +45,17 @@ class Login extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    const { aouth, history } = nextProps;
-    if (aouth.isAouth) {
+    const { oauth, history } = nextProps;
+    if (oauth.isoauth) {
       history.replace('/');
       return false;
     }
     return true;
   }
   render() {
-    const {aouth, aouthActions} = this.props;
-    aouthActions.checkAouth();
-    return  aouth.isFetching ? (
+    const {oauth, oauthActions} = this.props;
+    oauthActions.checkOAuth();
+    return  oauth.isFetching ? (
       <div>
         <Header />
         {this.renderCenterProgress()}
@@ -64,10 +64,10 @@ class Login extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  aouth: state.aouth,
+  oauth: state.oauth,
 });
 const mapDispatchToProps = dispatch => ({
-  aouthActions: bindActionCreators(AouthActions, dispatch),
+  oauthActions: bindActionCreators(OAuthActions, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login));
