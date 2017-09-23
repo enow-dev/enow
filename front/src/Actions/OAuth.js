@@ -4,25 +4,25 @@ import MyAexios from '../Constants/MyAexios';
 
 const cookies = new Cookies();
 
-function setCookieAouth(aouth) {
-  cookies.remove('aouth', { path: '/' });
-  cookies.set('aouth', aouth, { path: '/', expires: new Date(aouth.expire) });
-  MyAexios.defaults.headers.common['X-Authorization'] = aouth.token;
+function setCookieOAuth(oauth) {
+  cookies.remove('oauth', { path: '/' });
+  cookies.set('oauth', oauth, { path: '/', expires: new Date(oauth.expire) });
+  MyAexios.defaults.headers.common['X-Authorization'] = oauth.token;
 }
 
-export const startAouth = () => ({ type: types.START_AOUTH });
-export const redirectAouth = () => ({ type: types.REDIRECT_AOUTH });
+export const startOAuth = () => ({ type: types.START_OAUTH });
+export const redirectOAuth = () => ({ type: types.REDIRECT_OAUTH });
 export const fetchLogin = () => ({ type: types.FETCH_LOGIN });
 
-export function receiveLogin(aouth) {
+export function receiveLogin(oauth) {
   return (dispatch) => {
-    setCookieAouth(aouth);
-    return dispatch({ type: types.RECEIVE_LOGIN, aouth });
+    setCookieOAuth(oauth);
+    return dispatch({ type: types.RECEIVE_LOGIN, oauth });
   };
 }
 
-export const loginFromQookie = aouth => (
-  { type: types.LOGIN_FROM_QOOKIE, aouth }
+export const loginFromQookie = oauth => (
+  { type: types.LOGIN_FROM_QOOKIE, oauth }
 );
 
 function login(code, provider) {
@@ -33,7 +33,7 @@ function login(code, provider) {
     const params = new URLSearchParams();
     params.append('code', code);
     params.append('provider', provider);
-    MyAexios.post('/aouth/login', {
+    MyAexios.post('/auth/login', {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -68,25 +68,25 @@ function getQueryString() {
 
 export function loginIfNeeded(code, provider) {
   return (dispatch, getState) => {
-    const { aouth } = getState();
-    if (aouth.isFetching || aouth.isError || aouth.isAouth) {
+    const { oauth } = getState();
+    if (oauth.isFetching || oauth.isError || oauth.isOAuth) {
       return Promise.resolve();
     }
     return dispatch(login(code, provider));
   };
 }
 
-export function checkAouth() {
+export function checkOAuth() {
   return (dispatch, getState) => {
-    if (getState().aouth.isAouth) {
+    if (getState().oauth.isOAuth) {
       return Promise.resolve();
     }
-    if (getState().aouth.isRedirect) {
+    if (getState().oauth.isRedirect) {
       return Promise.resolve();
     }
     const attr = getQueryString();
     if ('code' in attr) {
-      dispatch(redirectAouth());
+      dispatch(redirectOAuth());
       return dispatch(loginIfNeeded(attr.code, attr.provider));
     }
     // error
@@ -95,49 +95,49 @@ export function checkAouth() {
 }
 
 export function geusLogin() {
-  const aouth = {
+  const oauth = {
     avater_url: 'none',
     expire: '9999-99-99',
     name: 'ゲスト',
     token: 'guest',
   };
-  setCookieAouth(aouth);
-  return dispatch => (dispatch({ type: types.GEUST_LOGIN, aouth }));
+  setCookieOAuth(oauth);
+  return dispatch => (dispatch({ type: types.GEUST_LOGIN, oauth }));
 }
 
 export function logout() {
   return (dispatch) => {
-    cookies.remove('aouth', { path: '/' });
+    cookies.remove('oauth', { path: '/' });
     dispatch({ type: types.LOGOUT });
     geusLogin();
   };
 }
 
-export function isCookieAouth() {
-  return (dispatch, getState) => {
-    const aouthCookie = cookies.get('aouth');
-    if (aouthCookie === undefined) {
+export function isCookieOAuth() {
+  return (dispatch) => {
+    const oauthCookie = cookies.get('oauth');
+    if (oauthCookie === undefined) {
       // ゲストログイン
       geusLogin();
       return Promise.resolve();
-    } else if (aouthCookie.token === 'guest') {
+    } else if (oauthCookie.token === 'guest') {
       return Promise.resolve();
     }
-    return dispatch(loginFromQookie(aouthCookie));
+    return dispatch(loginFromQookie(oauthCookie));
   };
 }
 
-export function startAouthGithub() {
+export function startOAuthGithub() {
   return (dispatch) => {
     const { REACT_APP_Github_ClientID, REACT_APP_API_Scheme, REACT_APP_FRONT_Host } = process.env;
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_Github_ClientID}&scope=user:email&redirect_uri=${REACT_APP_API_Scheme}${REACT_APP_FRONT_Host}/login?provider=github`;// eslint-disable-line
-    return dispatch(startAouth());
+    return dispatch(startOAuth());
   };
 }
 export function startOauthFacebook() {
   return (dispatch) => {
     const { REACT_APP_Facebook_ClientID, REACT_APP_API_Scheme, REACT_APP_FRONT_Host } = process.env;
     window.location.href = `https://www.facebook.com/dialog/oauth?client_id=${REACT_APP_Facebook_ClientID}&redirect_uri=${REACT_APP_API_Scheme}${REACT_APP_FRONT_Host}/login?provider=facebook/&response_type=code&scope=public_profile+email`;// eslint-disable-line
-    return dispatch(startAouth());
+    return dispatch(startOAuth());
   };
 }

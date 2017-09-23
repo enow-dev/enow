@@ -308,7 +308,7 @@ Home.defaultProps = {
 
 const mapStateToProps = state => ({
   autosuggests: state.autosuggest,
-  aouth: state.aouth,
+  oauth: state.oauth,
   searchStash: state.searchStash,
   eventsCount: state.eventsCount,
 });

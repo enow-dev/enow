@@ -19,7 +19,7 @@ import List, { ListItem, ListItemAvatar, ListItemText } from 'material-ui/List';
 
 import FacebookIcon from '../icons/facebook.svg';
 import GithubIcon from '../icons/github.svg';
-import * as AouthActions from '../../Actions/Aouth';
+import * as OAuthActions from '../../Actions/OAuth';
 import * as SearchStashActions from '../../Actions/SearchStash';
 
 const styles = theme => ({
@@ -56,7 +56,7 @@ function SubHeader({classes}) {
   );
 }
 
-function AccountDialog({classes, aouthActions, isOpen, onRequestClose, isGithubAouth, isFacebookAouth}){
+function AccountDialog({classes, oauthActions, isOpen, onRequestClose, isGithubOAuth, isFacebookOAuth}){
   return (
     <Dialog open={isOpen}>
       <DialogTitle>ログイン</DialogTitle>
@@ -64,20 +64,20 @@ function AccountDialog({classes, aouthActions, isOpen, onRequestClose, isGithubA
         <List>
 
           <ListItem button onClick={()=>{
-              !isGithubAouth ?
-              aouthActions.startAouthGithub() :
-              aouthActions.logout() ;
+              !isGithubOAuth ?
+              oauthActions.startOAuthGithub() :
+              oauthActions.logout() ;
               onRequestClose();
             }}>
             <ListItemAvatar>
               <Avatar src={GithubIcon} style={{backgroundColor: 'black'}}/>
             </ListItemAvatar>
-            <ListItemText primary={isGithubAouth ? "ログアウント" : "Githubでログイン"} />
+            <ListItemText primary={isGithubOAuth ? "ログアウント" : "Githubでログイン"} />
           </ListItem>
           <ListItem button onClick={()=>{
-            !isFacebookAouth ?
-            aouthActions.startOauthFacebook() :
-            aouthActions.logout() ;
+            !isFacebookOAuth ?
+            oauthActions.startOauthFacebook() :
+            oauthActions.logout() ;
             onRequestClose();
             }}>
             <ListItemAvatar>
@@ -111,12 +111,12 @@ class Header extends React.Component {
     this.setState({ isAccountDialogOpen: !this.state.isAccountDialogOpen });
   }
   renderAvatarIcon() {
-    const { aouth, classes } = this.props;
-    if (aouth.isAouth) {
+    const { oauth, classes } = this.props;
+    if (oauth.isOAuth) {
       return (
         <Avatar
           alt="Adelle Charles"
-          src={`${aouth.info.avaterUrl}`}
+          src={`${oauth.info.avaterUrl}`}
         />
       );
     } else {
@@ -136,7 +136,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { classes, children, aouth, aouthActions, tabsChildren } = this.props;
+    const { classes, children, oauth, oauthActions, tabsChildren } = this.props;
     const { REACT_APP_ClientID, REACT_APP_API_Scheme, REACT_APP_API_Host, REACT_APP_FRONT_Host } = process.env;
     return (
       <div className={classes.root}>
@@ -185,9 +185,9 @@ class Header extends React.Component {
           <SubHeader classes={classes}/>
         </MediaQuery>
         <AccountDialog
-          isGithubAouth={aouth.isAouth}
+          isGithubOAuth={oauth.isOAuth}
           isOpen={this.state.isAccountDialogOpen}
-          aouthActions={aouthActions}
+          oauthActions={oauthActions}
           onRequestClose={this.handleRequestClose}/>
         {children}
       </div>
@@ -210,10 +210,10 @@ SubHeader.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  aouth: state.aouth,
+  oauth: state.oauth,
 });
 const mapDispatchToProps = dispatch => ({
-  aouthActions: bindActionCreators(AouthActions, dispatch),
+  oauthActions: bindActionCreators(OAuthActions, dispatch),
   searchStashActions: bindActionCreators(SearchStashActions, dispatch),
 });
 

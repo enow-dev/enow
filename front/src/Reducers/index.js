@@ -1,6 +1,6 @@
 import error from './Error';
 import autosuggest from './Autosuggest';
-import aouth from './Aouth';
+import oauth from './OAuth';
 import searchStash from './SearchStash';
 import listOfEvent from './Events/';
 import eventsCount from './EventsCount';
@@ -9,7 +9,7 @@ const reducers = {
   events: listOfEvent,
   error,
   autosuggest,
-  aouth,
+  oauth,
   searchStash,
   eventsCount,
 };
