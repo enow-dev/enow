@@ -134,7 +134,7 @@ export function startOAuthGithub() {
 export function startOauthFacebook() {
   return (dispatch) => {
     const { REACT_APP_Facebook_ClientID, REACT_APP_API_Scheme, REACT_APP_FRONT_Host } = process.env;
-    window.location.href = `https://www.facebook.com/dialog/oauth?client_id=${REACT_APP_Facebook_ClientID}&redirect_uri=${REACT_APP_API_Scheme}${REACT_APP_FRONT_Host}/login?provider=facebook&response_type=code&scope=public_profile+email`;// eslint-disable-line
+    window.location.href = `https://www.facebook.com/dialog/oauth?client_id=${REACT_APP_Facebook_ClientID}&redirect_uri=${REACT_APP_API_Scheme}${REACT_APP_FRONT_Host}/login/&response_type=code&scope=public_profile+email`;// eslint-disable-line
     return dispatch(startOAuth());
   };
 }
