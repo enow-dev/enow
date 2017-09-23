@@ -46,7 +46,7 @@ class Login extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState){
     const { oauth, history } = nextProps;
-    if (oauth.isoauth) {
+    if (oauth.isOAuth) {
       history.replace('/');
       return false;
     }

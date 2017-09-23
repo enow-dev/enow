@@ -35,7 +35,7 @@ function login(code, provider) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     };
-    MyAexios.post('/auth/login', {code: code, provider: provider}, config)
+    MyAexios.post('/auth/login', { code, provider }, config)
       .then((response) => {
         if (response.status !== 200) {
           dispatch({ type: types.LOGIN_ERROR, error: response });
