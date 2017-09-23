@@ -18,6 +18,7 @@ class Web extends React.Component {
     const {
       classes,
       isMoreFetching,
+      isFetching,
       eventListComponent,
       progressComponent,
       moreReadComponent,
@@ -46,7 +47,7 @@ class Web extends React.Component {
               {eventListComponent}
             </Grid>
             <Grid item style={{ width: '100%' }}>
-              {isMoreFetching ? progressComponent : moreReadComponent}
+              {isMoreFetching || isFetching ? progressComponent : moreReadComponent}
             </Grid>
           </Grid>
         </Grid>
@@ -57,6 +58,7 @@ class Web extends React.Component {
 
 Web.propTypes = {
   classes: PropTypes.object.isRequired,
+  isFetching: PropTypes.bool,
   isMoreFetching: PropTypes.bool,
   eventListComponent: PropTypes.node,
   progressComponent: PropTypes.node,
@@ -64,6 +66,7 @@ Web.propTypes = {
 };
 Web.defaultProps = {
   classes: Object,
+  isFetching: false,
   isMoreFetching: false,
   eventListComponent: null,
   progressComponent: null,
