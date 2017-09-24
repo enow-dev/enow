@@ -11,6 +11,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { cyan, teal } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
 import dotenv from 'dotenv';
+import { createLogger } from 'redux-logger'
 
 import reducers from './Reducers';
 import App from './App';
@@ -24,7 +25,11 @@ const reducer = combineReducers({
   router: routerReducer,
 });
 
-const store = createStore(reducer, applyMiddleware(middleware, thunk));
+const logger = createLogger({
+  duration: true,
+});
+
+const store = createStore(reducer, applyMiddleware(middleware, thunk, logger));
 
 const theme = {
   typography: {
