@@ -5,11 +5,11 @@
   "dependencies": {
     "autosuggest-highlight": "^3.1.0",
     "axios": "^0.16.2",
-    "dateformat": "^2.0.0",
+    "dateformat": "^3.0.2",
     "dotenv": "^4.0.0",
     "history": "^4.7.2",
     "material-ui": "^1.0.0-beta.7",
-    "material-ui-icons": "^1.0.0-beta.5",
+    "material-ui-icons": "^1.0.0-beta.10",
     "moment": "^2.18.1",
     "parse-link-header": "^1.0.1",
     "prop-types": "^15.5.10",
@@ -23,24 +23,24 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.6",
-    "react-scripts": "1.0.11",
+    "react-scripts": "1.0.13",
     "react-sticky": "^6.0.1",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "universal-cookie": "^2.0.8"
+    "universal-cookie": "^2.1.0"
   },
   "devDependencies": {
-    "eslint": "^4.5.0",
+    "eslint": "^4.7.2",
     "eslint-config-airbnb": "^15.1.0",
-    "eslint-plugin-flowtype": "^2.30.3",
-    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-flowtype": "^2.35.1",
+    "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.1.0",
-    "prettier": "^1.5.3",
-    "prettier-eslint": "^8.0.0",
-    "prettier-eslint-cli": "^4.2.1"
+    "eslint-plugin-react": "^7.3.0",
+    "prettier": "^1.7.0",
+    "prettier-eslint": "^8.1.1",
+    "prettier-eslint-cli": "^4.3.2"
   },
   "scripts": {
     "lint": "node_modules/eslint/bin/eslint.js ./src",
