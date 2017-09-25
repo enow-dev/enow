@@ -12,13 +12,16 @@ import { cyan, teal } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
 import dotenv from 'dotenv';
 import { createLogger } from 'redux-logger'
+import createSagaMiddleware from 'redux-saga'
 
 import reducers from './Reducers';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import mySaga from './Sagas';
 
 const history = createHistory();
 const middleware = routerMiddleware(history);
+const sagaMiddleware = createSagaMiddleware();
 
 const reducer = combineReducers({
   ...reducers,
@@ -29,7 +32,9 @@ const logger = createLogger({
   duration: true,
 });
 
-const store = createStore(reducer, applyMiddleware(middleware, thunk, logger));
+const store = createStore(reducer, applyMiddleware(middleware, thunk, logger, sagaMiddleware));
+
+sagaMiddleware.run(mySaga);
 
 const theme = {
   typography: {
