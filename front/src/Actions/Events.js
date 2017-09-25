@@ -2,18 +2,24 @@ import parse from 'parse-link-header';
 import * as types from '../Constants/ActionTypes';
 import MyAexios from '../Constants/MyAexios';
 
+export const GET_EVENTS = 'GET_EVENTS';
+export const NAVIGATE = 'NAVIGATE';
 
-export const receiveEvents = (events, isMoreRead, link) => (
-  { type: types.RECEIVE_EVENTS, events, isMoreRead, link }
-);
-export const fetchEvents = isMoreRead => ({ type: types.FETCH_EVENTS, isMoreRead });
-export const clearEvents = () => ({ type: types.CLEAR_EVENTS });
+function action(type, payload = {}) {
+  return { type, ...payload };
+}
 
-function getEvents(isFavorite, isRed, isMoreRead, q, pref, link = '', startDate, endDate) {
-  return (dispatch) => {
-    dispatch(fetchEvents(isMoreRead));
-    let responseLink = '';
-
+export const events = {
+  request: (
+    isFavorite,
+    isRed,
+    isMoreRead,
+    q,
+    pref,
+    startDate,
+    endDate,
+    url,
+  ) => {
     const params = new URLSearchParams();
     params.append('is_favorite', isFavorite);
     params.append('is_red', isRed);
@@ -21,26 +27,50 @@ function getEvents(isFavorite, isRed, isMoreRead, q, pref, link = '', startDate,
     if (pref > 0) { params.append('pref', pref); }
     if (endDate && endDate !== '') { params.append('period_to', endDate); }
     if (startDate && startDate !== '') { params.append('period_from', startDate); }
-
-    MyAexios.get(`${!link || link === '' ? '/events' : `${link.next.url}`}`, {
+    return action(types.EVENTS[types.REQUEST], {
+      url,
       params,
-    })
-      .then((response) => {
-        responseLink = parse(response.headers.link);
-        dispatch(receiveEvents(response.data, isMoreRead, responseLink));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-}
+    });
+  },
+  success: response => (action(types.EVENTS[types.SUCCESS], { response })),
+  failure: error => action(types.EVENTS[types.FAILURE], { error }),
+};
+
+export const getEvents = (
+  isFavorite,
+  isRed,
+  isMoreRead,
+  q,
+  pref,
+  startDate,
+  endDate,
+  link = false,
+  requiredFields = [],
+) => action(GET_EVENTS, {
+  isFavorite,
+  isRed,
+  isMoreRead,
+  q,
+  pref,
+  startDate,
+  endDate,
+  requiredFields,
+  url: `${!link || link === '' ? '/events' : `${link.next.url}`}`,
+});
+
+export const receiveEvents = (events, isMoreRead, link) => (
+  { type: types.RECEIVE_EVENTS, events, isMoreRead, link }
+);
+export const fetchEvents = isMoreRead => ({ type: types.FETCH_EVENTS, isMoreRead });
+export const clearEvents = () => ({ type: types.CLEAR_EVENTS });
+
 
 export function getEventsIfNeeded(isFavorite, isRed, q, pref, startDate, endDate) {
   return (dispatch, getState) => {
     if (getState().isFetching) {
       return Promise.resolve();
     }
-    return dispatch(getEvents(isFavorite, isRed, false, q, pref, false, startDate, endDate));
+    return dispatch(getEvents(isFavorite, isRed, false, q, pref, startDate, endDate));
   };
 }
 
@@ -49,6 +79,6 @@ export function moreReadEventsIfNeeded(isFavorite, isRed, link) {
     if (getState().isMoreFetching) {
       return Promise.resolve();
     }
-    return dispatch(getEvents(isFavorite, isRed, true, '', 0, link));
+    return dispatch(getEvents(isFavorite, isRed, true, '', 0, '', '', link));
   };
 }

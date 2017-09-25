@@ -1,12 +1,4 @@
-import {
-  RECEIVE_EVENTS,
-  FETCH_EVENTS,
-  FETCH_EVENT,
-  RECEIVE_EVENT,
-  PUT_FAVORITE,
-  PUT_RECEIVE_FAVORITE,
-  CLEAR_EVENTS,
-} from '../../Constants/ActionTypes';
+import * as types from '../../Constants/ActionTypes';
 import eventReducer from './Event';
 
 const initialState = {
@@ -26,7 +18,7 @@ function list(eventReducer, actionTypes) {
             ...state,
             isFetching: false,
             isMoreFetching: false,
-            list: [...state.list, ...events.map(event => eventReducer({}, { type: RECEIVE_EVENT, item: event }))],
+            list: [...state.list, ...events.map(event => eventReducer({}, { type: types.RECEIVE_EVENT, item: event }))],
             link,
           };
         }
@@ -38,10 +30,10 @@ function list(eventReducer, actionTypes) {
         }
         return Object.assign({}, state, { isFetching: true });
       }
-      case FETCH_EVENT:
-      case RECEIVE_EVENT:
-      case PUT_FAVORITE:
-      case PUT_RECEIVE_FAVORITE: {
+      case types.FETCH_EVENT:
+      case types.RECEIVE_EVENT:
+      case types.PUT_FAVORITE:
+      case types.PUT_RECEIVE_FAVORITE: {
         const { event, ...rest } = action;
         if (typeof event !== 'undefined') {
           return {
@@ -56,8 +48,32 @@ function list(eventReducer, actionTypes) {
         }
         return state;
       }
-      case CLEAR_EVENTS:
+      case types.CLEAR_EVENTS:
         return initialState;
+      case types.EVENTS[types.REQUEST]: {
+        return Object.assign({}, state, { isFetching: true });
+      }
+      case types.EVENTS[types.SUCCESS]: {
+        if (action.response && action.response.entities) {
+          return {
+            ...state,
+            list: [
+              ...state.list,
+              ...action.response.result.map((index) => {
+                return eventReducer({}, { type: types.RECEIVE_EVENT, item: action.response.entities.events[index] });
+              })],
+            isFetching: false,
+            link: action.response.link,
+          };
+        }
+        return state;
+      }
+      case types.EVENTS[types.FAILURE]:
+        return {
+          ...state,
+          error: action.error,
+          isFetching: false,
+        };
       default:
         return state;
     }
@@ -65,8 +81,8 @@ function list(eventReducer, actionTypes) {
 }
 
 const listOfEvent = list(eventReducer, {
-  RECEIVE_EVENTS,
-  FETCH_EVENTS,
+  RECEIVE_EVENTS: types.RECEIVE_EVENTS,
+  FETCH_EVENTS: types.FETCH_EVENTS,
 });
 
 export default listOfEvent;

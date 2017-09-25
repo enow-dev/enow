@@ -1,7 +1,20 @@
+// Common
+export const REQUEST = 'REQUEST';
+export const SUCCESS = 'SUCCESS';
+export const FAILURE = 'FAILURE';
+
+function createRequestTypes(base) {
+  return [REQUEST, SUCCESS, FAILURE].reduce((acc, type) => {
+    acc[type] = `${base}_${type}`
+		return acc;
+  }, {});
+}
+
 export const ADD_EVENT = 'ADD_EVENT';
 // Events
 export const FETCH_EVENTS = 'FETCH_EVENTS';
 export const RECEIVE_EVENTS = 'RECEIVE_EVENTS';
+export const EVENTS = createRequestTypes('EVENTS');
 // Event
 export const FETCH_EVENT = 'FETCH_EVENT';
 export const RECEIVE_EVENT = 'RECEIVE_EVENT';

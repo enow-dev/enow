@@ -84,7 +84,7 @@ class EventBox extends React.Component {
       isOpenedDrawer: false,
       favorite: null,
       isTitleHover: false,
-      isFavorite: props.event.item['is_favorite'] ? props.event.item['is_favorite'] : false,
+      isFavorite: props.event.item.isFavorite ? props.event.item.isFavorite : false,
     };
   }
 
@@ -124,8 +124,8 @@ class EventBox extends React.Component {
 
   render() {
     const { classes, event, handleProviderJump, onClickDeleteFavorite, onClickPutFavorite } = this.props;
-    const startDate = new Date(event.item['start_at']);
-    const endDate = new Date(event.item['end_at']);
+    const startDate = new Date(event.item.startAt);
+    const endDate = new Date(event.item.endAt);
     let title = String(event.item.title);
     if (title.length > 36) {
       title =`${ title.substr(0,36)}...`
