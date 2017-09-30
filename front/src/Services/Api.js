@@ -23,6 +23,20 @@ function callApi(reqConfig, schema) {
     .catch(error => ({ error: error || 'Something bad happened' }));
 }
 
+function callOAuthApi(reqConfig) {
+  return MyAexios.request(reqConfig)
+    .then((response) => {
+      if (response.status !== 200) {
+        return Promise.reject(response);
+      }
+      const camelizedJson = humps.camelizeKeys(response.data);
+
+      return {
+        response: camelizedJson,
+      };
+    })
+    .catch(error => ({ error: error || 'Something bad happened' }));
+}
 const eventSchema = new schema.Entity('events');
 const eventListSchema = new schema.Array(eventSchema);
 
@@ -31,3 +45,4 @@ export const fetchEvents = reqConfig => callApi(reqConfig, eventListSchema);
 export const fetchEvent = reqConfig => callApi(reqConfig, eventSchema);
 export const putFavorite = reqConfig => callApi(reqConfig, eventSchema);
 export const deleteFavorite = reqConfig => callApi(reqConfig, eventSchema);
+export const postOAuth = reqConfig => callOAuthApi(reqConfig);

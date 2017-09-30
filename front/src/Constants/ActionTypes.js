@@ -29,8 +29,7 @@ export const CLEAR_AUTOSUGGEST = 'CLEAR_AUTOSUGGEST';
 // OAuth
 export const START_OAUTH = 'START_OAUTH';
 export const REDIRECT_OAUTH = 'REDIRECT_OAUTH';
-export const FETCH_LOGIN = 'FETCH_LOGIN';
-export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
+export const OAUTH = createRequestTypes('OAUTH');
 export const LOGIN_FROM_QOOKIE = 'LOGIN_FROM_QOOKIE';
 export const GEUST_LOGIN = 'GEUST_LOGIN';
 export const LOGIN_ERROR = 'LOGIN_ERROR';

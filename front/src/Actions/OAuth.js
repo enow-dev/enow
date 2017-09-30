@@ -12,42 +12,28 @@ function setCookieOAuth(oauth) {
 
 export const startOAuth = () => ({ type: types.START_OAUTH });
 export const redirectOAuth = () => ({ type: types.REDIRECT_OAUTH });
-export const fetchLogin = () => ({ type: types.FETCH_LOGIN });
-
-export function receiveLogin(oauth) {
-  return (dispatch) => {
-    setCookieOAuth(oauth);
-    return dispatch({ type: types.RECEIVE_LOGIN, oauth });
-  };
-}
 
 export const loginFromQookie = (oauth) => {
   MyAexios.defaults.headers.common['X-Authorization'] = oauth.token;
   return { type: types.LOGIN_FROM_QOOKIE, oauth };
 };
 
-function login(code, provider) {
-  const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
-  const url = `${REACT_APP_API_Scheme}${REACT_APP_API_Host}/api/auth/login`;// eslint-disable-line
-  return (dispatch) => {
-    dispatch(fetchLogin());
-    const config = {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    };
-    MyAexios.post('/auth/login', { code, provider }, config)
-      .then((response) => {
-        if (response.status !== 200) {
-          dispatch({ type: types.LOGIN_ERROR, error: response });
-        }
-        dispatch(receiveLogin(response.data));
-      })
-      .catch((error) => {
-        dispatch({ type: types.LOGIN_ERROR, error });
-      });
+export const POST_OAUTH = 'POST_OAUTH';
+export const postOAuth = (code, provider) => {
+  const config = {
+    'Content-Type': 'application/x-www-form-urlencoded',
   };
-}
+  return { type: POST_OAUTH, url: '/auth/login', data: { code, provider }, method: 'POST', headers: config };
+};
+
+export const login = {
+  request: reqConfig => ({ type: types.OAUTH[types.REQUEST], reqConfig }),
+  success: (response) => {
+    setCookieOAuth(response);
+    return { type: types.OAUTH[types.SUCCESS], response };
+  },
+  failure: error => ({ type: types.OAUTH[types.FAILURE], error }),
+};
 
 function getQueryString() {
   const result = {};
@@ -70,7 +56,7 @@ export function loginIfNeeded(code, provider) {
     if (oauth.isFetching || oauth.isError || oauth.isOAuth) {
       return Promise.resolve();
     }
-    return dispatch(login(code, provider));
+    return dispatch(postOAuth(code, provider));
   };
 }
 

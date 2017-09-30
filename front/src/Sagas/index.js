@@ -3,10 +3,12 @@ import { api, history } from '../Services';
 import * as eventsActions from '../Actions/Events';
 import * as eventActions from '../Actions/Event';
 import * as favoriteActions from '../Actions/Favorite';
+import * as oauthActions from '../Actions/OAuth';
 
 const { events } = eventsActions;
 const { event } = eventActions;
 const { favorite } = favoriteActions;
+const { login } = oauthActions;
 
 /* **************************** Subroutines *********************************** */
 
@@ -25,6 +27,8 @@ export const fetchEvents = fetchEntity.bind(null, events, api.fetchEvents);
 export const fetchEvent = fetchEntity.bind(null, event, api.fetchEvent);
 export const putFavorite = fetchEntity.bind(null, favorite, api.putFavorite);
 export const deleteFavorite = fetchEntity.bind(null, favorite, api.deleteFavorite);
+export const postOAuth = fetchEntity.bind(null, login, api.postOAuth);
+
 /* **************************************************************************** */
 /* ****************************** WATCHERS ************************************ */
 /* **************************************************************************** */
@@ -56,11 +60,20 @@ function* watchDeleteFavorite() {
     yield call(deleteFavorite, { ...results });
   }
 }
+
+function* watchPutOAuth() {
+  while (true) {
+    const results = yield take(oauthActions.POST_OAUTH);
+    console.log(results);
+    yield call(postOAuth, { ...results });
+  }
+}
 export default function* root() {
   yield all([
     fork(watchLoadEvents),
     fork(watchLoadEvent),
     fork(watchPutFavorite),
     fork(watchDeleteFavorite),
+    fork(watchPutOAuth),
   ]);
 }
