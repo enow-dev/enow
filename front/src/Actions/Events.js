@@ -1,6 +1,4 @@
-import parse from 'parse-link-header';
 import * as types from '../Constants/ActionTypes';
-import MyAexios from '../Constants/MyAexios';
 
 export const GET_EVENTS = 'GET_EVENTS';
 export const NAVIGATE = 'NAVIGATE';
@@ -58,10 +56,6 @@ export const getEvents = (
   url: `${!link || link === '' ? '/events' : `${link.next.url}`}`,
 });
 
-export const receiveEvents = (events, isMoreRead, link) => (
-  { type: types.RECEIVE_EVENTS, events, isMoreRead, link }
-);
-export const fetchEvents = isMoreRead => ({ type: types.FETCH_EVENTS, isMoreRead });
 export const clearEvents = () => ({ type: types.CLEAR_EVENTS });
 
 

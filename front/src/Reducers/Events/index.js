@@ -11,36 +11,17 @@ const initialState = {
 function list(eventReducer, actionTypes) {
   return (state = initialState, action) => {
     switch (action.type) {
-      case actionTypes.RECEIVE_EVENTS: {
-        const { events, link } = action;
-        if (typeof events !== 'undefined') {
-          return {
-            ...state,
-            isFetching: false,
-            isMoreFetching: false,
-            list: [...state.list, ...events.map(event => eventReducer({}, { type: types.RECEIVE_EVENT, item: event }))],
-            link,
-          };
-        }
-        return Object.assign({}, state, { isMoreFetching: false });
-      }
-      case actionTypes.FETCH_EVENTS: {
-        if (action.isMoreRead) {
-          return Object.assign({}, state, { isMoreFetching: true });
-        }
-        return Object.assign({}, state, { isFetching: true });
-      }
-      case types.FETCH_EVENT:
-      case types.RECEIVE_EVENT:
-      case types.PUT_FAVORITE:
-      case types.PUT_RECEIVE_FAVORITE: {
-        const { event, ...rest } = action;
-        if (typeof event !== 'undefined') {
+      case types.EVENT[types.REQUEST]:
+      case types.EVENT[types.SUCCESS]:
+        const { response, ...rest } = action;
+        if (typeof response !== 'undefined') {
+          const { entities, result } = response;
+          const event = entities.events[result];
           return {
             ...state,
             list: state.list.map((eventOfList) => {
-              if (eventOfList.item.id === event.item.id) {
-                return eventReducer(eventOfList, { ...rest, item: event.item });
+              if (eventOfList.item.id === event.id) {
+                return eventReducer(eventOfList, { ...rest, item: event });
               }
               return eventOfList;
             }),
@@ -81,8 +62,6 @@ function list(eventReducer, actionTypes) {
 }
 
 const listOfEvent = list(eventReducer, {
-  RECEIVE_EVENTS: types.RECEIVE_EVENTS,
-  FETCH_EVENTS: types.FETCH_EVENTS,
 });
 
 export default listOfEvent;

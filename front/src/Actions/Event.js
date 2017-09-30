@@ -1,23 +1,14 @@
 import * as types from '../Constants/ActionTypes';
-import MyAexios from '../Constants/MyAexios';
 
-export const receiveEvent = event => (
-  { type: types.RECEIVE_EVENT, event }
-);
-export const fetchEvent = () => ({ type: types.FETCH_EVENT });
+export const GET_EVENT = 'GET_EVENT';
 
-function getEvent(eventId) {
-  return (dispatch) => {
-    dispatch(fetchEvent());
-    MyAexios.get(`events/${eventId}`)
-      .then((response) => {
-        if (response.status !== 200) {
-          dispatch({ type: types.ADD_ERROR, error: response });
-        }
-        dispatch(receiveEvent({ item: response.data }));
-      });
-  };
-}
+export const event = {
+  request: url => ({ type: types.EVENT[types.REQUEST], url }),
+  success: response => ({ type: types.EVENT[types.SUCCESS], response }),
+  failure: error => ({ type: types.EVENT[types.FAILURE], error }),
+};
+
+export const getEvent = eventId => ({ type: GET_EVENT, url: `/events/${eventId}` });
 
 export function getEventIfNeeded(eventId) {
   return (dispatch, getState) => {

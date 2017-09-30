@@ -16,10 +16,9 @@ export const FETCH_EVENTS = 'FETCH_EVENTS';
 export const RECEIVE_EVENTS = 'RECEIVE_EVENTS';
 export const EVENTS = createRequestTypes('EVENTS');
 // Event
-export const FETCH_EVENT = 'FETCH_EVENT';
 export const RECEIVE_EVENT = 'RECEIVE_EVENT';
-export const SET_EVENTS = 'SET_EVENTS';
 export const CLEAR_EVENTS = 'CLEAR_EVENTS';
+export const EVENT = createRequestTypes('EVENT');
 // Error
 export const ADD_ERROR = 'ADD_ERROR';
 export const REMOVE_ERROR = 'REMOVE_ERROR';

@@ -1,8 +1,10 @@
 import { take, put, call, fork, select, all } from 'redux-saga/effects';
 import { api, history } from '../Services';
-import * as actions from '../Actions/Events';
+import * as eventsActions from '../Actions/Events';
+import * as eventActions from '../Actions/Event';
 
-const { events } = actions
+const { events } = eventsActions;
+const { event } = eventActions;
 
 /* **************************** Subroutines *********************************** */
 
@@ -18,10 +20,7 @@ function* fetchEntity(entity, apiFn, apiFnArgs) {
 
 // bind Generators
 export const fetchEvents = fetchEntity.bind(null, events, api.fetchEvents);
-
-function* loadEvents(args) {
-  yield call(fetchEvents, { ...args });
-}
+export const fetchEvent = fetchEntity.bind(null, event, api.fetchEvent);
 
 /* **************************************************************************** */
 /* ****************************** WATCHERS ************************************ */
@@ -29,13 +28,24 @@ function* loadEvents(args) {
 
 function* watchLoadEvents() {
   while (true) {
-    const results = yield take(actions.GET_EVENTS);
-    yield fork(loadEvents, { ...results });
+    const results = yield take(eventsActions.GET_EVENTS);
+    yield call(fetchEvents, { ...results });
+  }
+}
+
+function* watchLoadEvent() {
+  while (true) {
+    const results = yield take(eventActions.GET_EVENT);
+    yield call(fetchEvent, { ...results });
+  }
+}
+
   }
 }
 
 export default function* root() {
   yield all([
     fork(watchLoadEvents),
+    fork(watchLoadEvent),
   ]);
 }
