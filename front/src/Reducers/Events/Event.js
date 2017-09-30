@@ -1,8 +1,3 @@
-import {
-  RECEIVE_EVENT,
-  PUT_FAVORITE,
-  PUT_RECEIVE_FAVORITE,
-} from '../../Constants/ActionTypes';
 import * as types from '../../Constants/ActionTypes';
 import favoriteReducer from './Favorite';
 
@@ -30,7 +25,7 @@ const initialState = {
 
 export default function event(state = initialState, action) {
   switch (action.type) {
-    case RECEIVE_EVENT:
+    case types.SET_EVENT:
     case types.EVENT[types.SUCCESS]:
       return {
         isFetching: false,

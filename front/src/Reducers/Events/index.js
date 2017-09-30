@@ -43,7 +43,7 @@ function list(eventReducer, actionTypes) {
             list: [
               ...state.list,
               ...action.response.result.map((index) => {
-                return eventReducer({}, { type: types.RECEIVE_EVENT, item: action.response.entities.events[index] });
+                return eventReducer({}, { type: types.SET_EVENT, item: action.response.entities.events[index] });
               })],
             isFetching: false,
             link: action.response.link,

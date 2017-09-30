@@ -16,8 +16,8 @@ export const FETCH_EVENTS = 'FETCH_EVENTS';
 export const RECEIVE_EVENTS = 'RECEIVE_EVENTS';
 export const EVENTS = createRequestTypes('EVENTS');
 // Event
-export const RECEIVE_EVENT = 'RECEIVE_EVENT';
 export const CLEAR_EVENTS = 'CLEAR_EVENTS';
+export const SET_EVENT = 'SET_EVENT';
 export const EVENT = createRequestTypes('EVENT');
 // Error
 export const ADD_ERROR = 'ADD_ERROR';
@@ -39,10 +39,6 @@ export const LOGOUT = 'LOGOUT';
 export const SET_SEARCH = 'SET_SEARCH';
 export const CLEAR_SEARCH = 'CLEAR_SEARCH';
 // Favorite
-export const FETCH_FAVORITE = 'FETCH_FAVORITE';
-export const RECEIVE_FAVORITE = 'RECEIVE_FAVORITE';
-export const PUT_FAVORITE = 'PUT_FAVORITE';
-export const PUT_RECEIVE_FAVORITE = 'PUT_RECEIVE_FAVORITE';
 export const FAVORITE = createRequestTypes('FAVORITE');
 export const DELETE_FAVORITE = createRequestTypes('DELETE_FAVORITE');
 // Favorites
