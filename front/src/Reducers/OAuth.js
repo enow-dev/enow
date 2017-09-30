@@ -1,13 +1,4 @@
-import {
-  START_OAUTH,
-  REDIRECT_OAUTH,
-  FETCH_LOGIN,
-  RECEIVE_LOGIN,
-  LOGIN_FROM_QOOKIE,
-  LOGIN_ERROR,
-  GEUST_LOGIN,
-  LOGOUT,
-} from '../Constants/ActionTypes';
+import * as types from '../Constants/ActionTypes';
 
 const initialState = {
   info: {
@@ -25,57 +16,46 @@ const initialState = {
   isRedirect: false,
 };
 
-const adaptionOauthInfo = (info) => {
-  const newInfo = {
-    avaterUrl: info.avater_url,
-    expireDate: new Date(info.expire),
-    ...info,
-  };
-  return newInfo;
-};
-
 export default function oauth(state = initialState, action) {
   switch (action.type) {
-    case START_OAUTH:
+    case types.START_OAUTH:
       return Object.assign({}, state, {
         isOAuthing: true,
         isRedirect: false,
       });
-    case REDIRECT_OAUTH:
+    case types.REDIRECT_OAUTH:
       return Object.assign({}, state, { isRedirect: true, isOAuthing: true });
-    case FETCH_LOGIN:
+    case types.OAUTH[types.REQUEST]:
       return Object.assign({}, state, { isFetching: true });
-    case RECEIVE_LOGIN: {
-      const newInfo = adaptionOauthInfo(action.oauth);
+    case types.OAUTH[types.SUCCESS]: {
       return Object.assign({}, state, {
         isFetching: false,
-        info: newInfo,
+        info: action.response,
         isOAuth: true,
         isOAuthing: false,
       });
     }
-    case LOGIN_ERROR:
+    case types.LOGIN_ERROR:
       return Object.assign({}, state, {
         error: action.error,
         isFetching: false,
         isOAuth: false,
         isError: true,
       });
-    case LOGIN_FROM_QOOKIE: {
-      const newInfo = adaptionOauthInfo(action.oauth);
+    case types.LOGIN_FROM_QOOKIE: {
       return Object.assign({}, state, {
         isFetching: false,
-        info: newInfo,
+        info: action.oauth,
         isOAuth: true,
         isOAuthing: false,
       });
     }
-    case GEUST_LOGIN:
+    case types.GEUST_LOGIN:
       return {
         ...initialState,
         info: action.oauth,
       };
-    case LOGOUT:
+    case types.LOGOUT:
       return initialState;
     default:
       return state;

@@ -1,34 +1,30 @@
 import * as types from '../Constants/ActionTypes';
-import MyAexios from '../Constants/MyAexios';
 
-export const putFavorite = () => ({ type: types.PUT_FAVORITE });
-export const putReceiveFavorite = event => ({ type: types.PUT_RECEIVE_FAVORITE, event });
+export const DELETE_FAVORITE = 'DELETE_FAVORITE';
+export const PUT_FAVORITE = 'PUT_FAVORITE';
 
-export function putFavoriteIfNeed(event) {
+export const deleteFavorite = eventId => ({ type: DELETE_FAVORITE, url: `/events/${eventId}/favorites`, method: 'DELETE' });
+export const putFavorite = eventId => ({ type: PUT_FAVORITE, url: `/events/${eventId}/favorites`, method: 'PUT' });
+
+export const favorite = {
+  request: url => ({ type: types.FAVORITE[types.REQUEST], url }),
+  success: response => ({ type: types.FAVORITE[types.SUCCESS], response }),
+  failure: error => ({ type: types.FAVORITE[types.FAILURE], error }),
+};
+
+export function putFavoriteIfNeed(eventId) {
   return (dispatch, getState) => {
     if (getState.isPutiing) {
       return Promise.resolve();
     }
-    dispatch(putFavorite());
-    MyAexios.put(`/events/${event.item.id}/favorites`)
-      .then(() => {
-        dispatch(putReceiveFavorite(event));
-      });
+    return dispatch(putFavorite(eventId));
   };
 }
-
-export const deleteFavorite = () => ({ type: types.DELETE_FAVORITE });
-export const deleteReceiveFavorite = event => ({ type: types.DELETE_RECEIVE_FAVORITE, event });
-
-export function deleteFavoriteIfNeed(event) {
+export function deleteFavoriteIfNeed(eventId) {
   return (dispatch, getState) => {
     if (getState.deleting) {
       return Promise.resolve();
     }
-    dispatch(putFavorite());
-    MyAexios.delete(`/events/${event.item.id}/favorites`)
-      .then(() => {
-        dispatch(putReceiveFavorite(event));
-      });
+    return dispatch(deleteFavorite(eventId))
   };
 }

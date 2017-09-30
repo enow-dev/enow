@@ -1,9 +1,4 @@
-import {
-  PUT_FAVORITE,
-  PUT_RECEIVE_FAVORITE,
-  DELETE_FAVORITE,
-  DELETE_RECEIVE_FAVORITE,
-} from '../../Constants/ActionTypes';
+import * as types from '../../Constants/ActionTypes';
 
 const initialState = {
   isPutiing: false,
@@ -13,13 +8,13 @@ const initialState = {
 
 export default function favorite(state = initialState, action) {
   switch (action.type) {
-    case PUT_FAVORITE:
+    case types.FAVORITE[types.REQUEST]:
       return Object.assign({}, state, { isPutiing: true, resultEventId: null });
-    case PUT_RECEIVE_FAVORITE:
+    case types.FAVORITE[types.SUCCESS]:
       return Object.assign({}, state, { isPutiing: false, resultEventId: action.item.id });
-    case DELETE_FAVORITE:
+    case types.DELETE_FAVORITE[types.REQUEST]:
       return Object.assign({}, state, { isDeleting: true, resultEventId: null });
-    case DELETE_RECEIVE_FAVORITE:
+    case types.DELETE_FAVORITE[types.SUCCESS]:
       return Object.assign({}, state, { isDeleting: false, resultEventId: action.item.id });
     default:
       return state;
