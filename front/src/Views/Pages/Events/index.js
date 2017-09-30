@@ -117,8 +117,8 @@ class Events extends React.Component {
           }}
           handleEditJump={this.handleEditJump}
           handleProviderJump={this.handleProviderJump}
-          onClickDeleteFavorite={(event)=> { favoriteActions.deleteFavoriteIfNeed(event)} }
-          onClickPutFavorite={(event)=> { favoriteActions.putFavoriteIfNeed(event)} }
+          onClickDeleteFavorite={(event)=> { favoriteActions.deleteFavoriteIfNeed(event.item.id)} }
+          onClickPutFavorite={(event)=> { favoriteActions.putFavoriteIfNeed(event.item.id)} }
         />
       </Grid>,
     );

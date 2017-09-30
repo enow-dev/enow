@@ -41,8 +41,8 @@ export default function event(state = initialState, action) {
       };
     case types.EVENT[types.REQUEST]:
       return Object.assign({}, state, { isFetching: true });
-    case PUT_FAVORITE:
-    case PUT_RECEIVE_FAVORITE:
+    case types.FAVORITE[types.REQUEST]:
+    case types.FAVORITE[types.SUCCESS]:
       return {
         ...state,
         favorite: favoriteReducer(null, { ...action, ...state }),

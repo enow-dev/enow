@@ -29,3 +29,5 @@ const eventListSchema = new schema.Array(eventSchema);
 // api service
 export const fetchEvents = reqConfig => callApi(reqConfig, eventListSchema);
 export const fetchEvent = reqConfig => callApi(reqConfig, eventSchema);
+export const putFavorite = reqConfig => callApi(reqConfig, eventSchema);
+export const deleteFavorite = reqConfig => callApi(reqConfig, eventSchema);

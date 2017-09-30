@@ -13,6 +13,8 @@ function list(eventReducer, actionTypes) {
     switch (action.type) {
       case types.EVENT[types.REQUEST]:
       case types.EVENT[types.SUCCESS]:
+      case types.FAVORITE[types.REQUEST]:
+      case types.FAVORITE[types.SUCCESS]: {
         const { response, ...rest } = action;
         if (typeof response !== 'undefined') {
           const { entities, result } = response;
