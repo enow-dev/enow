@@ -21,9 +21,10 @@ export function receiveLogin(oauth) {
   };
 }
 
-export const loginFromQookie = oauth => (
-  { type: types.LOGIN_FROM_QOOKIE, oauth }
-);
+export const loginFromQookie = (oauth) => {
+  MyAexios.defaults.headers.common['X-Authorization'] = oauth.token;
+  return { type: types.LOGIN_FROM_QOOKIE, oauth };
+};
 
 function login(code, provider) {
   const { REACT_APP_API_Scheme, REACT_APP_API_Host } = process.env;
