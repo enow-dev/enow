@@ -12,7 +12,11 @@ function callApi(reqConfig, schema) {
       }
       const camelizedJson = humps.camelizeKeys(response.data);
       const link = parse(response.headers.link);
-
+      if (typeof camelizedJson !== 'object') {
+        return {
+          response: camelizedJson,
+        };
+      }
       return {
         response: Object.assign({},
           normalize(camelizedJson, schema),
@@ -46,3 +50,4 @@ export const fetchEvent = reqConfig => callApi(reqConfig, eventSchema);
 export const putFavorite = reqConfig => callApi(reqConfig, eventSchema);
 export const deleteFavorite = reqConfig => callApi(reqConfig, eventSchema);
 export const postOAuth = reqConfig => callOAuthApi(reqConfig);
+export const fetchEventsCount = reqConfig => callApi(reqConfig);

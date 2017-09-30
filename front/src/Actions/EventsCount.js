@@ -1,24 +1,13 @@
 import * as types from '../Constants/ActionTypes'
-import MyAexios from '../Constants/MyAexios';
 
-export const receiveEventsCount = count => ({ type: types.RECEIVE_EVENTS_COUNT, count });
-export const fetchEventsCount = () => ({ type: types.FETCH_EVENTS_COUNT });
+export const GET_EVENTS_COUNT = 'GET_EVENT_COUNT';
+export const eventsCount = {
+  request: reqConfig => ({ type: types.EVENTS_COUNT[types.REQUEST], reqConfig }),
+  success: response => ({ type: types.EVENTS_COUNT[types.SUCCESS], response }),
+  failure: error => ({ type: types.EVENTS_COUNT[types.FAILURE], error }),
+};
 
-function getEventsCount(pref, q) {
-  return (dispatch) => {
-    dispatch(fetchEventsCount());
-    const params = new URLSearchParams();
-    if (q) { params.append('q', q); }
-    if (pref > 0) { params.append('pref', pref); }
-
-    MyAexios.get('events/count', {
-      params,
-    })
-      .then((response) => {
-        dispatch(receiveEventsCount(response.data));
-      });
-  };
-}
+export const getEventsCount = (pref, q) => ({ type: GET_EVENTS_COUNT, url: '/events/count', params: { pref, q } });
 
 export function getEventsCountIfNeeded(pref, q) {
   return (dispatch, getState) => {

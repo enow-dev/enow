@@ -4,12 +4,13 @@ import * as eventsActions from '../Actions/Events';
 import * as eventActions from '../Actions/Event';
 import * as favoriteActions from '../Actions/Favorite';
 import * as oauthActions from '../Actions/OAuth';
+import * as eventsCountActions from '../Actions/EventsCount';
 
 const { events } = eventsActions;
 const { event } = eventActions;
 const { favorite } = favoriteActions;
 const { login } = oauthActions;
-
+const { eventsCount } = eventsCountActions;
 /* **************************** Subroutines *********************************** */
 
 function* fetchEntity(entity, apiFn, apiFnArgs) {
@@ -28,6 +29,7 @@ export const fetchEvent = fetchEntity.bind(null, event, api.fetchEvent);
 export const putFavorite = fetchEntity.bind(null, favorite, api.putFavorite);
 export const deleteFavorite = fetchEntity.bind(null, favorite, api.deleteFavorite);
 export const postOAuth = fetchEntity.bind(null, login, api.postOAuth);
+export const fetchEventsCount = fetchEntity.bind(null, eventsCount, api.fetchEventsCount);
 
 /* **************************************************************************** */
 /* ****************************** WATCHERS ************************************ */
@@ -64,8 +66,14 @@ function* watchDeleteFavorite() {
 function* watchPutOAuth() {
   while (true) {
     const results = yield take(oauthActions.POST_OAUTH);
-    console.log(results);
     yield call(postOAuth, { ...results });
+  }
+}
+
+function* watchEventsCount() {
+  while (true) {
+    const results = yield take(eventsCountActions.GET_EVENTS_COUNT);
+    yield call(fetchEventsCount, { ...results });
   }
 }
 export default function* root() {
@@ -75,5 +83,6 @@ export default function* root() {
     fork(watchPutFavorite),
     fork(watchDeleteFavorite),
     fork(watchPutOAuth),
+    fork(watchEventsCount),
   ]);
 }

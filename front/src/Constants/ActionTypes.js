@@ -44,5 +44,4 @@ export const DELETE_FAVORITE = createRequestTypes('DELETE_FAVORITE');
 export const FETCH_FAVORITES = 'FETCH_FAVORITES';
 export const RECEIVE_FAVORITES = 'RECEIVE_FAVORITES';
 // Events Count
-export const FETCH_EVENTS_COUNT = 'FETCH_EVENTS_COUNT';
-export const RECEIVE_EVENTS_COUNT = 'RECEIVE_EVENTS_COUNT';
+export const EVENTS_COUNT = createRequestTypes('EVENT_COUNT');
