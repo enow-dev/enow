@@ -1,5 +1,5 @@
-import { take, put, call, fork, select, all } from 'redux-saga/effects';
-import { api, history } from '../Services';
+import { take, put, call, fork, all } from 'redux-saga/effects';
+import { api } from '../Services';
 import * as eventsActions from '../Actions/Events';
 import * as eventActions from '../Actions/Event';
 import * as favoriteActions from '../Actions/Favorite';
