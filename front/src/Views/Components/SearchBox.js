@@ -107,7 +107,14 @@ class SearchBox extends React.Component {
       handleSubmit();
     }
     searchStashActions.setSearchStash({...this.state});
-    eventsActions.getEventsIfNeeded(false, isRed, keyword, prefIndex, startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'));
+    const params = new URLSearchParams();
+    params.append('is_favorite', false);
+    params.append('is_red', isRed);
+    if (keyword !== '') { params.append('q', keyword); }
+    if (prefIndex > 0) { params.append('pref', prefIndex); }
+    if (endDate && endDate !== '') { params.append('period_to', endDate.format('YYYY-MM-DD')); }
+    if (startDate && startDate !== '') { params.append('period_from', startDate.format('YYYY-MM-DD')); }
+    eventsActions.getEventsIfNeeded('/events', params);
   }
 
   render() {
