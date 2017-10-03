@@ -11,13 +11,14 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { cyan, teal } from 'material-ui/colors';
 import MediaQuery from 'react-responsive';
 import dotenv from 'dotenv';
-import { createLogger } from 'redux-logger'
-import createSagaMiddleware from 'redux-saga'
+import { createLogger } from 'redux-logger';
+import createSagaMiddleware from 'redux-saga';
 
 import reducers from './Reducers';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import mySaga from './Sagas';
+import { api } from './Services';
 
 const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -34,7 +35,7 @@ const logger = createLogger({
 
 const store = createStore(reducer, applyMiddleware(middleware, thunk, logger, sagaMiddleware));
 
-sagaMiddleware.run(mySaga);
+sagaMiddleware.run(mySaga, api);
 
 const theme = {
   typography: {

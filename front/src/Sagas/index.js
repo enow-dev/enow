@@ -1,5 +1,4 @@
 import { take, put, call, fork, all } from 'redux-saga/effects';
-import { api } from '../Services';
 import * as eventsActions from '../Actions/Events';
 import * as eventActions from '../Actions/Event';
 import * as favoriteActions from '../Actions/Favorite';
@@ -24,65 +23,67 @@ function* fetchEntity(entity, apiFn, apiFnArgs) {
 }
 
 // bind Generators
-export const fetchEvents = fetchEntity.bind(null, events, api.fetchEvents);
-export const fetchEvent = fetchEntity.bind(null, event, api.fetchEvent);
-export const putFavorite = fetchEntity.bind(null, favorite, api.putFavorite);
-export const deleteFavorite = fetchEntity.bind(null, favorite, api.deleteFavorite);
-export const postOAuth = fetchEntity.bind(null, login, api.postOAuth);
-export const fetchEventsCount = fetchEntity.bind(null, eventsCount, api.fetchEventsCount);
+export const fetchEvents = fetchEntity.bind(null, events);
+export const fetchEvents2 = fetchEntity.bind(null, events);
+export const fetchEvent = fetchEntity.bind(null, event);
+export const putFavorite = fetchEntity.bind(null, favorite);
+export const deleteFavorite = fetchEntity.bind(null, favorite);
+export const postOAuth = fetchEntity.bind(null, login);
+export const fetchEventsCount = fetchEntity.bind(null, eventsCount);
 
 /* **************************************************************************** */
 /* ****************************** WATCHERS ************************************ */
 /* **************************************************************************** */
 
-function* watchLoadEvents() {
+export function* watchLoadEvents(api) {
   while (true) {
     const results = yield take(eventsActions.GET_EVENTS);
-    yield call(fetchEvents, { ...results });
+    yield call(fetchEvents, api.fetchEvents, { ...results });
   }
 }
 
-function* watchLoadEvent() {
+export function* watchLoadEvent(api) {
   while (true) {
     const results = yield take(eventActions.GET_EVENT);
-    yield call(fetchEvent, { ...results });
+    yield call(fetchEvent, api.fetchEvent, { ...results });
   }
 }
 
-function* watchPutFavorite() {
+export function* watchPutFavorite(api) {
   while (true) {
     const results = yield take(favoriteActions.PUT_FAVORITE);
-    yield call(putFavorite, { ...results });
+    yield call(putFavorite, api.putFavorite, { ...results });
   }
 }
 
-function* watchDeleteFavorite() {
+export function* watchDeleteFavorite(api) {
   while (true) {
     const results = yield take(favoriteActions.DELETE_FAVORITE);
-    yield call(deleteFavorite, { ...results });
+    yield call(deleteFavorite, api.deleteFavorite, { ...results });
   }
 }
 
-function* watchPutOAuth() {
+export function* watchPutOAuth(api) {
   while (true) {
     const results = yield take(oauthActions.POST_OAUTH);
-    yield call(postOAuth, { ...results });
+    yield call(postOAuth, api.postOAuth, { ...results });
   }
 }
 
-function* watchEventsCount() {
+export function* watchEventsCount(api) {
   while (true) {
     const results = yield take(eventsCountActions.GET_EVENTS_COUNT);
-    yield call(fetchEventsCount, { ...results });
+    yield call(fetchEventsCount, api.fetchEventsCount, { ...results });
   }
 }
-export default function* root() {
+
+export default function* root(api) {
   yield all([
-    fork(watchLoadEvents),
-    fork(watchLoadEvent),
-    fork(watchPutFavorite),
-    fork(watchDeleteFavorite),
-    fork(watchPutOAuth),
-    fork(watchEventsCount),
+    fork(watchLoadEvents, api),
+    fork(watchLoadEvent, api),
+    fork(watchPutFavorite, api),
+    fork(watchDeleteFavorite, api),
+    fork(watchPutOAuth, api),
+    fork(watchEventsCount, api),
   ]);
 }
