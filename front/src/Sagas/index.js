@@ -10,6 +10,7 @@ const { event } = eventActions;
 const { favorite } = favoriteActions;
 const { login } = oauthActions;
 const { eventsCount } = eventsCountActions;
+
 /* **************************** Subroutines *********************************** */
 
 function* fetchEntity(entity, apiFn, apiFnArgs) {
@@ -24,7 +25,6 @@ function* fetchEntity(entity, apiFn, apiFnArgs) {
 
 // bind Generators
 export const fetchEvents = fetchEntity.bind(null, events);
-export const fetchEvents2 = fetchEntity.bind(null, events);
 export const fetchEvent = fetchEntity.bind(null, event);
 export const putFavorite = fetchEntity.bind(null, favorite);
 export const deleteFavorite = fetchEntity.bind(null, favorite);

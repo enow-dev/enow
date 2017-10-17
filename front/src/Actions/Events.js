@@ -8,7 +8,7 @@ function action(type, payload = {}) {
 }
 
 export const events = {
-  request: (url, params) => (action(types.EVENTS[types.REQUEST], { url, params })),
+  request: () => ({ type: types.EVENTS[types.REQUEST] }),
   success: response => (action(types.EVENTS[types.SUCCESS], { response })),
   failure: error => action(types.EVENTS[types.FAILURE], { error }),
 };

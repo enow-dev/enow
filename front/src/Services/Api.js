@@ -1,8 +1,9 @@
-import { normalize, schema } from 'normalizr';
+import { normalize } from 'normalizr';
 import humps from 'humps';
 import parse from 'parse-link-header';
 
 import MyAexios from '../Constants/MyAexios';
+import { eventListSchema, eventSchema } from './Schemas';
 
 function callApi(reqConfig, schema) {
   return MyAexios.request(reqConfig)
@@ -10,12 +11,13 @@ function callApi(reqConfig, schema) {
       if (response.status !== 200) {
         return Promise.reject(response);
       }
-      const camelizedJson = humps.camelizeKeys(response.data);
-      const link = parse(response.headers.link);
+      let camelizedJson = humps.camelizeKeys(response.data);
+      let link = parse(response.headers.link);
       if (typeof camelizedJson !== 'object') {
-        return {
-          response: camelizedJson,
-        };
+        camelizedJson = JSON.parse(camelizedJson);
+      }
+      if (!link) {
+        link = '';
       }
       return {
         response: Object.assign({},
@@ -41,8 +43,6 @@ function callOAuthApi(reqConfig) {
     })
     .catch(error => ({ error: error || 'Something bad happened' }));
 }
-const eventSchema = new schema.Entity('events');
-const eventListSchema = new schema.Array(eventSchema);
 
 // api service
 export const fetchEvents = reqConfig => callApi(reqConfig, eventListSchema);
